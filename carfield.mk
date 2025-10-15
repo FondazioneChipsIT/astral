@@ -181,12 +181,8 @@ include $(CAR_SW_DIR)/sw.mk
 .PHONY: chs-sw-build
 ## Build the host domain (Cheshire) SW libraries and generates an archive (`libcheshire.a`)
 ## available for Carfield as static library at link time.
-chs-sw-build: patch-sw-mk chs-sw-all
-
-patch-sw-mk:
-	@echo "Patching cheshire/sw/sw.mk to suppress compilation errors in last RISCV64 toolchain"
-	@grep -q '\-Wno-int-conversion' cheshire/sw/sw.mk || \
-		sed -i '/^CHS_SW_FLAGS/s/$$/ -Wno-int-conversion -Wno-implicit-function-declaration/' cheshire/sw/sw.mk
+CHS_SW_FLAGS += -Wno-int-conversion -Wno-implicit-function-declaration -Wno-incompatible-pointer-types
+chs-sw-build: chs-sw-all
 
 .PHONY: car-sw-build
 ## Builds carfield application SW and specific libraries. It links against `libcheshire.a`.
