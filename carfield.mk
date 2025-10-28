@@ -111,9 +111,9 @@ BYPASS_PLL ?= 0
 
 # Interrupt configuration in cheshire
 # CLINT interruptible harts
-CLINTCORES     := 4
+CLINTCORES     := 3
 # PLIC interruptible harts
-PLICCORES      := 8
+PLICCORES      := 6
 # PLIC number of input interrupts
 PLIC_NUM_INTRS := 89
 
