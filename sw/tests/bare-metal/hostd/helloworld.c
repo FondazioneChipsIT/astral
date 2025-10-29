@@ -21,8 +21,7 @@ int main(void) {
     // if (hart_id() != 0) wfi();
 
     // Init the HW
-    car_init_start();
-
-    printf("Hi\n");
+    // car_init_start();
+    printf("Hi!\n");
     return 0;
 }
