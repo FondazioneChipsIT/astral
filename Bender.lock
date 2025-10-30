@@ -87,7 +87,7 @@ packages:
     revision: f9206cab527ba0348d212e4ef2912fe755e79936
     version: null
     source:
-      Git: httsp://github.com/FondazioneChipsIT/cheshire.git
+      Git: https://github.com/FondazioneChipsIT/cheshire.git
     dependencies:
     - apb_uart
     - axi

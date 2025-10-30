@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: SHL-0.51
 
 overrides:
-  cva6:                 { git: "https://github.com:FondazioneChipsIT/cva6.git"            , rev: 00e860ff591e2c3c8b52a5ffa6931f28efbe20a5 } # yt/scar-v
+  cva6:                 { git: "https://github.com/FondazioneChipsIT/cva6.git"            , rev: 00e860ff591e2c3c8b52a5ffa6931f28efbe20a5 } # yt/scar-v
   axi_riscv_atomics:    { git: "https://github.com/pulp-platform/axi_riscv_atomics.git"   , rev: 062bc36cbcca25629384e7f12efa6693273b3e07 } # branch: main
   apb:                  { git: "https://github.com/pulp-platform/apb.git"                 , version: 0.2.3 }
   tech_cells_generic:   { git: "https://github.com/pulp-platform/tech_cells_generic.git"  , version: =0.2.13                                }
