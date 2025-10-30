@@ -672,7 +672,7 @@ localparam cheshire_pkg::cheshire_cfg_t CarfieldCfgDefault = '{
   SerialLink        : CheshireSerialLinkEnable,
   Vga               : 0,
   AxiRt             : 1,
-  Clic              : 1,
+  Clic              : 0,
   IrqRouter         : 1,
   BusErr            : 1,
   // HmrUnit           : 1,
