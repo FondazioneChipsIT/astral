@@ -6,7 +6,7 @@
 # Author: Matteo Perotti <mperotti@iis.ee.ethz.ch>
 
 # Runtime-selectable Carfield configuration
-CARFIELD_CONFIG ?= carfield_l2dual_secure_periph
+CARFIELD_CONFIG ?= carfield_secure_periph
 
 # bender targets
 common_targs += -t cva6
