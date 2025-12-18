@@ -85,6 +85,15 @@ packages:
     - axi
     - common_cells
     - register_interface
+  axi_scmi_mailbox:
+    revision: 96650c4c39dcfc683e48015abb1453d182c1d837
+    version: null
+    source:
+      Git: https://github.com/AlSaqr-platform/axi_scmi_mailbox.git
+    dependencies:
+    - axi
+    - common_cells
+    - register_interface
   axi_slice:
     revision: a4f72bc21ac4d7da631e8309d9f8d0c34b735c23
     version: 1.1.4
@@ -118,7 +127,7 @@ packages:
     revision: b975fe3b71358c95205f53f86e27512ac37729c1
     version: null
     source:
-      Git: https://github.com/FondazioneChipsIT/cheshire.git
+      Path: working_dir/cheshire
     dependencies:
     - apb_uart
     - axi
@@ -157,13 +166,14 @@ packages:
     - common_cells
     - register_interface
   cluster_icache:
-    revision: 64e21ae455bbdde850c4df13bef86ea55ac42537
-    version: 0.2.0
+    revision: 917ecbf908bdaa22c5713bbcff277d142506bb16
+    version: null
     source:
       Git: https://github.com/pulp-platform/cluster_icache.git
     dependencies:
     - axi
     - common_cells
+    - register_interface
     - scm
     - tech_cells_generic
   cluster_interconnect:
@@ -270,10 +280,10 @@ packages:
     dependencies:
     - common_cells
   hci:
-    revision: 2a5a5081a2b32f1a04e7e28c00d3762d92602b84
+    revision: 572698a0bb9824d0a503571eff7d66606b7549f6
     version: null
     source:
-      Git: https://github.com/pulp-platform/hci.git
+      Git: https://github.com/FondazioneChipsIT/hci.git
     dependencies:
     - cluster_interconnect
     - common_cells
@@ -401,14 +411,16 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: 42df2697ad3d07608df942cb7e1928c05558af26
+    revision: null
     version: null
     source:
-      Git: https://github.com/pulp-platform/opentitan.git
+      Path: working_dir/opentitan
     dependencies:
     - axi
+    - axi_scmi_mailbox
     - cluster_interconnect
     - idma
+    - pulp_cluster
     - register_interface
   opentitan_peripherals:
     revision: cd3153de2783abd3d03d0595e6c4b32413c62f14
@@ -439,10 +451,10 @@ packages:
     - idma
     - register_interface
   pulp_cluster:
-    revision: caaa9735346bee71b51d1fe6ba526743bc41e135
+    revision: 53d6c16d97f766f18c6e9334cbcabf3ad9c30212
     version: null
     source:
-      Git: https://github.com/pulp-platform/pulp_cluster.git
+      Git: https://github.com/FondazioneChipsIT/pulp_cluster.git
     dependencies:
     - axi
     - axi2mem
@@ -460,6 +472,7 @@ packages:
     - idma
     - mchan
     - neureka
+    - obi
     - per2axi
     - redmule
     - redundancy_cells
