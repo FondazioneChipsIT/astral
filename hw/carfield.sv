@@ -1671,36 +1671,23 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
 
   `ifndef SECD_NETLIST
   security_island #(
-    .HartIdOffs            ( OpnTitHartIdOffs                  ),
-    .AxiAddrWidth          ( Cfg.AddrWidth                     ),
-    .AxiDataWidth          ( Cfg.AxiDataWidth                  ),
-    .AxiUserWidth          ( Cfg.AxiUserWidth                  ),
-    .AxiOutIdWidth         ( Cfg.AxiMstIdWidth                 ),
-    .AxiOtAddrWidth        ( Cfg.AddrWidth                     ),
-    .AxiOtDataWidth        ( AxiNarrowDataWidth                ), // TODO: why is this exposed?
-    .AxiOtUserWidth        ( Cfg.AxiUserWidth                  ),
-    .AxiOtOutIdWidth       ( Cfg.AxiMstIdWidth                 ),
-    .AsyncAxiOutAwWidth    ( CarfieldAxiMstAwWidth             ),
-    .AsyncAxiOutWWidth     ( CarfieldAxiMstWWidth              ),
-    .AsyncAxiOutBWidth     ( CarfieldAxiMstBWidth              ),
-    .AsyncAxiOutArWidth    ( CarfieldAxiMstArWidth             ),
-    .AsyncAxiOutRWidth     ( CarfieldAxiMstRWidth              ),
-    .axi_out_aw_chan_t     ( carfield_axi_mst_aw_chan_t        ),
-    .axi_out_w_chan_t      ( carfield_axi_mst_w_chan_t         ),
-    .axi_out_b_chan_t      ( carfield_axi_mst_b_chan_t         ),
-    .axi_out_ar_chan_t     ( carfield_axi_mst_ar_chan_t        ),
-    .axi_out_r_chan_t      ( carfield_axi_mst_r_chan_t         ),
-    .axi_out_req_t         ( carfield_axi_mst_req_t            ),
-    .axi_out_resp_t        ( carfield_axi_mst_rsp_t            ),
-    .axi_ot_out_aw_chan_t  ( carfield_axi_mst_narrow_aw_chan_t ),
-    .axi_ot_out_w_chan_t   ( carfield_axi_mst_narrow_w_chan_t  ),
-    .axi_ot_out_b_chan_t   ( carfield_axi_mst_narrow_b_chan_t  ),
-    .axi_ot_out_ar_chan_t  ( carfield_axi_mst_narrow_ar_chan_t ),
-    .axi_ot_out_r_chan_t   ( carfield_axi_mst_narrow_r_chan_t  ),
-    .axi_ot_out_req_t      ( carfield_axi_mst_narrow_req_t     ),
-    .axi_ot_out_resp_t     ( carfield_axi_mst_narrow_resp_t    ),
-    .CdcSyncStages         ( SyncStages                        ),
-    .SyncStages            ( SyncStages                        )
+    .HartIdOffs               ( OpnTitHartIdOffs                  ),
+
+    .AxiAddrWidthRemap        ( Cfg.AddrWidth                     ),
+    .AxiDataWidthRemap        ( Cfg.AxiDataWidth                  ),
+    .AxiUserWidthRemap        ( Cfg.AxiUserWidth                  ),
+    .AxiIdWidthRemap          ( Cfg.AxiMstIdWidth                 ),
+
+    .axi_remap_out_aw_chan_t  ( carfield_axi_mst_aw_chan_t        ),
+    .axi_remap_out_w_chan_t   ( carfield_axi_mst_w_chan_t         ),
+    .axi_remap_out_b_chan_t   ( carfield_axi_mst_b_chan_t         ),
+    .axi_remap_out_ar_chan_t  ( carfield_axi_mst_ar_chan_t        ),
+    .axi_remap_out_r_chan_t   ( carfield_axi_mst_r_chan_t         ),
+    .axi_remap_out_req_t      ( carfield_axi_mst_req_t            ),
+    .axi_remap_out_resp_t     ( carfield_axi_mst_rsp_t            ),
+
+    .CdcSyncStages            ( SyncStages                        ),
+    .SyncStages               ( SyncStages                        )
   ) i_security_island (
   `else
   security_island i_security_island (
@@ -1739,7 +1726,9 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
     .async_axi_out_r_data_i  ( axi_mst_ext_r_data  [SecurityIslandTlulMstIdx] ),
     .async_axi_out_r_wptr_i  ( axi_mst_ext_r_wptr  [SecurityIslandTlulMstIdx] ),
     .async_axi_out_r_rptr_o  ( axi_mst_ext_r_rptr  [SecurityIslandTlulMstIdx] ),
-    // Uart
+    .axi_isolate_i           ( security_island_isolate_req                    ),
+    .axi_isolated_o          ( master_isolated_rsp[SecurityIslandTlulMstIdx]  ),
+     // Uart
     .ibex_uart_rx_i   ( uart_ot_rx_i  ),
     .ibex_uart_tx_o   ( uart_ot_tx_o  ),
      // SPI host
