@@ -8,3 +8,4 @@ uart
 design.bin
 qwave.db
 .qsim
+*.ses
