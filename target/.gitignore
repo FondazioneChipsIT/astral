@@ -9,3 +9,5 @@ design.bin
 qwave.db
 .qsim
 *.ses
+*.lock
+*.vstf
