@@ -17,8 +17,8 @@ dependencies:
   hyperbus:           { git: https://github.com/pulp-platform/hyperbus.git,             version: 0.0.9}
   dyn_mem:            { git: https://github.com/pulp-platform/dyn_spm.git,              rev: 480590062742230dc9bd4050358a15b4747bdf34 } # branch: main
   safety_island:      { git: https://github.com/pulp-platform/safety_island.git,        rev: 584eb697195c44ef1b1cbd1f4b7accdf5192200a } # branch: main
-  pulp_cluster:       { git: https://github.com/FondazioneChipsIT/pulp_cluster.git,     rev: 5db284d2a75093d6c7697264981f3f8d546de9a2 } # branch: dep_update
-  opentitan:          { git: https://github.com/AlSaqr-platform/opentitan.git,          rev: 908ef8ba727639c8d27241661553bb94e39e3a51 } # branch: gl/chips-it
+  pulp_cluster:       { git: https://github.com/FondazioneChipsIT/pulp_cluster.git,     rev: db3b8ac76b19a0d489284bb90b8c50bd8ba1a66b } # branch: dep_update
+  opentitan:          { git: https://github.com/AlSaqr-platform/opentitan.git,          rev: 3ee444fdb2e58aa19a6e41a350bc841f5acd6720 } # branch: chips-it
   mailbox_unit:       { git: https://github.com/pulp-platform/mailbox_unit.git,         version: 1.1.0                                }
   apb:                { git: https://github.com/pulp-platform/apb.git,                  version: 0.2.3                                }
   timer_unit:         { git: https://github.com/pulp-platform/timer_unit.git,           version: 1.0.2                                }

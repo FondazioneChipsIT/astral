@@ -411,10 +411,10 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: null
+    revision: 3ee444fdb2e58aa19a6e41a350bc841f5acd6720
     version: null
     source:
-      Path: working_dir/opentitan
+      Git: https://github.com/AlSaqr-platform/opentitan.git
     dependencies:
     - axi
     - axi_scmi_mailbox
@@ -451,7 +451,7 @@ packages:
     - idma
     - register_interface
   pulp_cluster:
-    revision: 5db284d2a75093d6c7697264981f3f8d546de9a2
+    revision: db3b8ac76b19a0d489284bb90b8c50bd8ba1a66b
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/pulp_cluster.git
