@@ -100,6 +100,7 @@ sources:
   - hw/carfield_chip_pkg.sv
   - hw/regs/carfield_reg_pkg.sv
   - hw/regs/carfield_reg_top.sv
+  - hw/padframe/tc_pad_pkg.sv
   - hw/padframe/astral_padframe/src/pkg_astral_padframe.sv
   - hw/padframe/astral_padframe/src/pkg_internal_astral_padframe_periph.sv
   - hw/padframe/astral_padframe/src/astral_padframe_periph_config_reg_pkg.sv
@@ -118,6 +119,10 @@ sources:
   # Level 2
   - hw/carfield.sv
   - hw/astral_wrap.sv
+
+  - target: all(not(synthesis), not(tech_sim))
+    files:
+      - hw/padframe/astral_padframe/tc_pad.sv
 
   - target: spatz
     files:
