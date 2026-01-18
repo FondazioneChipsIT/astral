@@ -23,12 +23,11 @@ CAR_SW_DIR  := $(CAR_ROOT)/sw
 CAR_TGT_DIR := $(CAR_ROOT)/target
 CAR_XIL_DIR := $(CAR_TGT_DIR)/xilinx
 CAR_SIM_DIR := $(CAR_TGT_DIR)/sim
+CAR_TECH_DIR := $(CAR_TGT_DIR)/gf22
 SECD_ROOT ?= $(shell $(BENDER) path opentitan)
 
 # Questasim
 CAR_VSIM_DIR := $(CAR_TGT_DIR)/sim/vsim
-
-TECH_ROOT   := $(CAR_ROOT)/tech
 
 BENDER      ?= bender
 BENDER_ROOT ?= $(CAR_ROOT)/.bender
@@ -49,8 +48,8 @@ include $(CAR_ROOT)/bender-safed.mk
 # Nonfree components #
 ######################
 
-CAR_NONFREE_REMOTE ?= git@iis-git.ee.ethz.ch:astral/astral-nonfree.git
-CAR_NONFREE_COMMIT ?= 59aa6cfed0afe8a841c6fd478c07717a764fc4da
+CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
+CAR_NONFREE_COMMIT ?= 00f4b0da3f4a096adfd5353184bd1db5a361a827 # main
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC
@@ -77,10 +76,14 @@ CHS_BINARY   ?=
 CHS_IMAGE    ?=
 
 # Safety Island, reliabililty and fault-tolerance
+ifeq ($(shell echo $(SAFED_PRESENT)), 1)
 SAFED_ROOT     ?= $(shell $(BENDER) path safety_island)
 SAFED_SW_DIR   := $(SAFED_ROOT)/sw
-SAFED_BOOTMODE ?= 0
 SAFED_BINARY   ?=
+SAFED_SW_BUILD := safed-sw-build
+SAFED_SW_INIT := safed-sw-init
+endif
+SAFED_BOOTMODE ?= 0
 
 # Security island, security and secure boot
 SECD_ROOT     ?= $(shell $(BENDER) path opentitan)
@@ -91,15 +94,22 @@ SECD_IMAGE    ?=
 SECURE_BOOT   ?= 0
 
 # PULP cluster, reliability and general-purpose accelerator
+ifeq ($(shell echo $(PULPD_PRESENT)), 1)
 PULPD_ROOT      ?= $(shell $(BENDER) path pulp_cluster)
 PULPD_BINARY    ?=
 PULPD_TEST_NAME ?=
-PULPD_BOOTMODE  ?=
+PULPD_SW_BUILD := pulpd-sw-build
+PULPD_SW_INIT := pulpd-sw-init
+endif
+PULPD_BOOTMODE  ?= 0
 
 # Spatz cluster, efficient vector co-processor
+ifeq ($(shell echo $(SPATZD_PRESENT)), 1)
 SPATZD_ROOT     ?= $(shell $(BENDER) path spatz)
 SPATZD_MAKEDIR  := $(SPATZD_ROOT)/hw/system/spatz_cluster
 SPATZD_BINARY   ?=
+SPATZD_HW_INIT := spatzd-hw-init
+endif
 SPATZD_BOOTMODE ?= 0 # default jtag bootmode
 
 # PLL/FLL bypass
@@ -111,9 +121,9 @@ BYPASS_PLL ?= 0
 
 # Interrupt configuration in cheshire
 # CLINT interruptible harts
-CLINTCORES     := 4
+CLINTCORES     := 3
 # PLIC interruptible harts
-PLICCORES      := 8
+PLICCORES      := 6
 # PLIC number of input interrupts
 PLIC_NUM_INTRS := 89
 
@@ -161,26 +171,12 @@ car-checkout: car-checkout-deps
 ############
 # Build SW #
 ############
-## @section Islands compile exclusion
-ifeq ($(shell echo $(PULPD_PRESENT)), 1)
-PULPD_SW_BUILD := pulpd-sw-build
-PULPD_SW_INIT := pulpd-sw-init
-endif
-
-ifeq ($(shell echo $(SAFED_PRESENT)), 1)
-SAFED_SW_BUILD := safed-sw-build
-SAFED_SW_INIT := safed-sw-init
-endif
-
-ifeq ($(shell echo $(SPATZD_PRESENT)), 1)
-SPATZD_HW_INIT := spatzd-hw-init
-endif
-
 ## @section Carfield platform SW build
 include $(CAR_SW_DIR)/sw.mk
 .PHONY: chs-sw-build
 ## Build the host domain (Cheshire) SW libraries and generates an archive (`libcheshire.a`)
 ## available for Carfield as static library at link time.
+CHS_SW_FLAGS += -Wno-int-conversion -Wno-implicit-function-declaration -Wno-incompatible-pointer-types -Wno-implicit-int
 chs-sw-build: chs-sw-all
 
 .PHONY: car-sw-build
@@ -220,7 +216,8 @@ pulpd-sw-build: pulpd-sw-init
 # TODO: properly compile spatz tests from carfield. For now, we symlink to existing tests. If you
 #are a user external to ETH, the symlink will not work. We will integrate the compilation flow ASAP.
 
-#.PHONY: spatzd-sw-build spatzd-sw-build: $(MAKE) -C $(SPATZD_MAKEDIR) BENDER=$(BENDER_PATH)
+#.PHONY: spatzd-sw-build
+# spatzd-sw-build: $(MAKE) -C $(SPATZD_MAKEDIR) BENDER=$(BENDER_PATH)
 #LLVM_INSTALL_DIR=$(LLVM_SPATZ_DIR) GCC_INSTALL_DIR=$(GCC_SPATZ_DIR) -B
 #SPATZ_CLUSTER_CFG=$(SPATZD_MAKEDIR)/cfg/carfield.hjson HTIF_SERVER=NO sw.vsim
 
@@ -233,7 +230,7 @@ pulpd-sw-build: pulpd-sw-init
 ## Initialize Carfield HW. This step takes care of the generation of the missing hardware or the
 ## update of default HW configurations in some of the domains. See the two prerequisite's comment
 ## for more information.
-car-hw-init: $(SPATZD_HW_INIT) chs-hw-init $(SECD_HW_INIT)
+car-hw-init: idma-hw-init $(SPATZD_HW_INIT) chs-hw-init $(SECD_HW_INIT)
 
 ## @section Carfield platform PCRs generation
 .PHONY: regenerate_soc_regs
@@ -311,6 +308,10 @@ spatzd-hw-init:
 chs-hw-init: update_plic update_serial_link
 	$(MAKE) -B chs-hw-all
 
+.PHONY: idma-hw-init
+idma-hw-init:
+	$(MAKE) -C $(shell bender path idma) idma_hw_all
+
 ##############
 # Simulation #
 ##############
@@ -366,7 +367,7 @@ include $(CAR_XIL_DIR)/xilinx.mk
 mibench: $(CAR_SW_DIR)/benchmarks/mibench
 
 $(CAR_SW_DIR)/benchmarks/mibench:
-	git clone https://github.com/alex96295/mibench.git -b carfield $@
+	git clone https://github.com/yvantor/mibench.git -b yt/astral $@
 
 # Litmus tests
 LITMUS_WORK_DIR  := work-litmus
@@ -404,16 +405,18 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 # Technology #
 ##############
-tech-repo := git@iis-git.ee.ethz.ch:Astral/gf12.git
+tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/gf22.git
 # no commit by default, change during development
-tech-commit := e58cb2997247e74c3d258788c4c1dbce9cbda838 # branch: yt/astral-resume
+tech-commit := 0b5d453704037a78f28ca14865e1e5c4644892e2 # branch: yt/gigi-rebased
 
 tech-clone:
-	git clone $(tech-repo) tech
+	git clone $(tech-repo) $(CAR_TECH_DIR)
+	cd $(CAR_TECH_DIR) && git checkout $(tech-commit) && \
+	git submodule update --init --recursive && \
+	cd $(CAR_ROOT)
 
 tech-init: tech-clone
-	cd $(TECH_ROOT) && git checkout $(tech-commit) && cd $(CAR_ROOT)
-	$(MAKE) -C $(TECH_ROOT) init
+	$(MAKE) -C $(CAR_TECH_DIR) init
 
 ########
 # Help #

@@ -15,11 +15,7 @@ module astral_wrap
   import cheshire_pkg::*;
   import pkg_astral_padframe::*;
 #(
-  parameter cheshire_cfg_t Cfg = carfield_pkg::CarfieldCfgDefault,
-  parameter int unsigned   HypNumPhys  = 1,
-  parameter int unsigned   HypNumChips = 1,
-  parameter type           reg_req_t   = logic,
-  parameter type           reg_rsp_t   = logic
+  parameter cheshire_cfg_t Cfg = carfield_pkg::CarfieldCfgDefault
 ) (
   inout wire logic pad_periph_ref_clk_pad,
   inout wire logic pad_periph_fll_host_pad,
@@ -101,8 +97,6 @@ module astral_wrap
 
   // clock signals
   logic ref_clk;
-  // generated clocks
-  logic host_clk, periph_clk, alt_clk, rt_clk;
 
   // secure boot mode signal
   logic secure_boot;
@@ -149,8 +143,8 @@ module astral_wrap
   assign serial_link_data_in_s[0][6] = pad2soc_port_signals.periph.serial_link.slink_6_i;
   assign serial_link_data_in_s[0][7] = pad2soc_port_signals.periph.serial_link.slink_7_i;
   // hyperbus signals
-  logic [HypNumPhys-1:0]      hyperbus_rwds_in_s;
-  logic [HypNumPhys-1:0][7:0] hyperbus_data_in_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0] hyperbus_rwds_in_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0][7:0] hyperbus_data_in_s;
   // hyperbus 0
   assign hyperbus_data_in_s[0][0] = st_pad2soc_signals.periph.hyper_dq_0_i;
   assign hyperbus_data_in_s[0][1] = st_pad2soc_signals.periph.hyper_dq_1_i;
@@ -175,14 +169,14 @@ module astral_wrap
   assign soc2pad_port_signals.periph.serial_link.slink_h_2_o = serial_link_data_out_s[0][6];
   assign soc2pad_port_signals.periph.serial_link.slink_h_3_o = serial_link_data_out_s[0][7];
   //hyperbus
-  logic [HypNumPhys-1:0]                  hyperbus_rwds_out_s;
-  logic [HypNumPhys-1:0]                  hyperbus_rwds_oe_s;
-  logic [HypNumPhys-1:0]                  hyperbus_clk_o_s;
-  logic [HypNumPhys-1:0]                  hyperbus_clk_no_s;
-  logic [HypNumPhys-1:0]                  hyperbus_rst_no_s;
-  logic [HypNumPhys-1:0][HypNumChips-1:0] hyperbus_cs_no_s;
-  logic [HypNumPhys-1:0][7:0]             hyperbus_data_out_s;
-  logic [HypNumPhys-1:0]                  hyperbus_data_oe_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_rwds_out_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_rwds_oe_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_clk_o_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_clk_no_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_rst_no_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0][carfield_pkg::NumHyperBusChips-1:0] hyperbus_cs_no_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0][7:0]                                hyperbus_data_out_s;
+  logic [carfield_pkg::NumHyperBusPhys-1:0]                                     hyperbus_data_oe_s;
   // hyper bus 0
   assign st_soc2pad_signals.periph.hyper_ck_no      = hyperbus_clk_no_s[0];
   assign st_soc2pad_signals.periph.hyper_ck_o       = hyperbus_clk_o_s[0];
@@ -299,14 +293,6 @@ module astral_wrap
   assign gpio_in_s[31:22] = '0;
 
   // soc2pad
-  // clocks
-  assign st_soc2pad_signals.periph.fll_host_clk_o   = host_clk;
-  assign st_soc2pad_signals.periph.fll_periph_clk_o = periph_clk;
-  assign st_soc2pad_signals.periph.fll_alt_clk_o    = alt_clk;
-  assign st_soc2pad_signals.periph.fll_rt_clk_o     = rt_clk;
-
-
-  // soc2pad
   // uart-- carfield itf
   // spi
   logic                                        spih_sck_o_s;
@@ -361,41 +347,42 @@ module astral_wrap
   //////////////////////
   // Clock generation //
   //////////////////////
-
   logic[carfield_pkg::NumFll-1:0] clk_fll_out;
   logic[carfield_pkg::NumFll-1:0] clk_fll_e;
   logic[carfield_pkg::NumFll-1:0] fll_lock;
   logic[carfield_pkg::NumFll-1:0] fll_pwd;
+  logic[carfield_pkg::NumFll-1:0] fll_ret;
   logic[carfield_pkg::NumFll-1:0] fll_test_mode;
   logic[carfield_pkg::NumFll-1:0] fll_scan_e;
   logic[carfield_pkg::NumFll-1:0] fll_scan_in;
   logic[carfield_pkg::NumFll-1:0] fll_scan_out;
   logic[carfield_pkg::NumFll-1:0] fll_scan_jtag_in;
   logic[carfield_pkg::NumFll-1:0] fll_scan_jtag_out;
+  logic[carfield_pkg::NumFll-1:0] domain_clk;
 
   // ref_clk
   assign ref_clk      = st_pad2soc_signals.periph.ref_clk_i;
   // power on reset
   assign pwr_on_rst_n = st_pad2soc_signals.periph.pwr_on_rst_ni;
 
-  assign host_clk    = clk_fll_out[0];
-  assign periph_clk  = clk_fll_out[1];
-  assign alt_clk     = clk_fll_out[2];
-  assign secd_clk    = clk_fll_out[3];
   assign clk_fll_e   = '{default: 1'b1};
 
   clk_int_div_static #(
     .DIV_VALUE            ( 100  ),
     .ENABLE_CLOCK_IN_RESET( 1'b1 )
   ) i_rt_clk_div (
-    .clk_i          ( clk_fll_out[4] ),
-    .rst_ni         ( pwr_on_rst_n   ),
-    .en_i           ( 1'b1           ),
-    .test_mode_en_i ( 1'b0           ),
-    .clk_o          ( rt_clk         )
+    .clk_i          ( clk_fll_out[carfield_pkg::RtClockIdx]),
+    .rst_ni         ( pwr_on_rst_n                         ),
+    .en_i           ( 1'b1                                 ),
+    .test_mode_en_i ( 1'b0                                 ),
+    .clk_o          ( domain_clk[carfield_pkg::RtClockIdx] )
   );
 
+  for (genvar i = 1; i < carfield_pkg::NumFll; i++)
+    assign domain_clk[i] = clk_fll_out[i];
+
   assign fll_pwd          = '{default: 1'b0};
+  assign fll_ret          = '{default: 1'b0};
   assign fll_test_mode    = '{default: 1'b0};
   assign fll_scan_e       = '{default: 1'b0};
   assign fll_scan_in      = '{default: 1'b0};
@@ -410,8 +397,8 @@ module astral_wrap
     .init_no ()
   );
 
-`ifdef GF12_FLL
-  gf12_fll_wrap #(
+`ifdef GF22_FLL
+  fll_wrap #(
     .NUM_FLL        ( carfield_pkg::NumFll ),
     // Addresses are double-word aligned (0x2002_0000, 0x2002_0008, ...)
     .FLL_REG_OFFSET ( 3                    ),
@@ -432,6 +419,7 @@ module astral_wrap
     .clk_fll_e_i         ( clk_fll_e                              ),
     .fll_lock_o          ( fll_lock                               ),
     .fll_pwd_i           ( fll_pwd                                ),
+    .fll_ret_i           ( fll_ret                                ),
     .fll_test_mode_i     ( fll_test_mode                          ),
     .fll_scan_e_i        ( fll_scan_e                             ),
     .fll_scan_in_i       ( fll_scan_in                            ),
@@ -477,22 +465,23 @@ module astral_wrap
    assign dummy_rsp.rdata = 'hCACABABE;
 `endif
 
+  // soc2pad
+  // clocks
+  assign st_soc2pad_signals.periph.fll_rt_clk_o     = clk_fll_out[carfield_pkg::RtClockIdx];
+  assign st_soc2pad_signals.periph.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
+  assign st_soc2pad_signals.periph.fll_alt_clk_o    = clk_fll_out[carfield_pkg::CarfieldClockIdx.AltClockIdx];
+  assign st_soc2pad_signals.periph.fll_periph_clk_o = clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx];
+
   //////////////////
   // Carfield SoC //
   //////////////////
 
   carfield      #(
-    .Cfg         ( Cfg         ),
-    .HypNumPhys  ( HypNumPhys  ),
-    .HypNumChips ( HypNumChips ),
+    .Cfg         ( Cfg ),
     .reg_req_t   ( carfield_reg_req_t ),
     .reg_rsp_t   ( carfield_reg_rsp_t )
   ) i_dut (
-    .host_clk_i                 ( host_clk                                          ),
-    .periph_clk_i               ( periph_clk                                        ),
-    .alt_clk_i                  ( alt_clk                                           ),
-    .secd_clk_i                 ( secd_clk                                          ),
-    .rt_clk_i                   ( rt_clk                                            ),
+    .domain_clk_i               ( domain_clk[carfield_pkg::NumFll-1:0]              ),
     .pwr_on_rst_ni              ( pwr_on_rst_n                                      ),
     .test_mode_i                ( '0                                                ),
     .boot_mode_i                ( bootmode_host_s[1:0]                              ),
