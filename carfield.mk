@@ -17,13 +17,15 @@
 # Generic variable initialization #
 ###################################
 
+TECHNOLOGY := gf22
+
 CAR_ROOT    ?= $(shell $(BENDER) path carfield)
 CAR_HW_DIR  := $(CAR_ROOT)/hw
 CAR_SW_DIR  := $(CAR_ROOT)/sw
 CAR_TGT_DIR := $(CAR_ROOT)/target
 CAR_XIL_DIR := $(CAR_TGT_DIR)/xilinx
 CAR_SIM_DIR := $(CAR_TGT_DIR)/sim
-CAR_TECH_DIR := $(CAR_TGT_DIR)/gf22
+CAR_TECH_DIR := $(CAR_TGT_DIR)/$(TECHNOLOGY)
 SECD_ROOT ?= $(shell $(BENDER) path opentitan)
 
 # Questasim
@@ -405,7 +407,7 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 # Technology #
 ##############
-tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/gf22.git
+tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/$(TECHNOLOGY).git
 # no commit by default, change during development
 tech-commit := 0b5d453704037a78f28ca14865e1e5c4644892e2 # branch: yt/gigi-rebased
 

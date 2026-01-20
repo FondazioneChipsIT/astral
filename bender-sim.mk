@@ -11,7 +11,8 @@ sim_targs += -t test
 sim_targs += -t simulation
 ifeq ($(TECH_SIM), 1)
 	sim_targs += -t tech_sim
-	sim_defs  += -D INITIALIZE_MEMORY
-	sim_defs  += -D INITIALIZE_OUTPUT
-	sim_defs  += -D GF22_FLL
+	sim_targs += -t $(TECHNOLOGY)
+ifeq ($(TECHNOLOGY), gf22)
+	sim_defs  += -D INITIALIZE_MEM
+endif
 endif
