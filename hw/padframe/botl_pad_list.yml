@@ -92,12 +92,12 @@
     pad2chip: jtag_ot_trst_ni
     input_en: 1'b1
 
-- name: jtat_ot_tms
+- name: jtag_ot_tms
   description: "JTAG OT tms"
   pad_type: PAD_INPUT_V
   is_static: true
   connections:
-    pad2chip: jtat_ot_tms_i
+    pad2chip: jtag_ot_tms_i
     input_en: 1'b1
     
 - name: jtag_ot_tdi
@@ -307,12 +307,12 @@
     pad2chip: jtag_trst_ni
     input_en: 1'b1
 
-- name: jtat_tms
+- name: jtag_tms
   description: "JTAG tms"
   pad_type: PAD_INPUT_H
   is_static: true
   connections:
-    pad2chip: jtat_tms_i
+    pad2chip: jtag_tms_i
     input_en: 1'b1
     
 - name: jtag_tdi
