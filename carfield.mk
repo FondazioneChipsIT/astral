@@ -30,6 +30,7 @@ SECD_ROOT ?= $(shell $(BENDER) path opentitan)
 
 # Questasim
 CAR_VSIM_DIR := $(CAR_TGT_DIR)/sim/vsim
+CAR_QSIM_DIR := $(CAR_TGT_DIR)/sim/qsim
 
 BENDER      ?= bender
 BENDER_ROOT ?= $(CAR_ROOT)/.bender
