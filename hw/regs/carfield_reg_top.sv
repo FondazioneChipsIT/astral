@@ -598,7 +598,7 @@ module carfield_reg_top #(
   prim_subreg #(
     .DW      (1),
     .SWACCESS("RW"),
-    .RESVAL  (1'h1)
+    .RESVAL  (1'h0)
   ) u_security_island_isolate (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
@@ -922,7 +922,7 @@ module carfield_reg_top #(
   prim_subreg #(
     .DW      (1),
     .SWACCESS("RW"),
-    .RESVAL  (1'h0)
+    .RESVAL  (1'h1)
   ) u_security_island_clk_en (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
@@ -1030,7 +1030,7 @@ module carfield_reg_top #(
   prim_subreg #(
     .DW      (2),
     .SWACCESS("RW"),
-    .RESVAL  (2'h2)
+    .RESVAL  (2'h0)
   ) u_periph_clk_sel (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
@@ -1084,7 +1084,7 @@ module carfield_reg_top #(
   prim_subreg #(
     .DW      (2),
     .SWACCESS("RW"),
-    .RESVAL  (2'h3)
+    .RESVAL  (2'h1)
   ) u_security_island_clk_sel (
     .clk_i   (clk_i    ),
     .rst_ni  (rst_ni  ),
