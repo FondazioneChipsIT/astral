@@ -180,9 +180,10 @@ module tb_astral;
           end 2: begin  // Standalone UART passive preload
             fix.chs_vip.uart_debug_elf_run_and_wait(chs_preload_elf, exit_code);
           end 3: begin  // Secure boot: Opentitan booting CVA6
-            fix.chs_vip.slink_elf_preload(chs_preload_elf, unused);
+            // fix.chs_vip.slink_elf_preload(chs_preload_elf, unused);
             // We check the EOC with the JTAG
-            fix.chs_vip.jtag_init();
+            // fix.chs_vip.jtag_init();
+            fix.chs_vip.jtag_elf_halt_load(chs_preload_elf, unused);
             fix.chs_vip.jtag_wait_for_eoc(exit_code);
           end default: begin
             $fatal(1, "Unsupported preload mode %d (reserved)!", boot_mode);
@@ -318,10 +319,15 @@ module tb_astral;
         // Wait for FLL lock
         fix.wait_fll_lock();
 
+        // Initialize JTAG at first
+        fix.chs_vip.jtag_init();
+
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+        // $display("[TB] INFO: Configuring Hyperbus through serial link.");
+        // fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+        $display("[TB - SECD] INFO: Configuring Hyperbus through JTAG.");
+        fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
 
         case(secd_boot_mode)
           0: begin
