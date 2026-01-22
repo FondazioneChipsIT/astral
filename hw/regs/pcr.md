@@ -365,7 +365,7 @@ Safety Island AXI isolate
 ## SECURITY_ISLAND_ISOLATE
 Security Island AXI isolate
 - Offset: `0x44`
-- Reset default: `0x1`
+- Reset default: `0x0`
 - Reset mask: `0x1`
 
 ### Fields
@@ -377,7 +377,7 @@ Security Island AXI isolate
 |  Bits  |  Type  |  Reset  | Name                    | Description   |
 |:------:|:------:|:-------:|:------------------------|:--------------|
 |  31:1  |        |         |                         | Reserved      |
-|   0    |   rw   |   0x1   | SECURITY_ISLAND_ISOLATE |               |
+|   0    |   rw   |   0x0   | SECURITY_ISLAND_ISOLATE |               |
 
 ## PULP_CLUSTER_ISOLATE
 PULP Cluster AXI isolate
@@ -569,7 +569,7 @@ Safety Island clk gate enable
 ## SECURITY_ISLAND_CLK_EN
 Security Island clk gate enable
 - Offset: `0x74`
-- Reset default: `0x0`
+- Reset default: `0x1`
 - Reset mask: `0x1`
 
 ### Fields
@@ -581,7 +581,7 @@ Security Island clk gate enable
 |  Bits  |  Type  |  Reset  | Name                   | Description   |
 |:------:|:------:|:-------:|:-----------------------|:--------------|
 |  31:1  |        |         |                        | Reserved      |
-|   0    |   rw   |   0x0   | SECURITY_ISLAND_CLK_EN |               |
+|   0    |   rw   |   0x1   | SECURITY_ISLAND_CLK_EN |               |
 
 ## PULP_CLUSTER_CLK_EN
 PULP Cluster clk gate enable
@@ -637,7 +637,7 @@ Shared L2 memory clk gate enable
 ## PERIPH_CLK_SEL
 Periph Domain fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
 - Offset: `0x84`
-- Reset default: `0x2`
+- Reset default: `0x0`
 - Reset mask: `0x3`
 
 ### Fields
@@ -649,7 +649,7 @@ Periph Domain fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd f
 |  Bits  |  Type  |  Reset  | Name           | Description   |
 |:------:|:------:|:-------:|:---------------|:--------------|
 |  31:2  |        |         |                | Reserved      |
-|  1:0   |   rw   |   0x2   | PERIPH_CLK_SEL |               |
+|  1:0   |   rw   |   0x0   | PERIPH_CLK_SEL |               |
 
 ## SAFETY_ISLAND_CLK_SEL
 Safety Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
@@ -671,7 +671,7 @@ Safety Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd f
 ## SECURITY_ISLAND_CLK_SEL
 Security Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
 - Offset: `0x8c`
-- Reset default: `0x3`
+- Reset default: `0x1`
 - Reset mask: `0x3`
 
 ### Fields
@@ -683,7 +683,7 @@ Security Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd
 |  Bits  |  Type  |  Reset  | Name                    | Description   |
 |:------:|:------:|:-------:|:------------------------|:--------------|
 |  31:2  |        |         |                         | Reserved      |
-|  1:0   |   rw   |   0x3   | SECURITY_ISLAND_CLK_SEL |               |
+|  1:0   |   rw   |   0x1   | SECURITY_ISLAND_CLK_SEL |               |
 
 ## PULP_CLUSTER_CLK_SEL
 PULP Cluster fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
