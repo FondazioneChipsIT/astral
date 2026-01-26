@@ -138,16 +138,38 @@ module carfield
   output logic [SlinkNumChan-1:0][SlinkNumLanes-1:0]  slink_o,
   // HyperBus interface
   // verilog_lint: waive-start line-length
-  output logic [carfield_configuration::NumHypPhys-1:0][carfield_configuration::NumHypChips-1:0] hyper_cs_no,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_ck_o,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_ck_no,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_rwds_o,
-  input  logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_rwds_i,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_rwds_oe_o,
-  input  logic [carfield_configuration::NumHypPhys-1:0][7:0]                                     hyper_dq_i,
-  output logic [carfield_configuration::NumHypPhys-1:0][7:0]                                     hyper_dq_o,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_dq_oe_o,
-  output logic [carfield_configuration::NumHypPhys-1:0]                                          hyper_reset_no,
+  inout wire logic pad_config_tc_pad_internal_signals_0,
+  inout wire logic pad_config_tc_pad_internal_signals_1,
+  inout wire logic pad_config_tc_pad_internal_signals_2,
+  inout wire logic pad_config_tc_pad_internal_signals_3,
+  inout wire logic pad_hyper_phy0_cs_n_0_pad,
+  inout wire logic pad_hyper_phy0_cs_n_1_pad,
+  inout wire logic pad_hyper_phy0_ck_pad,
+  inout wire logic pad_hyper_phy0_ck_n_pad,
+  inout wire logic pad_hyper_phy0_rwds_pad,
+  inout wire logic pad_hyper_phy0_dq_b0_pad,
+  inout wire logic pad_hyper_phy0_dq_b1_pad,
+  inout wire logic pad_hyper_phy0_dq_b2_pad,
+  inout wire logic pad_hyper_phy0_dq_b3_pad,
+  inout wire logic pad_hyper_phy0_dq_b4_pad,
+  inout wire logic pad_hyper_phy0_dq_b5_pad,
+  inout wire logic pad_hyper_phy0_dq_b6_pad,
+  inout wire logic pad_hyper_phy0_dq_b7_pad,
+  inout wire logic pad_hyper_phy0_reset_n_pad,
+  inout wire logic pad_hyper_phy1_cs_n_0_pad,
+  inout wire logic pad_hyper_phy1_cs_n_1_pad,
+  inout wire logic pad_hyper_phy1_ck_pad,
+  inout wire logic pad_hyper_phy1_ck_n_pad,
+  inout wire logic pad_hyper_phy1_rwds_pad,
+  inout wire logic pad_hyper_phy1_dq_b0_pad,
+  inout wire logic pad_hyper_phy1_dq_b1_pad,
+  inout wire logic pad_hyper_phy1_dq_b2_pad,
+  inout wire logic pad_hyper_phy1_dq_b3_pad,
+  inout wire logic pad_hyper_phy1_dq_b4_pad,
+  inout wire logic pad_hyper_phy1_dq_b5_pad,
+  inout wire logic pad_hyper_phy1_dq_b6_pad,
+  inout wire logic pad_hyper_phy1_dq_b7_pad,
+  inout wire logic pad_hyper_phy1_reset_n_pad,
   // verilog_lint: waive-stop line-length
 `ifdef GEN_NO_HYPERBUS
   // LLC interface
@@ -706,10 +728,6 @@ carfield_reg_top #(
 assign car_regs_hw2reg.fll_lock.de = 1'b1;
 assign car_regs_hw2reg.fll_lock.d = fll_lock_i;
 
-// hyperbus reg req/rsp
-carfield_a32_d32_reg_req_t reg_hyper_req;
-carfield_a32_d32_reg_rsp_t reg_hyper_rsp;
-
 // wdt reg req/rsp
 carfield_a32_d32_reg_req_t reg_wdt_req;
 carfield_a32_d32_reg_rsp_t reg_wdt_rsp;
@@ -922,6 +940,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
 `ifndef GEN_NO_HYPERBUS // bender-xilinx.mk
   localparam int unsigned HyperDivWidth = 20;
   localparam int unsigned DefaultHyperClkDivValue = 1;
+  localparam int unsigned HyperBusAsyncIdx = CarfieldRegBusSlvIdx.hyperbus-NumSyncRegSlv;
   logic hyp_clk;
 
   logic hyper_clk_decoupled_valid, hyper_clk_decoupled_ready;
@@ -959,7 +978,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
   hyperbus_wrap      #(
     .NumChips         ( HypNumChips                           ),
     .NumPhys          ( HypNumPhys                            ),
-    .IsClockODelayed  ( 1'b0                                  ),
+    .UsePhyClkDivider ( 1'b1                                  ),
     .AxiAddrWidth     ( Cfg.AddrWidth                         ),
     .AxiDataWidth     ( Cfg.AxiDataWidth                      ),
     .AxiIdWidth       ( LlcIdWidth                            ),
@@ -973,8 +992,8 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .axi_aw_chan_t    ( carfield_axi_llc_aw_chan_t            ),
     .RegAddrWidth     ( AxiNarrowAddrWidth                    ),
     .RegDataWidth     ( AxiNarrowDataWidth                    ),
-    .reg_req_t        ( carfield_a32_d32_reg_req_t            ),
-    .reg_rsp_t        ( carfield_a32_d32_reg_rsp_t            ),
+    .reg_req_t        ( carfield_reg_req_t                    ),
+    .reg_rsp_t        ( carfield_reg_rsp_t                    ),
     .RxFifoLogDepth   ( 32'd2                                 ),
     .TxFifoLogDepth   ( 32'd2                                 ),
     .RstChipBase      ( Cfg.LlcOutRegionStart                 ),
@@ -1007,25 +1026,45 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .axi_slave_w_data_i  ( llc_w_data         ),
     .axi_slave_w_wptr_i  ( llc_w_wptr         ),
     .axi_slave_w_rptr_o  ( llc_w_rptr         ),
-    .rbus_req_addr_i     ( reg_hyper_req.addr  ),
-    .rbus_req_write_i    ( reg_hyper_req.write ),
-    .rbus_req_wdata_i    ( reg_hyper_req.wdata ),
-    .rbus_req_wstrb_i    ( reg_hyper_req.wstrb ),
-    .rbus_req_valid_i    ( reg_hyper_req.valid ),
-    .rbus_rsp_rdata_o    ( reg_hyper_rsp.rdata ),
-    .rbus_rsp_ready_o    ( reg_hyper_rsp.ready ),
-    .rbus_rsp_error_o    ( reg_hyper_rsp.error ),
-    .hyper_cs_no,
-    .hyper_ck_o,
-    .hyper_ck_no,
-    .hyper_rwds_o,
-    .hyper_rwds_i,
-    .hyper_rwds_oe_o,
-    .hyper_dq_i,
-    .hyper_dq_o,
-    .hyper_dq_oe_o,
-    .hyper_reset_no
-  );
+    .reg_async_mst_req_i ( ext_reg_async_slv_req_out [HyperBusAsyncIdx] ),
+    .reg_async_mst_ack_o ( ext_reg_async_slv_ack_in  [HyperBusAsyncIdx] ),
+    .reg_async_mst_data_i( ext_reg_async_slv_data_out[HyperBusAsyncIdx] ),
+    .reg_async_mst_req_o ( ext_reg_async_slv_req_in  [HyperBusAsyncIdx] ),
+    .reg_async_mst_ack_i ( ext_reg_async_slv_ack_out [HyperBusAsyncIdx] ),
+    .reg_async_mst_data_o( ext_reg_async_slv_data_in [HyperBusAsyncIdx] ),
+    .pad_config_tc_pad_internal_signals_0,
+    .pad_config_tc_pad_internal_signals_1,
+    .pad_config_tc_pad_internal_signals_2,
+    .pad_config_tc_pad_internal_signals_3,
+    .pad_hyper_phy0_cs_n_0_pad,
+    .pad_hyper_phy0_cs_n_1_pad,
+    .pad_hyper_phy0_ck_pad,
+    .pad_hyper_phy0_ck_n_pad,
+    .pad_hyper_phy0_rwds_pad,
+    .pad_hyper_phy0_dq_b0_pad,
+    .pad_hyper_phy0_dq_b1_pad,
+    .pad_hyper_phy0_dq_b2_pad,
+    .pad_hyper_phy0_dq_b3_pad,
+    .pad_hyper_phy0_dq_b4_pad,
+    .pad_hyper_phy0_dq_b5_pad,
+    .pad_hyper_phy0_dq_b6_pad,
+    .pad_hyper_phy0_dq_b7_pad,
+    .pad_hyper_phy0_reset_n_pad,
+    .pad_hyper_phy1_cs_n_0_pad,
+    .pad_hyper_phy1_cs_n_1_pad,
+    .pad_hyper_phy1_ck_pad,
+    .pad_hyper_phy1_ck_n_pad,
+    .pad_hyper_phy1_rwds_pad,
+    .pad_hyper_phy1_dq_b0_pad,
+    .pad_hyper_phy1_dq_b1_pad,
+    .pad_hyper_phy1_dq_b2_pad,
+    .pad_hyper_phy1_dq_b3_pad,
+    .pad_hyper_phy1_dq_b4_pad,
+    .pad_hyper_phy1_dq_b5_pad,
+    .pad_hyper_phy1_dq_b6_pad,
+    .pad_hyper_phy1_dq_b7_pad,
+    .pad_hyper_phy1_reset_n_pad
+);
 `endif // GEN_NO_HYPERBUS
 
 // Temporary Mailbox parameters (evaluate if we can move everything here).
@@ -2345,36 +2384,6 @@ if (CarfieldIslandsCfg.periph.enable) begin: gen_periph // Handle with care...
     .aon_timer_rst_req_o       ( car_wdt_intrs[4] ),
     .sleep_mode_i              ( '0                    )
   );
-
-  // Hyperbus
-  REG_BUS #(
-    .ADDR_WIDTH ( AxiNarrowAddrWidth ),
-    .DATA_WIDTH ( AxiNarrowDataWidth )
-  ) reg_bus_hyper (hyp_clk);
-
-  apb_to_reg i_apb_to_reg_hyper (
-    .clk_i     ( hyp_clk                          ),
-    .rst_ni    ( periph_pwr_on_rst_n              ),
-    .penable_i ( apb_mst_req[HyperBusIdx].penable ),
-    .pwrite_i  ( apb_mst_req[HyperBusIdx].pwrite  ),
-    .paddr_i   ( apb_mst_req[HyperBusIdx].paddr   ),
-    .psel_i    ( apb_mst_req[HyperBusIdx].psel    ),
-    .pwdata_i  ( apb_mst_req[HyperBusIdx].pwdata  ),
-    .prdata_o  ( apb_mst_rsp[HyperBusIdx].prdata  ),
-    .pready_o  ( apb_mst_rsp[HyperBusIdx].pready  ),
-    .pslverr_o ( apb_mst_rsp[HyperBusIdx].pslverr ),
-    .reg_o     ( reg_bus_hyper                    )
-  );
-
-  assign reg_hyper_req.addr  = reg_bus_hyper.addr;
-  assign reg_hyper_req.write = reg_bus_hyper.write;
-  assign reg_hyper_req.wdata = reg_bus_hyper.wdata;
-  assign reg_hyper_req.wstrb = reg_bus_hyper.wstrb;
-  assign reg_hyper_req.valid = reg_bus_hyper.valid;
-
-  assign reg_bus_hyper.rdata = reg_hyper_rsp.rdata;
-  assign reg_bus_hyper.error = reg_hyper_rsp.error;
-  assign reg_bus_hyper.ready = reg_hyper_rsp.ready;
 
   // CAN bus
   logic [63:0] can_timestamp;

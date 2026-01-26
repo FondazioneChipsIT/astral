@@ -26,6 +26,13 @@ FORCE_SEED ?= $(shell printf "0x%016x" $(shell date +%s))
 # pass the define to the C compiler flags (CHS_SW_CCFLAGS is used in the rules)
 CHS_SW_CCFLAGS += -DFORCE_SEED=$(FORCE_SEED)
 
+# PHY SELECTION (leave empty to use defaults in C)
+CAR_PHY_SEL ?=
+
+ifneq ($(CAR_PHY_SEL),)
+    CHS_SW_CCFLAGS += -DCAR_PHY_SEL=$(CAR_PHY_SEL)
+endif
+
 # Libraries
 ifeq ($(shell echo $(PULPD_PRESENT)), 1)
 CAR_PULPD_BARE ?= -I$(CAR_SW_DIR)/tests/bare-metal/pulpd

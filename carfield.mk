@@ -49,7 +49,7 @@ include $(CAR_ROOT)/bender-safed.mk
 ######################
 
 CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
-CAR_NONFREE_COMMIT ?= 00f4b0da3f4a096adfd5353184bd1db5a361a827 # main
+CAR_NONFREE_COMMIT ?= 49e0ff7888d5922815e5e730a773496013555b76 # main
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC
@@ -114,6 +114,9 @@ SPATZD_BOOTMODE ?= 0 # default jtag bootmode
 
 # PLL/FLL bypass
 BYPASS_PLL ?= 0
+
+# PHY selection (optional, passed as +CAR_PHY_SEL to simulation)
+CAR_PHY_SEL ?=
 
 ###########################
 # System HW configuration #
@@ -407,7 +410,7 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/gf22.git
 # no commit by default, change during development
-tech-commit := 0b5d453704037a78f28ca14865e1e5c4644892e2 # branch: yt/gigi-rebased
+tech-commit := 9a2ad6675525d98827b85b3e613dcfb5d3c3db63 # branch: adr/dev
 
 tech-clone:
 	git clone $(tech-repo) $(CAR_TECH_DIR)

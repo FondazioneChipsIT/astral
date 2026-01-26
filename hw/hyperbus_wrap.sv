@@ -2,14 +2,17 @@
 // Solderpad Hardware License, Version 0.51, see LICENSE for details.
 // SPDX-License-Identifier: SHL-0.51
 //
-// Yvan Tortorella <yvan.tortorella@unibo.it>
+// Andrea Di Ruzza
 
 `include "register_interface/typedef.svh"
 
-module hyperbus_wrap #(
+module hyperbus_wrap 
+  import pkg_hyperbus_padframe::*;
+  import pkg_internal_hyperbus_padframe_topr::*;
+#(
   parameter int unsigned NumChips        = -1,
   parameter int unsigned NumPhys         = 2,
-  parameter int unsigned IsClockODelayed = 0,
+  parameter bit          UsePhyClkDivider = 1,
   parameter int unsigned AxiAddrWidth    = -1,
   parameter int unsigned AxiDataWidth    = -1,
   parameter int unsigned AxiIdWidth      = -1,
@@ -24,11 +27,9 @@ module hyperbus_wrap #(
   parameter type         axi_aw_chan_t   = logic,
   parameter int unsigned RegAddrWidth    = -1,
   parameter int unsigned RegDataWidth    = -1,
+  parameter int unsigned  MinFreqMHz     = 100,
   parameter type         reg_req_t       = logic,
   parameter type         reg_rsp_t       = logic,
-  parameter type reg_addr_t              = logic [RegAddrWidth-1:0],
-  parameter type reg_data_t              = logic [RegDataWidth-1:0],
-  parameter type reg_strb_t              = logic [RegDataWidth/8-1:0],
   // The below have sensible defaults, but should be set on integration!
   parameter int unsigned RxFifoLogDepth  = 2,
   parameter int unsigned TxFifoLogDepth  = 2,
@@ -46,7 +47,7 @@ module hyperbus_wrap #(
   parameter int unsigned AxiSlaveWWidth  = 0,
   parameter int unsigned CdcSyncStages   = 0
 )(
-  input  logic clk_i         ,
+  input  logic clk_i     ,
   input  logic rst_ni        ,
   input  logic test_mode_i   ,
   // AXI bus
@@ -66,25 +67,46 @@ module hyperbus_wrap #(
   input  logic [      AxiLogDepth:0] axi_slave_w_wptr_i,
   output logic [      AxiLogDepth:0] axi_slave_w_rptr_o,
   // Reg bus
-  input  reg_addr_t                   rbus_req_addr_i,
-  input  logic                        rbus_req_write_i,
-  input  reg_data_t                   rbus_req_wdata_i,
-  input  reg_strb_t                   rbus_req_wstrb_i,
-  input  logic                        rbus_req_valid_i,
-  output reg_data_t                   rbus_rsp_rdata_o,
-  output logic                        rbus_rsp_ready_o,
-  output logic                        rbus_rsp_error_o,
+  input logic reg_async_mst_req_i,
+  output logic reg_async_mst_ack_o,
+  input reg_req_t reg_async_mst_data_i,
+  output logic reg_async_mst_req_o,
+  input logic reg_async_mst_ack_i,
+  output reg_rsp_t reg_async_mst_data_o,  
+
   // Physical interace: HyperBus PADs
-  output logic [NumPhys-1:0][NumChips-1:0] hyper_cs_no,
-  output logic [NumPhys-1:0]               hyper_ck_o,
-  output logic [NumPhys-1:0]               hyper_ck_no,
-  output logic [NumPhys-1:0]               hyper_rwds_o,
-  input  logic [NumPhys-1:0]               hyper_rwds_i,
-  output logic [NumPhys-1:0]               hyper_rwds_oe_o,
-  input  logic [NumPhys-1:0][7:0]          hyper_dq_i,
-  output logic [NumPhys-1:0][7:0]          hyper_dq_o,
-  output logic [NumPhys-1:0]               hyper_dq_oe_o,
-  output logic [NumPhys-1:0]               hyper_reset_no
+  inout wire logic pad_config_tc_pad_internal_signals_0,
+  inout wire logic pad_config_tc_pad_internal_signals_1,
+  inout wire logic pad_config_tc_pad_internal_signals_2,
+  inout wire logic pad_config_tc_pad_internal_signals_3,
+  inout wire logic pad_hyper_phy0_cs_n_0_pad,
+  inout wire logic pad_hyper_phy0_cs_n_1_pad,
+  inout wire logic pad_hyper_phy0_ck_pad,
+  inout wire logic pad_hyper_phy0_ck_n_pad,
+  inout wire logic pad_hyper_phy0_rwds_pad,
+  inout wire logic pad_hyper_phy0_dq_b0_pad,
+  inout wire logic pad_hyper_phy0_dq_b1_pad,
+  inout wire logic pad_hyper_phy0_dq_b2_pad,
+  inout wire logic pad_hyper_phy0_dq_b3_pad,
+  inout wire logic pad_hyper_phy0_dq_b4_pad,
+  inout wire logic pad_hyper_phy0_dq_b5_pad,
+  inout wire logic pad_hyper_phy0_dq_b6_pad,
+  inout wire logic pad_hyper_phy0_dq_b7_pad,
+  inout wire logic pad_hyper_phy0_reset_n_pad,
+  inout wire logic pad_hyper_phy1_cs_n_0_pad,
+  inout wire logic pad_hyper_phy1_cs_n_1_pad,
+  inout wire logic pad_hyper_phy1_ck_pad,
+  inout wire logic pad_hyper_phy1_ck_n_pad,
+  inout wire logic pad_hyper_phy1_rwds_pad,
+  inout wire logic pad_hyper_phy1_dq_b0_pad,
+  inout wire logic pad_hyper_phy1_dq_b1_pad,
+  inout wire logic pad_hyper_phy1_dq_b2_pad,
+  inout wire logic pad_hyper_phy1_dq_b3_pad,
+  inout wire logic pad_hyper_phy1_dq_b4_pad,
+  inout wire logic pad_hyper_phy1_dq_b5_pad,
+  inout wire logic pad_hyper_phy1_dq_b6_pad,
+  inout wire logic pad_hyper_phy1_dq_b7_pad,
+  inout wire logic pad_hyper_phy1_reset_n_pad
 );
 
 reg_req_t   reg_req;
@@ -109,7 +131,7 @@ axi_cdc_dst      #(
   .r_chan_t       ( axi_r_chan_t  ),
   .axi_req_t      ( axi_req_t     ),
   .axi_resp_t     ( axi_rsp_t     )
-) i_hyper_cdc_dst (
+) i_hyper_axi_cdc_dst (
   // asynchronous slave port
   .async_data_slave_aw_data_i ( axi_slave_aw_data_i ),
   .async_data_slave_aw_wptr_i ( axi_slave_aw_wptr_i ),
@@ -127,25 +149,47 @@ axi_cdc_dst      #(
   .async_data_slave_r_wptr_o  ( axi_slave_r_wptr_o  ),
   .async_data_slave_r_rptr_i  ( axi_slave_r_rptr_i  ),
   // synchronous master port
-  .dst_clk_i                  ( clk_i     ),
+  .dst_clk_i                  ( clk_i ),
   .dst_rst_ni                 ( rst_ni    ),
   .dst_req_o                  ( hyper_req ),
   .dst_resp_i                 ( hyper_rsp )
 );
 
-assign reg_req.addr         = rbus_req_addr_i;
-assign reg_req.write        = rbus_req_write_i;
-assign reg_req.wdata        = rbus_req_wdata_i;
-assign reg_req.wstrb        = rbus_req_wstrb_i;
-assign reg_req.valid        = rbus_req_valid_i;
-assign rbus_rsp_rdata_o     = reg_rsp.rdata;
-assign rbus_rsp_ready_o     = reg_rsp.ready;
-assign rbus_rsp_error_o     = reg_rsp.error;
+reg_cdc_dst #(
+  .CDC_KIND ( "cdc_4phase" ),
+  .req_t    ( reg_req_t ),
+  .rsp_t    ( reg_rsp_t )
+) i_hyper_reg_cdc_dst (
+  .dst_clk_i   ( clk_i ),
+  .dst_rst_ni  ( rst_ni ),
+  .dst_req_o   ( reg_req ),
+  .dst_rsp_i   ( reg_rsp ),
+
+  .async_req_i (reg_async_mst_req_i),
+  .async_ack_o (reg_async_mst_ack_o),
+  .async_data_i(reg_async_mst_data_i),
+
+  .async_req_o (reg_async_mst_req_o),
+  .async_ack_i (reg_async_mst_ack_i),
+  .async_data_o(reg_async_mst_data_o)
+);
+
+logic [NumPhys-1:0][NumChips-1:0] hyper_cs_no;
+logic [NumPhys-1:0] hyper_ck_o;
+logic [NumPhys-1:0] hyper_ck_no;
+logic [NumPhys-1:0] hyper_rwds_o;
+logic [NumPhys-1:0] hyper_rwds_i;
+logic [NumPhys-1:0] hyper_rwds_oe_o;
+logic [NumPhys-1:0][7:0] hyper_dq_i;
+logic [NumPhys-1:0][7:0] hyper_dq_o;
+logic [NumPhys-1:0] hyper_dq_oe_o;
+logic [NumPhys-1:0] hyper_reset_no;
+logic [NumPhys-1:0][7:0] hyper_pad_cfg_o;
 
 hyperbus           #(
   .NumChips         ( NumChips         ),
   .NumPhys          ( NumPhys          ),
-  .IsClockODelayed  ( IsClockODelayed  ),
+  .UsePhyClkDivider ( UsePhyClkDivider ),
   .AxiAddrWidth     ( AxiAddrWidth     ),
   .AxiDataWidth     ( AxiDataWidth     ),
   .AxiIdWidth       ( AxiIdWidth       ),
@@ -157,12 +201,13 @@ hyperbus           #(
   .reg_req_t        ( reg_req_t        ),
   .reg_rsp_t        ( reg_rsp_t        ),
   .axi_rule_t       ( addr_rule_t      ),
+
+  .MinFreqMHz       ( MinFreqMHz ),
   .RxFifoLogDepth   ( RxFifoLogDepth   ),
   .TxFifoLogDepth   ( TxFifoLogDepth   ),
   .RstChipBase      ( RstChipBase      ),
   .RstChipSpace     ( RstChipSpace     ),
   .PhyStartupCycles ( PhyStartupCycles ),
-  .AxiLogDepth      ( AxiLogDepth      ),
   .SyncStages       ( CdcSyncStages    )
 ) i_hyperbus        (
   .clk_phy_i        ( clk_i              ),
@@ -183,7 +228,106 @@ hyperbus           #(
   .hyper_dq_i,
   .hyper_dq_o,
   .hyper_dq_oe_o,
-  .hyper_reset_no
+  .hyper_reset_no,
+  .hyper_pad_cfg_o
 );
+
+pad_domain_topr_static_connection_signals_pad2soc_t pad2soc; //output
+pad_domain_topr_static_connection_signals_soc2pad_t soc2pad; //input
+
+hyperbus_padframe_topr_pads i_hyperbus_padframe_topr_pads(
+  .static_connection_signals_pad2soc(pad2soc),
+  .static_connection_signals_soc2pad(soc2pad),
+  .pad_config_tc_pad_internal_signals_0,
+  .pad_config_tc_pad_internal_signals_1,
+  .pad_config_tc_pad_internal_signals_2,
+  .pad_config_tc_pad_internal_signals_3,
+  .pad_hyper_phy0_cs_n_0_pad,
+  .pad_hyper_phy0_cs_n_1_pad,
+  .pad_hyper_phy0_ck_pad,
+  .pad_hyper_phy0_ck_n_pad,
+  .pad_hyper_phy0_rwds_pad,
+  .pad_hyper_phy0_dq_b0_pad,
+  .pad_hyper_phy0_dq_b1_pad,
+  .pad_hyper_phy0_dq_b2_pad,
+  .pad_hyper_phy0_dq_b3_pad,
+  .pad_hyper_phy0_dq_b4_pad,
+  .pad_hyper_phy0_dq_b5_pad,
+  .pad_hyper_phy0_dq_b6_pad,
+  .pad_hyper_phy0_dq_b7_pad,
+  .pad_hyper_phy0_reset_n_pad,
+  .pad_hyper_phy1_cs_n_0_pad,
+  .pad_hyper_phy1_cs_n_1_pad,
+  .pad_hyper_phy1_ck_pad,
+  .pad_hyper_phy1_ck_n_pad,
+  .pad_hyper_phy1_rwds_pad,
+  .pad_hyper_phy1_dq_b0_pad,
+  .pad_hyper_phy1_dq_b1_pad,
+  .pad_hyper_phy1_dq_b2_pad,
+  .pad_hyper_phy1_dq_b3_pad,
+  .pad_hyper_phy1_dq_b4_pad,
+  .pad_hyper_phy1_dq_b5_pad,
+  .pad_hyper_phy1_dq_b6_pad,
+  .pad_hyper_phy1_dq_b7_pad,
+  .pad_hyper_phy1_reset_n_pad
+);
+
+// PAD input and output signals assignment
+
+assign soc2pad.hyper_phy0_cs_no_0 = hyper_cs_no[0][0];
+assign soc2pad.hyper_phy0_cs_no_1 = hyper_cs_no[0][1];
+assign soc2pad.hyper_phy0_ck_o = hyper_ck_o[0];
+assign soc2pad.hyper_phy0_ck_no = hyper_ck_no[0];
+assign soc2pad.hyper_phy0_rwds_o = hyper_rwds_o[0];
+assign hyper_rwds_i[0] = pad2soc.hyper_phy0_rwds_i;
+assign soc2pad.hyper_phy0_rwds_oe_o = hyper_rwds_oe_o[0];
+assign hyper_dq_i[0][0] = pad2soc.hyper_phy0_dq_i_b0;
+assign hyper_dq_i[0][1] = pad2soc.hyper_phy0_dq_i_b1;
+assign hyper_dq_i[0][2] = pad2soc.hyper_phy0_dq_i_b2;
+assign hyper_dq_i[0][3] = pad2soc.hyper_phy0_dq_i_b3;
+assign hyper_dq_i[0][4] = pad2soc.hyper_phy0_dq_i_b4;
+assign hyper_dq_i[0][5] = pad2soc.hyper_phy0_dq_i_b5;
+assign hyper_dq_i[0][6] = pad2soc.hyper_phy0_dq_i_b6;
+assign hyper_dq_i[0][7] = pad2soc.hyper_phy0_dq_i_b7;
+assign soc2pad.hyper_phy0_dq_o_b0 = hyper_dq_o[0][0];
+assign soc2pad.hyper_phy0_dq_o_b1 = hyper_dq_o[0][1];
+assign soc2pad.hyper_phy0_dq_o_b2 = hyper_dq_o[0][2];
+assign soc2pad.hyper_phy0_dq_o_b3 = hyper_dq_o[0][3];
+assign soc2pad.hyper_phy0_dq_o_b4 = hyper_dq_o[0][4];
+assign soc2pad.hyper_phy0_dq_o_b5 = hyper_dq_o[0][5];
+assign soc2pad.hyper_phy0_dq_o_b6 = hyper_dq_o[0][6];
+assign soc2pad.hyper_phy0_dq_o_b7 = hyper_dq_o[0][7];
+assign soc2pad.hyper_phy0_dq_oe_o = hyper_dq_oe_o[0];
+assign soc2pad.hyper_phy0_reset_no = hyper_reset_no[0];
+assign soc2pad.hyper_phy1_cs_no_0 = hyper_cs_no[1][0];
+assign soc2pad.hyper_phy1_cs_no_1 = hyper_cs_no[1][1];
+assign soc2pad.hyper_phy1_ck_o = hyper_ck_o[1];
+assign soc2pad.hyper_phy1_ck_no = hyper_ck_no[1];
+assign soc2pad.hyper_phy1_rwds_o = hyper_rwds_o[1];
+assign hyper_rwds_i[1] = pad2soc.hyper_phy1_rwds_i;
+assign soc2pad.hyper_phy1_rwds_oe_o = hyper_rwds_oe_o[1];
+assign hyper_dq_i[1][0] = pad2soc.hyper_phy1_dq_i_b0;
+assign hyper_dq_i[1][1] = pad2soc.hyper_phy1_dq_i_b1;
+assign hyper_dq_i[1][2] = pad2soc.hyper_phy1_dq_i_b2;
+assign hyper_dq_i[1][3] = pad2soc.hyper_phy1_dq_i_b3;
+assign hyper_dq_i[1][4] = pad2soc.hyper_phy1_dq_i_b4;
+assign hyper_dq_i[1][5] = pad2soc.hyper_phy1_dq_i_b5;
+assign hyper_dq_i[1][6] = pad2soc.hyper_phy1_dq_i_b6;
+assign hyper_dq_i[1][7] = pad2soc.hyper_phy1_dq_i_b7;
+assign soc2pad.hyper_phy1_dq_o_b0 = hyper_dq_o[1][0];
+assign soc2pad.hyper_phy1_dq_o_b1 = hyper_dq_o[1][1];
+assign soc2pad.hyper_phy1_dq_o_b2 = hyper_dq_o[1][2];
+assign soc2pad.hyper_phy1_dq_o_b3 = hyper_dq_o[1][3];
+assign soc2pad.hyper_phy1_dq_o_b4 = hyper_dq_o[1][4];
+assign soc2pad.hyper_phy1_dq_o_b5 = hyper_dq_o[1][5];
+assign soc2pad.hyper_phy1_dq_o_b6 = hyper_dq_o[1][6];
+assign soc2pad.hyper_phy1_dq_o_b7 = hyper_dq_o[1][7];
+assign soc2pad.hyper_phy1_dq_oe_o = hyper_dq_oe_o[1];
+assign soc2pad.hyper_phy1_reset_no = hyper_reset_no[1];
+
+assign soc2pad.hyper_phy0_slew_en_o = hyper_pad_cfg_o[0][3];
+assign soc2pad.hyper_phy0_drive_strength_o = hyper_pad_cfg_o[0][1:0];
+assign soc2pad.hyper_phy1_slew_en_o = hyper_pad_cfg_o[1][3];
+assign soc2pad.hyper_phy1_drive_strength_o = hyper_pad_cfg_o[1][1:0];
 
 endmodule: hyperbus_wrap
