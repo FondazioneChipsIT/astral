@@ -26,6 +26,14 @@ ifeq ($(XILINX_BOARD),vcu128)
 	XILINX_HOST       ?= bordcomputer
 endif
 
+ifeq ($(XILINX_BOARD),vcu118)
+	xilinx_part       := xcvu9p-flga2104-2L-e
+	xilinx_board_long := xilinx.com:vcu118:part0:2.4
+	XILINX_PORT 	  ?= 3249
+	XILINX_FPGA_PATH  ?= xilinx_tcf/Digilent/210308A3B1D8
+	XILINX_HOST       ?= bordcomputer
+endif
+
 XILINX_USE_ARTIFACTS ?= 0
 XILINX_ARTIFACTS_ROOT ?=
 XILINX_ELABORATION_ONLY ?= 0

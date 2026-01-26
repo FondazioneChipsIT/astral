@@ -106,3 +106,4 @@ proc handle_mst_cdc { mst_cdc_path } {
 handle_mst_cdc [get_cells -hier gen_safety_island.i_safety_island_wrap]/i_cdc_out
 handle_mst_cdc [get_cells -hier gen_spatz_cluster.i_fp_cluster_wrapper]/i_spatz_cluster_cdc_src
 handle_mst_cdc [get_cells -hier gen_pulp_cluster.i_integer_cluster]/axi_master_cdc_i
+handle_mst_cdc [get_cells -hier gen_secure_subsystem.i_security_island]/i_cdc_out_tlul2axi

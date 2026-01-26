@@ -4,6 +4,9 @@
 #
 # Author: Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 
+# uncomment if you experience delays during update_compile_order step
+#set_param project.hsv.draftModeDefault only
+
 set project $::env(XILINX_PROJECT)
 
 create_project $project . -force -part $::env(XILINX_PART)
@@ -14,7 +17,7 @@ set_param general.maxThreads 8
 
 # Contraints files selection
 switch $::env(XILINX_BOARD) {
-  "vcu128" {
+  "vcu128" - "vcu118" {
     import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD).xdc
     import_files -fileset constrs_1 -norecurse constraints/carfield_top_xilinx.xdc
     # General constraints
@@ -29,6 +32,11 @@ switch $::env(XILINX_BOARD) {
   }
 }
 
+# Add the DDR4 interface pins
+if {[info exists ::env(GEN_NO_HYPERBUS)] && ($::env(GEN_NO_HYPERBUS)==1) && ($::env(XILINX_BOARD)=="vcu118")} {
+    import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_ddr4.xdc
+}
+
 # Ips selection
 set ips $::env(XILINX_IP_PATHS)
 read_ip $ips
@@ -36,6 +44,7 @@ read_ip $ips
 source scripts/add_sources.tcl
 
 set_property top ${project}_top_xilinx [current_fileset]
+
 
 update_compile_order -fileset sources_1
 
@@ -57,7 +66,7 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
   set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-sfcu} -objects [get_runs synth_1]
   
   # Synthesis
-  launch_runs synth_1
+  launch_runs synth_1 -jobs 12
   wait_on_run synth_1
   open_run synth_1 -name synth_1
   
@@ -78,7 +87,7 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
     puts "Creating debug core..."
     create_debug_core u_ila_0 ila
     set_property -dict "ALL_PROBE_SAME_MU true ALL_PROBE_SAME_MU_CNT 4 C_ADV_TRIGGER true C_DATA_DEPTH 16384 \
-     C_EN_STRG_QUAL true C_INPUT_PIPE_STAGES 0 C_TRIGIN_EN false C_TRIGOUT_EN false" [get_debug_cores u_ila_0]
+    C_EN_STRG_QUAL true C_INPUT_PIPE_STAGES 0 C_TRIGIN_EN false C_TRIGOUT_EN false" [get_debug_cores u_ila_0]
     ## Clock
     set_property port_width 1 [get_debug_ports u_ila_0/clk]
     connect_debug_port u_ila_0/clk [get_nets soc_clk]
@@ -116,7 +125,7 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
   }
   
   # Implementation
-  launch_runs impl_1
+  launch_runs impl_1 -jobs 12
   wait_on_run impl_1
   launch_runs impl_1 -to_step write_bitstream
   wait_on_run impl_1
