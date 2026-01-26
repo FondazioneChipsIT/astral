@@ -1420,36 +1420,6 @@ end
 logic pulpcl_mbox_intr;
 assign pulpcl_eoc = car_regs_hw2reg.pulp_cluster_eoc.d;
 
-if (CarfieldIslandsCfg.pulp.enable) begin : gen_pulp_cluster
-  assign pulp_rst_n = rsts_n[CarfieldDomainIdx.pulp];
-  assign pulp_pwr_on_rst_n = pwr_on_rsts_n[CarfieldDomainIdx.pulp];
-  assign pulp_clk = domain_clk_gated[CarfieldDomainIdx.pulp];
-  assign reset_vector[CarfieldDomainIdx.pulp] = car_regs_reg2hw.pulp_cluster_rst.q;
-
-  assign domain_clk_sel[CarfieldDomainIdx.pulp] =
-         car_regs_reg2hw.pulp_cluster_clk_sel.q;
-  assign domain_clk_div_value[CarfieldDomainIdx.pulp] =
-         car_regs_reg2hw.pulp_cluster_clk_div_value.q;
-  assign domain_clk_div_changed[CarfieldDomainIdx.pulp] =
-         car_regs_reg2hw.pulp_cluster_clk_div_value.qe;
-  assign domain_clk_en[CarfieldDomainIdx.pulp] =
-         car_regs_reg2hw.pulp_cluster_clk_en.q;
-
-  assign slave_isolate_req[IntClusterSlvIdx] = car_regs_reg2hw.pulp_cluster_isolate.q;
-  assign car_regs_hw2reg.pulp_cluster_eoc.de  = 1'b1;
-  assign car_regs_hw2reg.pulp_cluster_busy.de = 1'b1;
-  assign car_regs_hw2reg.pulp_cluster_isolate_status.d = slave_isolated[IntClusterSlvIdx];
-  assign car_regs_hw2reg.pulp_cluster_isolate_status.de = 1'b1;
-
-  assign slave_isolated[IntClusterSlvIdx] = slave_isolated_rsp[IntClusterSlvIdx] &
-                                            master_isolated_rsp[IntClusterMstIdx];
-  assign debug_clock_enable[CarfieldDomainIdx.pulp]
-         = car_regs_reg2hw.pulpd_debug_clk_en.q;
-  assign debug_clock_div_value[CarfieldDomainIdx.pulp]
-         = car_regs_reg2hw.pulpd_debug_clk_div_value.q;
-  assign debug_clock_div_valid[CarfieldDomainIdx.pulp]
-         = car_regs_reg2hw.pulpd_debug_clk_div_value.qe;
-
 localparam pulp_cluster_package::pulp_cluster_cfg_t PulpClusterCfg = '{
   CoreType: pulp_cluster_package::RI5CY,
   NumCores: IntClusterNumCores,
@@ -1523,9 +1493,40 @@ localparam pulp_cluster_package::pulp_cluster_cfg_t PulpClusterCfg = '{
   default: '0
 };
 
+if (CarfieldIslandsCfg.pulp.enable) begin : gen_pulp_cluster
+  assign pulp_rst_n = rsts_n[CarfieldDomainIdx.pulp];
+  assign pulp_pwr_on_rst_n = pwr_on_rsts_n[CarfieldDomainIdx.pulp];
+  assign pulp_clk = domain_clk_gated[CarfieldDomainIdx.pulp];
+  assign reset_vector[CarfieldDomainIdx.pulp] = car_regs_reg2hw.pulp_cluster_rst.q;
+
+  assign domain_clk_sel[CarfieldDomainIdx.pulp] =
+         car_regs_reg2hw.pulp_cluster_clk_sel.q;
+  assign domain_clk_div_value[CarfieldDomainIdx.pulp] =
+         car_regs_reg2hw.pulp_cluster_clk_div_value.q;
+  assign domain_clk_div_changed[CarfieldDomainIdx.pulp] =
+         car_regs_reg2hw.pulp_cluster_clk_div_value.qe;
+  assign domain_clk_en[CarfieldDomainIdx.pulp] =
+         car_regs_reg2hw.pulp_cluster_clk_en.q;
+
+  assign slave_isolate_req[IntClusterSlvIdx] = car_regs_reg2hw.pulp_cluster_isolate.q;
+  assign car_regs_hw2reg.pulp_cluster_eoc.de  = 1'b1;
+  assign car_regs_hw2reg.pulp_cluster_busy.de = 1'b1;
+  assign car_regs_hw2reg.pulp_cluster_isolate_status.d = slave_isolated[IntClusterSlvIdx];
+  assign car_regs_hw2reg.pulp_cluster_isolate_status.de = 1'b1;
+
+  assign slave_isolated[IntClusterSlvIdx] = slave_isolated_rsp[IntClusterSlvIdx] &
+                                            master_isolated_rsp[IntClusterMstIdx];
+  assign debug_clock_enable[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_div_value.qe;
+
+
 `ifndef INT_CLUSTER_NETLIST
   pulp_cluster #(
-   .Cfg( carfield_pkg::PulpClusterCfg )
+   .Cfg( PulpClusterCfg )
   ) i_integer_cluster               (
 `else
   pulp_cluster i_integer_cluster     (
