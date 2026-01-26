@@ -125,7 +125,7 @@ module carfield_top_xilinx
 
   wire clk_100, clk_50, clk_20;
   (* dont_touch = "yes" *) wire clk_10;
-  wire soc_clk, host_clk, alt_clk, periph_clk;
+ // wire soc_clk, host_clk, alt_clk, periph_clk;
   (* dont_touch = "yes" *) wire rst_n;
 
   ///////////////////
@@ -181,10 +181,15 @@ module carfield_top_xilinx
     .clk_10  ( clk_10   )
   );
   localparam rtc_clk_divider = 4;
+  logic[carfield_pkg::NumFll-1:0] domain_clk;
+
   assign soc_clk = clk_50;
-  assign alt_clk = clk_20;
-  assign host_clk = soc_clk;
-  assign periph_clk = soc_clk;
+  //assign domain_clk[carfield_pkg::CarfieldClockIdx.AltClockIdx] = clk_20;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.SecureClockIdx] = clk_20;
+  assign domain_clk[carfield_pkg::HostClockIdx] = clk_50;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.PeriphClockIdx] = clk_10;
+  assign domain_clk[carfield_pkg::RtClockIdx] = rtc_clk_q;
+
 
   /////////////////////
   // Reset Generator //
@@ -488,10 +493,7 @@ module carfield_top_xilinx
       .HypNumPhys   (`HypNumPhys),
       .HypNumChips  (`HypNumChips)
   ) i_carfield (
-      .host_clk_i    (host_clk),
-      .periph_clk_i  (periph_clk),
-      .alt_clk_i     (alt_clk),
-      .rt_clk_i      (rtc_clk_q),
+      .domain_clk_i               (domain_clk[carfield_pkg::NumFll-1:0]),
       .pwr_on_rst_ni (rst_n),
       .test_mode_i   (testmode_i),
       // Boot mode selection
@@ -501,21 +503,21 @@ module carfield_top_xilinx
       .jtag_trst_ni              (jtag_trst_ni),
       .jtag_tms_i                (jtag_tms_i),
       .jtag_tdi_i                (jtag_tdi_i),
-      .jtag_tdo_o                (jtag_host_to_safety),
+      .jtag_tdo_o                (jtag_tdo_o),
       .jtag_tdo_oe_o             (),
       // Secure Subsystem JTAG Interface
       .jtag_ot_tck_i             (jtag_tck_i),
       .jtag_ot_trst_ni           (jtag_trst_ni),
       .jtag_ot_tms_i             (jtag_tms_i),
-      .jtag_ot_tdi_i             (jtag_safety_to_ot),
-      .jtag_ot_tdo_o             (jtag_tdo_o), // Take in account when they are unactivated
+      .jtag_ot_tdi_i             (jtag_tdi_i),
+      .jtag_ot_tdo_o             (), // Take in account when they are unactivated
       .jtag_ot_tdo_oe_o          (),
       // Safety Island JTAG Interface
       .jtag_safety_island_tck_i  (jtag_tck_i),
       .jtag_safety_island_trst_ni(jtag_trst_ni),
       .jtag_safety_island_tms_i  (jtag_tms_i),
-      .jtag_safety_island_tdi_i  (jtag_host_to_safety),
-      .jtag_safety_island_tdo_o  (jtag_safety_to_ot),
+      .jtag_safety_island_tdi_i  (jtag_tdi_i),
+      .jtag_safety_island_tdo_o  (),
       .bootmode_safe_isln_i      (boot_mode_safety),
       // UART Interface
       .uart_tx_o,
