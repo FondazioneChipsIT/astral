@@ -92,12 +92,12 @@
     pad2chip: jtag_ot_trst_ni
     input_en: 1'b1
 
-- name: jtat_ot_tms
+- name: jtag_ot_tms
   description: "JTAG OT tms"
   pad_type: PAD_INPUT_V
   is_static: true
   connections:
-    pad2chip: jtat_ot_tms_i
+    pad2chip: jtag_ot_tms_i
     input_en: 1'b1
     
 - name: jtag_ot_tdi
@@ -134,7 +134,7 @@
 
 - name: spih_sck
   description: "SPI sck"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_sck_o
@@ -142,7 +142,7 @@
 
 - name: spih_csb
   description: "SPI csb"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_csb_o_1
@@ -151,7 +151,7 @@
 - name: spih_sd_{i}
   multiple: 4
   description: "SPI sd in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: spih_sd_o_{i}
@@ -162,7 +162,7 @@
 - name: gpio_{2+i}
   multiple: 2
   description: "gpio in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: gpio_v_o_{2+i}
@@ -173,7 +173,7 @@
 - name: spih_ot_sd_{1+i}
   multiple: 3
   description: "SPI OT sd in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: spih_ot_sd_o_{1+i}
@@ -307,12 +307,12 @@
     pad2chip: jtag_trst_ni
     input_en: 1'b1
 
-- name: jtat_tms
+- name: jtag_tms
   description: "JTAG tms"
   pad_type: PAD_INPUT_H
   is_static: true
   connections:
-    pad2chip: jtat_tms_i
+    pad2chip: jtag_tms_i
     input_en: 1'b1
     
 - name: jtag_tdi

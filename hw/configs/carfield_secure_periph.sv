@@ -62,9 +62,6 @@ localparam doub_bt SystemAdvancedTimerSize = 'h00001000;
 // System Watchdog
 localparam doub_bt SystemWatchdogBase = 'h20007000;
 localparam doub_bt SystemWatchdogSize = 'h00001000;
-// Hyperbus Config
-localparam doub_bt HyperBusBase = 'h20008000;
-localparam doub_bt HyperBusSize = 'h00001000;
 /************************
  * RegBus Configuration *
  ***********************/
@@ -83,10 +80,14 @@ localparam doub_bt PcrsSize = 'h00001000;
 localparam bit     PllCfgEnable = 1;
 localparam doub_bt PllCfgBase = 'h21003000;
 localparam doub_bt PllCfgSize = 'h00001000;
+// Hyperbus Config
+localparam bit     HyperBusEnable = 1;
+localparam doub_bt HyperBusBase = 'h21004000; // it was 'h20008000;
+localparam doub_bt HyperBusSize = 'h00001000;
 /**************************
  * HyperBus Configuration *
  **************************/
-localparam doub_bt NumHypPhys = 1;
+localparam doub_bt NumHypPhys = 2;
 localparam doub_bt NumHypChips = 2;
 
 endpackage

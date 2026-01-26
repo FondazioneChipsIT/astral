@@ -1,6 +1,6 @@
 // Copyright 2025 Fondazione Chips-IT.
 //
-// Author: Riccardo Fiorani Gallotta <riccardo.fiorani3@unibo.it>
+// Author: Riccardo Fiorani Gallotta <riccardo.fiorani@chips.it>
 //
 // Package with configuration and type definitions for beahviour model of generic io pads
 //
@@ -8,6 +8,9 @@
 package tc_pad_pkg;
     // Type for configuration of pads behaviour
     typedef struct packed {
+        bit          av_bidir_cell;          // bidirectional io cell availability
+        bit          av_in_cell;             // only input cell availability
+        bit          av_out_cell;            // only output cell availability
         bit          in_en_ah;               // input enable active high
         bit          in_en_latch;            // input enable is latched when retention is enabled
         bit          out_en_ah;              // output enable active high
@@ -23,6 +26,9 @@ package tc_pad_pkg;
     typedef enum bit {V, H} tc_pad_orientation_t; 
 
     parameter tc_pad_config_t default_tc_pad_config = '{
+        1'b1,   //av_bidir_cell
+        1'b1,   //av_in_cell
+        1'b1,   //av_out_cell
         1'b1,   //in_en_ah
         1'b1,   //in_en_latch
         1'b1,   //out_en_ah

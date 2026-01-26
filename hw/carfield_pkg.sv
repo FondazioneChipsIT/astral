@@ -205,6 +205,7 @@ typedef struct packed {
   islands_properties_t padframe;
   islands_properties_t l2ecc;
   islands_properties_t ethernet;
+  islands_properties_t hyperbus;
 } regbus_cfg_t;
 
 typedef struct packed {
@@ -213,6 +214,7 @@ typedef struct packed {
   byte_bt padframe;
   byte_bt ethernet;
   byte_bt l2ecc;
+  byte_bt hyperbus;
 } carfield_regbus_slave_idx_t;
 
 // Generate the number of AXI slave devices to be connected to the
@@ -229,6 +231,7 @@ function automatic int unsigned gen_num_regbus_async_slave(regbus_cfg_t regbus_c
   if (regbus_cfg.padframe.enable) begin ret++; end
   if (regbus_cfg.l2ecc.enable   ) begin ret++; end
   if (regbus_cfg.ethernet.enable) begin ret++; end
+  if (regbus_cfg.hyperbus.enable) begin ret++; end
   return ret;
 endfunction
 
@@ -237,7 +240,8 @@ localparam regbus_cfg_t CarfieldRegBusCfg = '{
   pll:      '{PllCfgEnable, PllCfgBase, PllCfgSize},
   padframe: '{PadframeCfgEnable, PadframeCfgBase, PadframeCfgSize},
   l2ecc:    '{L2EccCfgEnable, L2EccCfgBase, L2EccCfgSize},
-  ethernet: '{EthernetEnable, EthernetBase, EthernetSize}
+  ethernet: '{EthernetEnable, EthernetBase, EthernetSize},
+  hyperbus: '{HyperBusEnable, HyperBusBase, HyperBusSize}
 };
 
 localparam int unsigned NumSyncRegSlv = gen_num_regbus_sync_slave(CarfieldRegBusCfg);
@@ -261,6 +265,8 @@ function automatic carfield_regbus_slave_idx_t carfield_gen_regbus_slave_idx(reg
   end else begin ret.l2ecc = NumTotalRegSlv + j; j++; end
   if (regbus_cfg.ethernet.enable) begin ret.ethernet = i; i++;
   end else begin ret.ethernet = NumTotalRegSlv + j; j++; end
+  if (regbus_cfg.hyperbus.enable) begin ret.hyperbus = i; i++;
+  end else begin ret.hyperbus = NumTotalRegSlv + j; j++; end
   return ret;
 endfunction
 
@@ -304,6 +310,12 @@ function automatic regbus_struct_t carfield_gen_regbus_map(int unsigned NumSlave
     ret.RegBusIdx[i] = idx.ethernet;
     ret.RegBusStart[i] = regbus_cfg.ethernet.base;
     ret.RegBusEnd[i] = regbus_cfg.ethernet.base + regbus_cfg.ethernet.size;
+    if (i < NumSlave - 1) i++;
+  end
+  if (regbus_cfg.hyperbus.enable) begin
+    ret.RegBusIdx[i] = idx.hyperbus;
+    ret.RegBusStart[i] = regbus_cfg.hyperbus.base;
+    ret.RegBusEnd[i] = regbus_cfg.hyperbus.base + regbus_cfg.hyperbus.size;
     if (i < NumSlave - 1) i++;
   end
   return ret;
@@ -887,14 +899,13 @@ typedef logic [     AxiNarrowDataWidth-1:0] car_nar_dataw_t;
 typedef logic [        AxiNarrowStrobe-1:0] car_nar_strb_t;
 
 // APB Mapping
-localparam int unsigned NumApbMst = 5;
+localparam int unsigned NumApbMst = 4;
 
 typedef enum int {
   SystemTimerIdx   = 'd0,
   AdvancedTimerIdx = 'd1,
   SystemWdtIdx     = 'd2,
-  CanIdx           = 'd3,
-  HyperBusIdx      = 'd4
+  CanIdx           = 'd3
 } carfield_peripherals_e;
 
 // Address map of peripheral system
@@ -916,10 +927,7 @@ localparam carfield_addr_map_rule_t [NumApbMst-1:0] PeriphApbAddrMapRule = '{
                             end_addr: SystemWatchdogBase + SystemWatchdogSize },
   // 3: Can
   '{ idx: CanIdx,           start_addr: CanBase,
-                            end_addr: CanBase + CanSize },
-  // 4: Hyperbus
-  '{ idx: HyperBusIdx,      start_addr: HyperBusBase,
-                            end_addr: HyperBusBase + HyperBusSize }
+                            end_addr: CanBase + CanSize }
 };
 
 // Narrow reg types
