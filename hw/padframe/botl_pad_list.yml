@@ -134,7 +134,7 @@
 
 - name: spih_sck
   description: "SPI sck"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_sck_o
@@ -142,7 +142,7 @@
 
 - name: spih_csb
   description: "SPI csb"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_csb_o_1
@@ -151,7 +151,7 @@
 - name: spih_sd_{i}
   multiple: 4
   description: "SPI sd in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: spih_sd_o_{i}
@@ -162,7 +162,7 @@
 - name: gpio_{2+i}
   multiple: 2
   description: "gpio in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: gpio_v_o_{2+i}
@@ -173,7 +173,7 @@
 - name: spih_ot_sd_{1+i}
   multiple: 3
   description: "SPI OT sd in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
     chip2pad: spih_ot_sd_o_{1+i}
