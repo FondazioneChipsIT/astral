@@ -309,7 +309,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals     )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_sck (
     .pad_io           ( pad_spih_sck_pad            ),
@@ -325,9 +325,9 @@ module astral_padframe_botl_pads
     .slew_en_i        ( 1'b0        ),
     .drive_strength_i ( 2'b00 ),
     .int_io           ( `io_pad_internals         )
-  );    
+  );   
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_csb (
     .pad_io           ( pad_spih_csb_pad            ),
@@ -343,9 +343,9 @@ module astral_padframe_botl_pads
     .slew_en_i        ( 1'b0        ),
     .drive_strength_i ( 2'b00 ),
     .int_io           ( `io_pad_internals         )
-  );    
+  );   
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_sd_0 (
     .pad_io           ( pad_spih_sd_0_pad            ),
@@ -363,7 +363,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_sd_1 (
     .pad_io           ( pad_spih_sd_1_pad            ),
@@ -381,7 +381,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_sd_2 (
     .pad_io           ( pad_spih_sd_2_pad            ),
@@ -399,7 +399,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_sd_3 (
     .pad_io           ( pad_spih_sd_3_pad            ),
@@ -417,7 +417,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_gpio_2 (
     .pad_io           ( pad_gpio_2_pad            ),
@@ -435,7 +435,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_gpio_3 (
     .pad_io           ( pad_gpio_3_pad            ),
@@ -453,7 +453,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_ot_sd_1 (
     .pad_io           ( pad_spih_ot_sd_1_pad            ),
@@ -471,7 +471,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_ot_sd_2 (
     .pad_io           ( pad_spih_ot_sd_2_pad            ),
@@ -489,7 +489,7 @@ module astral_padframe_botl_pads
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
-    .tc_pad_orientation ( tc_pad_pkg::H              ),
+    .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
   ) i_spih_ot_sd_3 (
     .pad_io           ( pad_spih_ot_sd_3_pad            ),
