@@ -185,6 +185,18 @@ logic [NumPhys-1:0] hyper_dq_oe_o;
 logic [NumPhys-1:0] hyper_reset_no;
 logic [NumPhys-1:0][7:0] hyper_pad_cfg_o;
 
+logic [NumPhys-1:0][NumChips-1:0] hyper_cs_no;
+logic [NumPhys-1:0] hyper_ck_o;
+logic [NumPhys-1:0] hyper_ck_no;
+logic [NumPhys-1:0] hyper_rwds_o;
+logic [NumPhys-1:0] hyper_rwds_i;
+logic [NumPhys-1:0] hyper_rwds_oe_o;
+logic [NumPhys-1:0][7:0] hyper_dq_i;
+logic [NumPhys-1:0][7:0] hyper_dq_o;
+logic [NumPhys-1:0] hyper_dq_oe_o;
+logic [NumPhys-1:0] hyper_reset_no;
+logic [NumPhys-1:0][7:0] hyper_pad_cfg_o;
+
 hyperbus           #(
   .NumChips         ( NumChips         ),
   .NumPhys          ( NumPhys          ),

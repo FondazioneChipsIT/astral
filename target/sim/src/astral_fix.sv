@@ -524,7 +524,6 @@ astral_wrap i_dut (
   tranif1 tran_spih_sd_2 (w_muxed_v_05, w_spi_hostd_sd[2], mux_0_spih_sd_2);
   tranif1 tran_spih_sd_3 (w_muxed_v_06, w_spi_hostd_sd[3], mux_0_spih_sd_3);
   */
-
   // Ethernet
   /*
   assign mux_0_eth_rxck = (`PAD_MUX_REG_PATH.muxed_v_07_mux_sel.q == PAD_MUX_GROUP_MUXED_V_07_SEL_ETHERNET_RXCK);
@@ -559,7 +558,6 @@ astral_wrap i_dut (
   tranif1 tran_eth_rst_n (w_muxed_h_03, w_eth_rst, mux_0_eth_rst_n);
   assign eth_clk = i_dut.i_dut.eth_clk;
   */
-
   // CAN
   /*
   assign mux_1_can_rx = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_CAN_RX);
@@ -567,7 +565,6 @@ astral_wrap i_dut (
   tranif1 tran_can_rx (w_muxed_v_00, w_can_rx, mux_1_can_rx);
   tranif1 tran_can_tx (w_muxed_v_01, w_can_tx, mux_1_can_tx);
   */
-
   // Serial Link
   /*
   assign mux_1_slink_rcv_clk_i = (`PAD_MUX_REG_PATH.muxed_v_04_mux_sel.q == PAD_MUX_GROUP_MUXED_V_04_SEL_SERIAL_LINK_RCV_CLK_I);
@@ -607,7 +604,6 @@ astral_wrap i_dut (
   tranif1 tran_slink_6_o (w_muxed_h_02, w_slink_hostd_to_vip[6], mux_1_slink_6_o);
   tranif1 tran_slink_7_o (w_muxed_h_03, w_slink_hostd_to_vip[7], mux_1_slink_7_o);
   */
-
   // I2C
   /*
   assign mux_2_i2c_sda = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_I2C_SDA);
@@ -615,7 +611,6 @@ astral_wrap i_dut (
   tranif1 tran_i2c_sda (w_muxed_v_00, w_i2c_hostd_sda, mux_2_i2c_sda);
   tranif1 tran_i2c_scl (w_muxed_v_01, w_i2c_hostd_scl, mux_2_i2c_scl);
   */
-
   // Telecommand
   // assign mux_2_tc_active = (`PAD_MUX_REG_PATH.muxed_v_07_mux_sel.q == PAD_MUX_GROUP_MUXED_V_07_SEL_TC_ACTIVE);
   // assign mux_2_tc_clk = (`PAD_MUX_REG_PATH.muxed_v_08_mux_sel.q == PAD_MUX_GROUP_MUXED_V_08_SEL_TC_CLK);
@@ -671,7 +666,6 @@ astral_wrap i_dut (
   tranif1 tran_spih_ot_sd_2 (w_muxed_v_04, w_spi_secd_sd[2], mux_3_spih_ot_sd_2);
   tranif1 tran_spih_ot_sd_3 (w_muxed_v_05, w_spi_secd_sd[3], mux_3_spih_ot_sd_3);
   */
-
   // GPIO
   /*
   assign mux_4_gpio_0 = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_GPIO_IO_V_0);
