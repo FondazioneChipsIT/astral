@@ -406,7 +406,7 @@ module astral_fixture;
   `CHESHIRE_TYPEDEF_ALL(, DutCfg)
 
 
-  astral_wrap i_dut (
+astral_wrap i_dut (
     // Reference clock
     .pad_botl_ref_clk_pad          ( w_ext_clk ),
     .pad_botl_fll_bypass_pad       ( w_bypass_pll ),
@@ -505,6 +505,7 @@ module astral_fixture;
   ////////////////////////////
 
   `define PAD_MUX_REG_PATH i_dut.i_astral_padframe.i_periph.i_periph_muxer.s_reg2hw
+
 
   // SPI
   /*

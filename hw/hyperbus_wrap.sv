@@ -209,9 +209,9 @@ hyperbus           #(
   .PhyStartupCycles ( PhyStartupCycles ),
   .SyncStages       ( CdcSyncStages    )
 ) i_hyperbus        (
-  .clk_phy_i        ( clk_i              ),
+  .clk_phy_i        ( clk_phy_i          ),
   .rst_phy_ni       ( rst_ni             ),
-  .clk_sys_i        ( clk_i              ),
+  .clk_sys_i        ( clk_sys_i          ),
   .rst_sys_ni       ( rst_ni             ),
   .test_mode_i      ( test_mode_i        ),
   .axi_req_i        ( hyper_req          ),
