@@ -411,10 +411,10 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: null
+    revision: 86d1492a479f8d7deb06335e8b8760d6cd4661f0
     version: null
     source:
-      Path: working_dir/opentitan
+      Git: https://github.com/AlSaqr-platform/opentitan.git
     dependencies:
     - axi
     - axi_scmi_mailbox
