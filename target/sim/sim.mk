@@ -89,6 +89,7 @@ car-vsim-sim-clean:
 ## @param SECD_BINARY=<path_to_elf> ELF to be executed on the host domain
 ## @param SECD_IMAGE=<path_to_memh> Raw image (ROMs) or GPT disk image to be executed on Cheshire (when CHS_BOOTMODE >= 1)
 ## @param SECD_BOOTMODE=0 The bootmode of secure domain <0 JTAG|1 Serial Link>
+## @param SECD_PULP_CL_BIN=<path_to_elf> ELF to be executed on the pulp cluster inside the Security Island
 ## @param SAFED_BINARY=<path_to_elf> ELF to be executed on safe domain
 ## @param SAFED_BOOTMODE=0 The bootmode of safe domain <0 JTAG|1 Serial Link>
 ## @param PULPD_BINARY=<path_to_elf> ELF to be executed on integer PMCA
@@ -108,6 +109,7 @@ pargs+=+CHS_IMAGE=$(CHS_IMAGE_ABS)
 pargs+=+SECD_BINARY=$(SECD_BINARY_ABS)
 pargs+=+SECD_BOOTMODE=$(SECD_BOOTMODE)
 pargs+=+SECD_IMAGE=$(SECD_IMAGE_ABS)
+pargs+=+SECD_PULP_CL_BIN=$(SECD_PULP_CL_BIN_ABS)
 pargs+=+SAFED_BINARY=$(SAFED_BINARY_ABS)
 pargs+=+SAFED_BOOTMODE=$(SAFED_BOOTMODE)
 pargs+=+PULPD_BINARY=$(PULPD_BINARY_ABS)
@@ -124,6 +126,9 @@ ifneq ($(CHS_IMAGE),)
 endif
 ifneq ($(SECD_BINARY),)
 	$(eval SECD_BINARY_ABS := $(realpath $(SECD_BINARY)))
+endif
+ifneq ($(SECD_PULP_CL_BIN),)
+	$(eval SECD_PULP_CL_BIN_ABS := $(realpath $(SECD_PULP_CL_BIN)))
 endif
 ifneq ($(SECD_IMAGE),)
 	$(eval SECD_IMAGE_ABS := $(realpath $(SECD_IMAGE)))
