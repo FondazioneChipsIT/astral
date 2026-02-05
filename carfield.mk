@@ -91,6 +91,7 @@ SECD_ROOT     ?= $(shell $(BENDER) path opentitan)
 SECD_BINARY   ?=
 SECD_BOOTMODE ?= 0
 SECD_IMAGE    ?=
+SECD_PULP_CL_BIN ?=
 # Secure boot
 SECURE_BOOT   ?= 0
 
