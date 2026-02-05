@@ -365,7 +365,7 @@ Safety Island AXI isolate
 ## SECURITY_ISLAND_ISOLATE
 Security Island AXI isolate
 - Offset: `0x44`
-- Reset default: `0x0`
+- Reset default: `0x1`
 - Reset mask: `0x1`
 
 ### Fields
@@ -377,7 +377,7 @@ Security Island AXI isolate
 |  Bits  |  Type  |  Reset  | Name                    | Description   |
 |:------:|:------:|:-------:|:------------------------|:--------------|
 |  31:1  |        |         |                         | Reserved      |
-|   0    |   rw   |   0x0   | SECURITY_ISLAND_ISOLATE |               |
+|   0    |   rw   |   0x1   | SECURITY_ISLAND_ISOLATE |               |
 
 ## PULP_CLUSTER_ISOLATE
 PULP Cluster AXI isolate
@@ -569,7 +569,7 @@ Safety Island clk gate enable
 ## SECURITY_ISLAND_CLK_EN
 Security Island clk gate enable
 - Offset: `0x74`
-- Reset default: `0x1`
+- Reset default: `0x0`
 - Reset mask: `0x1`
 
 ### Fields
@@ -581,7 +581,7 @@ Security Island clk gate enable
 |  Bits  |  Type  |  Reset  | Name                   | Description   |
 |:------:|:------:|:-------:|:-----------------------|:--------------|
 |  31:1  |        |         |                        | Reserved      |
-|   0    |   rw   |   0x1   | SECURITY_ISLAND_CLK_EN |               |
+|   0    |   rw   |   0x0   | SECURITY_ISLAND_CLK_EN |               |
 
 ## PULP_CLUSTER_CLK_EN
 PULP Cluster clk gate enable
