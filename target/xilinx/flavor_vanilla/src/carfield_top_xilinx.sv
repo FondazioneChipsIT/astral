@@ -149,10 +149,10 @@ module carfield_top_xilinx
   // Tie off signals if no switches on the board
 `ifndef USE_SWITCHES
   logic         testmode_i;
-  logic [1:0]   boot_mode_i, boot_mode_safety_i;
+  logic [1:0]   boot_mode_i, boot_mode_security_i;
   assign testmode_i  = '0;
   assign boot_mode_i = 2'b00;
-  assign boot_mode_safety_i = 2'b00;
+  assign boot_mode_security_i = 2'b00;
 `endif
 
   // Give VDD and GND to JTAG
@@ -229,25 +229,25 @@ module carfield_top_xilinx
   // VIOs          //
   ///////////////////
 
-  logic [1:0] boot_mode, boot_mode_safety;
+  logic [1:0] boot_mode, boot_mode_security;
 
 `ifdef USE_VIO
   logic       vio_reset;
-  logic [1:0] vio_boot_mode, vio_boot_mode_safety;
+  logic [1:0] vio_boot_mode, vio_boot_mode_security;
 
   xlnx_vio (
     .clk(soc_clk),
     .probe_out0(vio_reset),
     .probe_out1(vio_boot_mode),
-    .probe_out2(vio_boot_mode_safety)
+    .probe_out2(vio_boot_mode_security)
   );
   assign sys_rst = cpu_reset | vio_reset;
   assign boot_mode = boot_mode_i | vio_boot_mode;
-  assign boot_mode_safety = boot_mode_safety_i | vio_boot_mode_safety;
+  assign boot_mode_security = boot_mode_security_i | vio_boot_mode_security;
 `else
   assign sys_rst = cpu_reset;
   assign boot_mode = boot_mode_i;
-  assign boot_mode_safety = boot_mode_safety_i;
+  assign boot_mode_security = boot_mode_security_i;
 `endif
 
   //////////////////
@@ -542,13 +542,14 @@ module carfield_top_xilinx
       .jtag_ot_tdi_i             (jtag_tdi_i),
       .jtag_ot_tdo_o             (),
 `endif
+      .bootmode_ot_i             (boot_mode_security),
       // Safety Island JTAG Interface
       .jtag_safety_island_tck_i  (jtag_tck_i),
       .jtag_safety_island_trst_ni(jtag_trst_ni),
       .jtag_safety_island_tms_i  (jtag_tms_i),
       .jtag_safety_island_tdi_i  (jtag_tdi_i),
       .jtag_safety_island_tdo_o  (),
-      .bootmode_safe_isln_i      (boot_mode_safety),
+      .bootmode_safe_isln_i      (),
       // UART Interface
       .uart_tx_o,
       .uart_rx_i,
