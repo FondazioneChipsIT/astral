@@ -4,8 +4,8 @@
 #
 # Author: Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 
-# uncomment if you experience delays during update_compile_order step
-#set_param project.hsv.draftModeDefault only
+# It fixes the long delays during update_compile_order step
+set_param project.hsv.draftModeDefault only
 
 set project $::env(XILINX_PROJECT)
 
