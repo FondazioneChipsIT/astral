@@ -149,7 +149,11 @@ int probe_range_lfsr_wrwr(volatile uintptr_t from, volatile uintptr_t to)
     while (addr < to) {
         //  Compute and store next LFSR value
         lfsr = lfsr_64bits(lfsr);
+
+        /* scrittura 64-bit: uso puntatore volatile a 64-bit; se preferisci */
         writed(lfsr, addr);
+
+        /* assicurati che la scrittura sia effettivamente visibile */
         fence();
 
         uint64_t r = readd(addr);
@@ -193,6 +197,7 @@ int probe_range_lfsr_wwrr(volatile uintptr_t from, volatile uintptr_t to)
         ++i;
     }
 
+    /* Assicura che tutte le scritture siano visibili */
     fence();
 
     /* ---------------- READ PHASE ---------------- */
