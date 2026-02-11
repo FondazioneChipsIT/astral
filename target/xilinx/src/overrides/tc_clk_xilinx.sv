@@ -30,15 +30,27 @@ module tc_clk_gating #(
   /// required for functional correctness or just instantiated for power
   /// savings. If IS_FUNCTIONAL == 0, technology specific mappings might
   /// replace this cell with a feedthrough connection without any gating.
-  parameter bit IS_FUNCTIONAL = 1'b1
+  parameter bit IS_FUNCTIONAL = 1'b0
 )(
    input  logic clk_i,
    input  logic en_i,
    input  logic test_en_i,
    output logic clk_o
 );
-
-  assign clk_o = clk_i;
+  if (IS_FUNCTIONAL) begin : gen_functional
+    BUFGCE #(
+      .CE_TYPE        ( "SYNC"       ),
+      .IS_CE_INVERTED ( 1'b0         ),
+      .IS_I_INVERTED  ( 1'b0         ),
+      .SIM_DEVICE     ( "ULTRASCALE" )
+    ) i_clk_gate (
+      .I  ( clk_i ),
+      .CE ( en_i  ),
+      .O  ( clk_o )
+    );
+  end else begin : gen_non_functional
+    assign clk_o = clk_i;
+  end
 
 endmodule
 
