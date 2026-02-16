@@ -89,6 +89,8 @@ SAFED_BOOTMODE ?= 0
 # Security island, security and secure boot
 SECD_ROOT     ?= $(shell $(BENDER) path opentitan)
 SECD_BINARY   ?=
+SECD_SW_BUILD := secd-sw-build
+SECD_SW_INIT  := secd-sw-init
 SECD_BOOTMODE ?= 0
 SECD_IMAGE    ?=
 SECD_PULP_CL_BIN ?=
@@ -186,9 +188,9 @@ chs-sw-build: chs-sw-all
 
 .PHONY: car-sw-build
 ## Builds carfield application SW and specific libraries. It links against `libcheshire.a`.
-car-sw-build: chs-sw-build $(SAFED_SW_BUILD) $(PULPD_SW_BUILD) car-sw-all
+car-sw-build: chs-sw-build $(SAFED_SW_BUILD) $(PULPD_SW_BUILD) $(SECD_SW_BUILD)  car-sw-all
 
-.PHONY: safed-sw-init pulpd-sw-init
+.PHONY: safed-sw-init pulpd-sw-init secd-sw-init
 ## Clone safe domain's SW stack in the dedicated repository.
 safed-sw-init: $(SAFED_ROOT) $(SAFED_SW_DIR)/pulp-runtime $(SAFED_SW_DIR)/pulp-freertos
 
@@ -205,6 +207,14 @@ $(PULPD_ROOT)/pulp-runtime: $(PULPD_ROOT)
 $(PULPD_ROOT)/regression-tests: $(PULPD_ROOT)
 	$(MAKE) -C $(PULPD_ROOT) regression_tests
 
+## Clone secure domain's SW stack in the dedicated repository.
+secd-sw-init: $(SECD_ROOT) $(SECD_ROOT)/sw/tests/pulp-runtime $(SECD_ROOT)/sw/tests/regression_tests
+
+$(SECD_ROOT)/sw/tests/pulp-runtime: $(SECD_ROOT)
+	$(MAKE) -C $(SECD_ROOT) sw/tests/pulp-runtime
+$(SECD_ROOT)/sw/tests/regression_tests: $(SECD_ROOT)
+	$(MAKE) -C $(SECD_ROOT) sw/tests/regression_tests
+
 ## Build safe domain SW
 .PHONY: safed-sw-build
 safed-sw-build: safed-sw-init
@@ -216,6 +226,12 @@ safed-sw-build: safed-sw-init
 pulpd-sw-build: pulpd-sw-init
 	. $(CAR_ROOT)/env/pulpd-env.sh; \
 	$(MAKE) pulpd-sw-all
+
+## Build integer secure domain SW
+.PHONY: secd-sw-build
+secd-sw-build: secd-sw-init
+	. $(CAR_ROOT)/env/secd-env.sh; \
+	$(MAKE) secd-sw-all
 
 ## Build vectorial PMCA domain SW
 # TODO: properly compile spatz tests from carfield. For now, we symlink to existing tests. If you
@@ -331,7 +347,7 @@ include $(CAR_SIM_DIR)/sim.mk
 
 .PHONY: car-init-all
 ## Shortcut to initialize carfield with all the targets described above.
-car-init-all: car-checkout car-hw-init car-sim-init $(SAFED_SW_INIT) $(PULPD_SW_INIT) mibench
+car-init-all: car-checkout car-hw-init car-sim-init $(SAFED_SW_INIT) $(PULPD_SW_INIT) $(SECD_SW_INIT) mibench
 
 ## Initialize Carfield and build SW
 .PHONY: car-all
