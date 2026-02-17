@@ -1,0 +1,173 @@
+# Dimention of IO ring [um], you can set une dimention or x and y
+io_dim:
+    x: 2973
+    y: 2973
+
+# Min step of IO ring [um]
+io_step: 1
+
+# Order of pad number definition: clockwise, counterclockwise or a combination of lr|rl+tb|bt
+# e.g. lrtb for left to right, top to bottom
+direction: counterclockwise
+
+# Setting for pad_types:
+#   orientation:
+#     - vertical (for pad in top or bottom side),
+#     - horizontal (for pad in left or right side),
+#     - corner (for pad in the corners)
+#   rotation: orientation of placement when placed in bottom/left side or bottom-left corner (default R0)
+#   mirror: if placed in top/right side or in different corners than bottom-left the orientation of
+#           placement will be the mirrored of the "rotation" setting (if true) or the 180° rotated one (if 
+#           false, default). For corners you can set also mirror-x and/or mirror-y to mirror only along one 
+#           axes and rotate in the other
+#   width: dimension along the die edge. For coners, refers to it as if the pad is at the bottom-left corner.
+#          You can also set the height.
+#   rtl_name: hierarchical name inside the rtl. Use * to insert the "pad_name" value of padframe csv file
+pad_types:
+    PAD_CORNER:
+        orientation: corner
+        width: 110
+        mirror: True
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/i_gf22_in_tc_pad_corner
+    PAD_PWR_MNG_V:
+        orientation: vertical
+        width: 30
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_genblk1_i_gf22_in_tc_pad_pwr_mng_v
+    PAD_VDD_IO_V:
+        orientation: vertical
+        width: 44
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vdd_io_v
+    PAD_VSS_IO_V:
+        orientation: vertical
+        width: 44
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vss_io_v
+    PAD_VDD_CORE_V:
+        orientation: vertical
+        width: 48
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vdd_core_v
+    PAD_VSS_CORE_V:
+        orientation: vertical
+        width: 42
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vss_core_v
+    PAD_BIDIR_V: &bidir_v
+        orientation: vertical
+        width: 42
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/gen_gf22_in_tc_pad_bidir_0__genblk1_i_gf22_in_tc_pad_bidir_v
+    PAD_INPUT_V: *bidir_v
+    PAD_OUTPUT_V: *bidir_v
+    PAD_PWR_MNG_H:
+        orientation: horizontal
+        width: 30
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_genblk1_i_gf22_in_tc_pad_pwr_mng_h
+    PAD_VDD_IO_H:
+        orientation: horizontal
+        width: 44
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vdd_io_h
+    PAD_VSS_IO_H:
+        orientation: horizontal
+        width: 44
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vss_io_h
+    PAD_VDD_CORE_H:
+        orientation: horizontal
+        width: 48
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vdd_core_h
+    PAD_VSS_CORE_H:
+        orientation: horizontal
+        width: 42
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_vss_core_h
+    PAD_BIDIR_H: &bidir_h
+        orientation: horizontal
+        width: 42
+        rtl_name: i_astral_padframe/i_botl/i_botl_pads/i_*/gen_gf22_in_tc_pad_bidir_0__genblk1_i_gf22_in_tc_pad_bidir_h
+    PAD_INPUT_H: *bidir_h
+    PAD_OUTPUT_H: *bidir_h
+    
+
+# Sides configuration: TOP, BOTTOM, RIGHT, LEFT
+#   step: you can set a constant step [um]. The distance is calculated from the inner edge of the corner pad,
+#         if defined, or from/to the first encountered side of a pads following the direction defined above. 
+#         If not defined the pad are equally distributed.
+#   margin: distance [um] to the side (always positive to the inside)
+#   start_offset: you can set the distances [um] of pads from the inner edge of the corner pad (if defined) or 
+#                 from the previus pad. The distance is calculated from the inner edge of the corner pad or 
+#                 from/to the first encountered side of a pads following the direction defined above. If not 
+#                 defined the pad are equally distributed. Each offset is set for only a pad so to use it to 
+#                 set multple pad, define an array. You can also set multple offset using multiplier*offset 
+#                 e.g. 5*11.5 to set 5 times an offset of 11.5. Use only positive numbers. The remaining pads 
+#                 will be equally distributed.
+#   end_offset: the same as start_offset but it sets the offset from the last pads of a side. If a pad has both
+#               start and end offset only the start offset will be used.
+#   pad_numbers: associated pad numbers as defined in the padframe csv file. The order on the side follow the
+#                direction setting defined above. You can use also a range in the form start-stop[,step].
+#                e.g. 1-7 for 1, 2, 3, 4, 5, 6 or 7-1,2 for 7, 5, 3
+LEFT:
+    pad_numbers:
+        - 33
+        - 37
+        - 41-49
+        - 34
+        - 38
+        - 39
+        - 35
+        - 32
+        - 49-61
+        - 36
+        - 40
+BOTTOM:
+    pad_numbers:
+        - 4
+        - 8
+        - 13-21
+        - 5
+        - 9
+        - 11
+        - 6
+        - 3
+        - 10
+        - 21-32
+        - 7
+        - 12
+RIGHT:
+    pad_numbers:
+        - 90
+        - 101-104
+        - 96
+        - 104-107
+        - 91
+        - 97
+        - 99
+        - 93
+        - 89
+        - 107-111
+        - 92
+        - 98
+        - 100
+        - 94
+        - 111-115
+        - 95
+TOP:
+    pad_numbers:
+        - 64    
+        - 75-78
+        - 70
+        - 78-81
+        - 65
+        - 71
+        - 73
+        - 67
+        - 63
+        - 81-85
+        - 66
+        - 72
+        - 74
+        - 68
+        - 85-89
+        - 69
+
+
+# For corner define the 4 corner pad numbers unsing T/B+L/R (top bottom left right)
+CORNERS:
+    BR: 61
+    TL: 1
+    TR: 62
+    BL: 2
