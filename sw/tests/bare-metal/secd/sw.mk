@@ -26,10 +26,12 @@ $(SECD_PULPD_SW_DIR)/%/build: $(SECD_ROOT)
 	cp $@/test/test $(CAR_SECD_SW)/$*.elf
 	@echo $(SECD_PULPD_SW_DIR)
 
-GENERIC_TEST := $(SECD_SW_DIR)/generic_test/generic_test.elf
+GENERIC_TEST = $(SECD_SW_DIR)/generic_test/generic_test.elf
 
 $(SECD_SW_DIR)/generic_test/generic_test.elf:
-	$(MAKE) -C $(patsubst %/,%,$(dir $(GENERIC_TEST))) clean all
+	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
+	cp $(filter  %.elf %.dis, $(wildcard $(patsubst %/,%,$(dir $@)/*))) $(CAR_SECD_SW)
+	@echo $(SECD_PULPD_SW_DIR)
 
 # Global targets
 secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(GENERIC_TEST)
