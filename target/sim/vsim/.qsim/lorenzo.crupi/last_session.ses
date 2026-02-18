@@ -32,48 +32,47 @@
  </app>
  <window_config>
   <expanded_mode enabled="false"/>
-  <dockareas top="0" right="713" bottom="235" left="346"/>
-  <taborder right="signalclipboard+" bottom="transcript+search+" left="structure+testbench+"/>
-  <activetab right="signalclipboard" bottom="transcript" left="structure" activewindow="transcript"/>
-  <window undocked="0" windowstate="" geometry="AdnQywADAAAAAAAAAAAAUQAAAVkAAAHzAAAAAAAAAFEAAAFZAAAB8wAAAAAAAAAAB4AAAAAAAAAAUQAAAVkAAAHz" visible="1" type="structure" dock_location="left"/>
-  <window undocked="0" windowstate="" geometry="AdnQywADAAD///yy///8af///gv///4L///8sv///Gn///4L///+C/////8AAAAAB4D///yy///8af///gv///4L" visible="1" type="testbench" dock_location="left"/>
-  <window undocked="0" windowstate="AAAA/wAAAAD9AAAAAAAAAskAAAGrAAAABAAAAAQAAAAIAAAACPwAAAAA" geometry="AdnQywADAAAAAAHnAAAAUQAABK8AAAISAAAB5wAAAFEAAASvAAACEgAAAAAAAAAAB4AAAAHnAAAAUQAABK8AAAIS" visible="1" type="signalclipboard" dock_location="right"/>
-  <window undocked="0" windowstate="" geometry="AdnQywADAAAAAAAAAAACGQAABK8AAALkAAAAAAAAAhkAAASvAAAC5AAAAAAAAAAAB4AAAAAAAAACGQAABK8AAALk" visible="1" type="transcript" dock_location="bottom"/>
-  <window undocked="0" windowstate="AAAA/wAAAAD9AAAAAAAABLAAAABxAAAABAAAAAQAAAAIAAAACPwAAAACAAAAAgAAAAEAAAAcAHQAYQByAGcAZQB0AF8AdABvAG8AbABiAGEAcgEAAAAA/////wAAAAAAAAAAAAAAAgAAAAEAAAAcAGYAaQBsAHQAZQByAF8AdABvAG8AbABiAGEAcgEAAAAA/////wAAAAAAAAAA" geometry="AdnQywADAAD///lc///9QP///gv///4L///5XP///UD///4L///+C/////8AAAAAB4D///lc///9QP///gv///4L" visible="1" type="search" dock_location="bottom"/>
-  <window undocked="0" windowstate="AAAA/wAAAAD9AAAAAwAAAAAAAAFaAAABwvwCAAAAAfwAAABRAAABwgAAAQoBAAAe+gAAAAACAAAAA/sAAAASAHMAdAByAHUAYwB0AHUAcgBlAQAAAAD/////AAAAoAD////7AAAAJAB0AGUAcwB0AGIAZQBuAGMAaABVAHYAbQBXAGkAbgBDAGwAcwEAAAAA/////wAAAOsA////+wAAACwAdABlAHMAdABiAGUAbgBjAGgAQwBsAGEAcwBzAGUAcwBXAGkAbgBDAGwAcwAAAAAA/////wAAAAAAAAAAAAAAAQAAAskAAAHC/AIAAAAB+wAAAB4AcwBpAGcAbgBhAGwAYwBsAGkAcABiAG8AYQByAGQBAAAAUQAAAcIAAADUAP///wAAAAMAAASwAAAA6/wBAAAAAfwAAAAAAAAEsAAAAVMA////+gAAAAABAAAAAvsAAAAUAHQAcgBhAG4AcwBjAHIAaQBwAHQBAAAAAP////8AAABiAP////sAAAAMAHMAZQBhAHIAYwBoAQAAAAD/////AAABUwD///8AAACBAAABwgAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAAGAAAAKABNAGEAaQBuAF8ASABpAHMAdABvAHIAeQBfAFQAbwBvAGwAQgBhAHIBAAAAAP////8AAAAAAAAAAAAAACQAUgBUAEwAXwBXAGkAbgBkAG8AdwBfAFQAbwBvAGwAQgBhAHIBAAAAe/////8AAAAAAAAAAAAAACIAZAByAHYAUgBlAGMAVgBpAGUAdwBUAG8AbwBsAEIAYQByAQAAARD/////AAAAAAAAAAAAAAA2AEcASQBEAF8AUwByAGMAVgBpAGUAdwBfAE8AcAB0AGkAbwBuAHMAXwBUAG8AbwBsAEIAYQByAQAAAar/////AAAAAAAAAAAAAABGAEcASQBEAF8ATQBhAGkAbgBTAHIAYwBXAGkAbgBkAG8AdwBfAFQAaQBtAGUAUwBjAGEAbABlAF8AVABvAG8AbABCAGEAcgEAAAHz/////wAAAAAAAAAAAAAAIgBEAGUAYgB1AGcAZwBpAG4AZwAgAFQAbwBvAGwAYgBhAHIBAAAES/////8AAAAAAAAAAA==" geometry="AdnQywADAAAAAAAyAAAAGwAABOEAAANfAAAAMgAAAEAAAAThAAADXwAAAAAAAAAAB4AAAAAyAAAAQAAABOEAAANf" visible="1" type="rtl" dock_location="right"/>
-  <window undocked="0" windowstate="" geometry="" visible="0" type="classes" dock_location="left"/>
-  <window undocked="0" windowstate="" geometry="" visible="0" type="files" dock_location="left"/>
-  <window undocked="0" windowstate="" geometry="" visible="0" type="variables" dock_location="right"/>
-  <window undocked="1" windowstate="" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="1" windowstate="" id="1" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="0" windowstate="" id="2" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="0" windowstate="" id="3" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="0" windowstate="" id="4" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="0" windowstate="" id="5" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window undocked="0" windowstate="" id="6" geometry="" visible="0" type="wave" dock_location="bottom"/>
-  <window firstVisibleLine="197" path="/data/lorenzo.crupi/astral/target/sim/src/astral_tb.sv" undocked="0" windowstate="" geometry="AdnQywADAAAAAAAAAAAAAAAAAHwAAAG9AAAAAAAAAAAAAAB8AAABvQAAAAAAAAAAB4AAAAAAAAAAAAAAAHwAAAG9" visible="1" type="source" dock_location="center"/>
-  <window undocked="0" windowstate="" geometry="" visible="0" type="generallist" dock_location="right"/>
+  <dockareas left="346" right="713" top="0" bottom="266"/>
+  <taborder left="structure+testbench+" right="signalclipboard+" bottom="transcript+"/>
+  <activetab left="structure" activewindow="transcript" right="signalclipboard" bottom="transcript"/>
+  <window windowstate="" undocked="0" type="structure" geometry="AdnQywADAAAAAAAAAAAAUQAAAVkAAAHUAAAAAAAAAFEAAAFZAAAB1AAAAAAAAAAAB4AAAAAAAAAAUQAAAVkAAAHU" visible="1" dock_location="left"/>
+  <window windowstate="" undocked="0" type="testbench" geometry="AdnQywADAAD///yy///8iP///gv///4L///8sv///Ij///4L///+C/////8AAAAAB4D///yy///8iP///gv///4L" visible="1" dock_location="left"/>
+  <window windowstate="AAAA/wAAAAD9AAAAAAAAAskAAAGMAAAABAAAAAQAAAAIAAAACPwAAAAA" undocked="0" type="signalclipboard" geometry="AdnQywADAAAAAAHnAAAAUQAABK8AAAHzAAAB5wAAAFEAAASvAAAB8wAAAAAAAAAAB4AAAAHnAAAAUQAABK8AAAHz" visible="1" dock_location="right"/>
+  <window windowstate="" undocked="0" type="transcript" geometry="AdnQywADAAAAAAAAAAAB+gAABK8AAAMDAAAAAAAAAfoAAASvAAADAwAAAAAAAAAAB4AAAAAAAAAB+gAABK8AAAMD" visible="1" dock_location="bottom"/>
+  <window windowstate="AAAA/wAAAAD9AAAAAwAAAAAAAAFaAAABo/wCAAAAAfwAAABRAAABowAAAQoBAAAe+gAAAAACAAAAAvsAAAASAHMAdAByAHUAYwB0AHUAcgBlAQAAAAD/////AAAAoAD////7AAAAJAB0AGUAcwB0AGIAZQBuAGMAaABVAHYAbQBXAGkAbgBDAGwAcwEAAAAA/////wAAAOsA////AAAAAQAAAskAAAGj/AIAAAAB+wAAAB4AcwBpAGcAbgBhAGwAYwBsAGkAcABiAG8AYQByAGQBAAAAUQAAAaMAAADUAP///wAAAAMAAASwAAABCvwBAAAAAfsAAAAUAHQAcgBhAG4AcwBjAHIAaQBwAHQBAAAAAAAABLAAAABiAP///wAAAIEAAAGjAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAYAAAAoAE0AYQBpAG4AXwBIAGkAcwB0AG8AcgB5AF8AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAAAAAAJABSAFQATABfAFcAaQBuAGQAbwB3AF8AVABvAG8AbABCAGEAcgEAAAB7/////wAAAAAAAAAAAAAAIgBkAHIAdgBSAGUAYwBWAGkAZQB3AFQAbwBvAGwAQgBhAHIBAAABEP////8AAAAAAAAAAAAAADYARwBJAEQAXwBTAHIAYwBWAGkAZQB3AF8ATwBwAHQAaQBvAG4AcwBfAFQAbwBvAGwAQgBhAHIBAAABqv////8AAAAAAAAAAAAAAEYARwBJAEQAXwBNAGEAaQBuAFMAcgBjAFcAaQBuAGQAbwB3AF8AVABpAG0AZQBTAGMAYQBsAGUAXwBUAG8AbwBsAEIAYQByAQAAAfP/////AAAAAAAAAAAAAAAiAEQAZQBiAHUAZwBnAGkAbgBnACAAVABvAG8AbABiAGEAcgEAAARL/////wAAAAAAAAAA" undocked="0" type="rtl" geometry="AdnQywADAAAAAAAyAAAAGwAABOEAAANfAAAAMgAAAEAAAAThAAADXwAAAAAAAAAAB4AAAAAyAAAAQAAABOEAAANf" visible="1" dock_location="right"/>
+  <window windowstate="" undocked="0" type="classes" geometry="" visible="0" dock_location="left"/>
+  <window windowstate="" undocked="0" type="files" geometry="" visible="0" dock_location="left"/>
+  <window windowstate="" undocked="0" type="variables" geometry="" visible="0" dock_location="right"/>
+  <window windowstate="" undocked="1" type="wave" geometry="" visible="0" dock_location="bottom"/>
+  <window windowstate="" undocked="1" type="wave" geometry="" visible="0" id="1" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="wave" geometry="" visible="0" id="2" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="wave" geometry="" visible="0" id="3" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="wave" geometry="" visible="0" id="4" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="wave" geometry="" visible="0" id="5" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="wave" geometry="" visible="0" id="6" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="source" geometry="AdnQywADAAAAAAAAAAAAAAAAAHwAAAGeAAAAAAAAAAAAAAB8AAABngAAAAAAAAAAB4AAAAAAAAAAAAAAAHwAAAGe" firstVisibleLine="207" visible="1" dock_location="center" path="/data/lorenzo.crupi/astral/target/sim/src/astral_tb.sv"/>
+  <window windowstate="" undocked="0" type="search" geometry="" visible="0" dock_location="bottom"/>
+  <window windowstate="" undocked="0" type="generallist" geometry="" visible="0" dock_location="right"/>
  </window_config>
  <wave_file_mgr>
   <waveFile tagName="sim" fileName="/data/lorenzo.crupi/astral/target/sim/vsim/qwave.db" waveType="0"/>
  </wave_file_mgr>
  <gui>
   <main_window visible="1">
-   <srcbrowser filepath="/data/lorenzo.crupi/astral/target/sim/src/astral_tb.sv" instancename="tb_astral" primary="true"/>
+   <srcbrowser filepath="/data/lorenzo.crupi/astral/target/sim/src/astral_tb.sv" primary="true" instancename="tb_astral"/>
    <sourcetclcommands>
     <tcl command="src activate source"/>
-    <tcl command="src top 198"/>
+    <tcl command="src top 208"/>
    </sourcetclcommands>
    <edge_gui cur_selection="AnyEdge"/>
   </main_window>
-  <watchTower_cur_setting curRadix="2" curActiveWaveFile="sim" customDisplayTimeUnitListStr="" curDisplayTimeUnitStr="1ps" curDisplayTimeUnit="-12">
-   <curTime hightime="43" lowtime="4228055272"/>
+  <watchTower_cur_setting curDisplayTimeUnit="-12" curRadix="2" curDisplayTimeUnitStr="1ps" customDisplayTimeUnitListStr="" curActiveWaveFile="sim">
+   <curTime hightime="91" lowtime="3160485064"/>
   </watchTower_cur_setting>
   <structure selection="tb_astral"/>
   <testbench/>
   <signalclipboard/>
   <transcript/>
-  <search/>
  </gui>
  <wave_mgr sync_time_range="0"/>
  <mem_mgr/>
