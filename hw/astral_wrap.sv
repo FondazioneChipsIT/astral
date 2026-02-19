@@ -393,6 +393,7 @@ module astral_wrap
   logic[carfield_pkg::NumFll-1:0] fll_scan_jtag_in;
   logic[carfield_pkg::NumFll-1:0] fll_scan_jtag_out;
   logic[carfield_pkg::NumFll-1:0] domain_clk;
+  logic[carfield_pkg::NumFll-1:0] domain_clk_dgb;
 
   // ref_clk
   assign ref_clk      = st_pad2soc_signals.botl.ref_clk_i;
@@ -501,11 +502,8 @@ module astral_wrap
 
   // soc2pad
   // clocks
-  //assign st_soc2pad_signals.botl.fll_rt_clk_o     = clk_fll_out[carfield_pkg::RtClockIdx];
-  assign st_soc2pad_signals.botl.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
-  //assign st_soc2pad_signals.botl.fll_alt_clk_o    = clk_fll_out[carfield_pkg::CarfieldClockIdx.AltClockIdx];
-  //assign st_soc2pad_signals.botl.fll_periph_clk_o = clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx];
-  assign st_soc2pad_signals.botl.fll_secd_clk_o   = clk_fll_out[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
+  assign st_soc2pad_signals.botl.fll_host_clk_o   = domain_clk_dgb[carfield_pkg::HostClockIdx];
+  assign st_soc2pad_signals.botl.fll_secd_clk_o   = domain_clk_dgb[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
 
   //////////////////
   // Carfield SoC //
@@ -517,6 +515,7 @@ module astral_wrap
     .reg_rsp_t   ( carfield_reg_rsp_t )
   ) i_dut (
     .domain_clk_i               ( domain_clk[carfield_pkg::NumFll-1:0]              ),
+    .domain_clk_dgb_o           ( domain_clk_dgb[carfield_pkg::NumFll-1:0]          ),
     .pwr_on_rst_ni              ( pwr_on_rst_n                                      ),
     .test_mode_i                ( '0                                                ),
     .boot_mode_i                ( bootmode_host_s[1:0]                              ),

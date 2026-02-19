@@ -48,6 +48,7 @@ module carfield
   localparam int unsigned SlinkNumLanes = cheshire_pkg::SlinkNumLanes
 ) (
   input   logic            [carfield_pkg::NumFll-1:0] domain_clk_i,
+  output  logic            [carfield_pkg::NumFll-1:0] domain_clk_dgb_o,
 
   input   logic                                       pwr_on_rst_ni,
 
@@ -613,6 +614,8 @@ for (genvar i = 0; i < NumDomains; i++) begin : gen_domain_clock_mux
     .cycl_count_o   (                                ) // Not needed
   );
 end
+
+assign domain_clk_dgb_o = domain_clk_gated;
 
 // Reset generation for power-on reset for host domain. For the other domain we
 // get this from carfield_rstgen
