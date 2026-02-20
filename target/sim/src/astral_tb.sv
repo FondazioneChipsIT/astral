@@ -303,7 +303,7 @@ module tb_astral;
       if (!$value$plusargs("SECD_IMAGE=%s",       secd_flash_vmem))  secd_flash_vmem  = "";
       if (!$value$plusargs("SECD_BINARY=%s",      secd_preload_elf)) secd_preload_elf = "";
       if (!$value$plusargs("SECD_BOOTMODE=%d",    secd_boot_mode))   secd_boot_mode   = 0;
-      if (!$value$plusargs("SECD_PULP_CL_BIN=%s", secd_pulp_cl_bin)) secd_pulp_cl_bin = "";
+      if (!$value$plusargs("SECD_PULP_CL_BINARY=%s", secd_pulp_cl_bin)) secd_pulp_cl_bin = "";
 
       // PLL bypass
       fix.set_bypass_pll(bypass_pll);
