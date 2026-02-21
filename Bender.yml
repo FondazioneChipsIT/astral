@@ -103,9 +103,7 @@ sources:
   - hw/padframe/tc_pad_pkg.sv
   - hw/padframe/astral_padframe/src/pkg_astral_padframe.sv
   - hw/hyperbus_padframe/src/pkg_hyperbus_padframe.sv
-  - hw/hyperbus_padframe/src/pkg_internal_hyperbus_padframe_topr.sv
   - hw/hyperbus_padframe/src/hyperbus_padframe_topr_pads.sv
-  - hw/padframe/astral_padframe/src/pkg_internal_astral_padframe_botl.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_config_reg_pkg.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_config_reg_top.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_pads.sv

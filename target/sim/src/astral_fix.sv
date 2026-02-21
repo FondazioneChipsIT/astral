@@ -18,7 +18,6 @@ module astral_fixture;
   import safety_island_pkg::*;
 `endif
   import astral_padframe_botl_config_reg_pkg::*;
-  import pkg_internal_astral_padframe_botl::*;
 
   ///////////
   //  DPI  //
@@ -407,7 +406,7 @@ module astral_fixture;
   `CHESHIRE_TYPEDEF_ALL(, DutCfg)
 
 
-astral_wrap i_dut (
+  astral_wrap i_dut (
     // Reference clock
     .pad_botl_ref_clk_pad          ( w_ext_clk ),
     .pad_botl_fll_bypass_pad       ( w_bypass_pll ),
@@ -418,7 +417,6 @@ astral_wrap i_dut (
     .pad_botl_pwr_on_rst_n_pad     ( w_pwr_on_rst_n ),
 
     // Bootmode
-    //.pad_periph_test_mode_pad     ( pd_testmode_net ),
     .pad_botl_boot_mode_0_pad     ( w_bootmode_hostd[0] ),
     .pad_botl_boot_mode_1_pad     ( w_bootmode_hostd[1] ),
     .pad_botl_ot_boot_mode_pad    ( w_bootmode_secd ),
@@ -467,11 +465,7 @@ astral_wrap i_dut (
     .pad_hyper_phy1_dq_b6_pad       (w_hyper_dq[1][6] ),
     .pad_hyper_phy1_dq_b7_pad       (w_hyper_dq[1][7] ),
     .pad_hyper_phy1_reset_n_pad     (w_hyper_resetn[1] ),
-    // SPW
-    // .pad_periph_spw_data_in_pad     ( w_spw_data_in    ),
-    // .pad_periph_spw_strb_in_pad     ( w_spw_strobe_in  ),
-    // .pad_periph_spw_data_out_pad    ( w_spw_data_out   ),
-    // .pad_periph_spw_strb_out_pad    ( w_spw_strobe_out ),
+
     // UART
     .pad_botl_uart_tx_pad          ( w_uart_hostd_tx ),
     .pad_botl_uart_rx_pad          ( w_uart_hostd_rx ),
@@ -481,12 +475,12 @@ astral_wrap i_dut (
     .pad_botl_ot_uart_rx_pad       ( ),
 
     // SPI
-    .pad_botl_spih_sck_pad          ( w_spi_hostd_sck ),
-    .pad_botl_spih_csb_pad          ( w_spi_hostd_csb ),
-    .pad_botl_spih_sd_0_pad         ( w_spi_hostd_sd[0] ),
-    .pad_botl_spih_sd_1_pad         ( w_spi_hostd_sd[1] ),
-    .pad_botl_spih_sd_2_pad         ( w_spi_hostd_sd[2] ),
-    .pad_botl_spih_sd_3_pad         ( w_spi_hostd_sd[3] ),
+    .pad_botl_spih_sck_pad          ( w_spi_hostd_sck    ),
+    .pad_botl_spih_csb_pad          ( w_spi_hostd_csb[1] ),
+    .pad_botl_spih_sd_0_pad         ( w_spi_hostd_sd[0]  ),
+    .pad_botl_spih_sd_1_pad         ( w_spi_hostd_sd[1]  ),
+    .pad_botl_spih_sd_2_pad         ( w_spi_hostd_sd[2]  ),
+    .pad_botl_spih_sd_3_pad         ( w_spi_hostd_sd[3]  ),
 
     // SPI OT
     .pad_botl_spih_ot_sck_pad       ( w_spi_secd_sck ),
@@ -512,7 +506,6 @@ astral_wrap i_dut (
 
   `define PAD_MUX_REG_PATH i_dut.i_astral_padframe.i_periph.i_periph_muxer.s_reg2hw
 
-
   // SPI
   /*
   assign mux_0_spih_sck = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_SPI_SCK);
@@ -530,12 +523,7 @@ astral_wrap i_dut (
   tranif1 tran_spih_sd_2 (w_muxed_v_05, w_spi_hostd_sd[2], mux_0_spih_sd_2);
   tranif1 tran_spih_sd_3 (w_muxed_v_06, w_spi_hostd_sd[3], mux_0_spih_sd_3);
   */
-  
-  pullup (w_spi_hostd_sck);
-  pullup (w_spi_hostd_sd[0]);
-  pullup (w_spi_hostd_sd[1]);
-  pullup (w_spi_hostd_sd[2]);
-  pullup (w_spi_hostd_sd[3]);
+
   // Ethernet
   /*
   assign mux_0_eth_rxck = (`PAD_MUX_REG_PATH.muxed_v_07_mux_sel.q == PAD_MUX_GROUP_MUXED_V_07_SEL_ETHERNET_RXCK);
@@ -570,6 +558,7 @@ astral_wrap i_dut (
   tranif1 tran_eth_rst_n (w_muxed_h_03, w_eth_rst, mux_0_eth_rst_n);
   assign eth_clk = i_dut.i_dut.eth_clk;
   */
+
   // CAN
   /*
   assign mux_1_can_rx = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_CAN_RX);
@@ -577,6 +566,7 @@ astral_wrap i_dut (
   tranif1 tran_can_rx (w_muxed_v_00, w_can_rx, mux_1_can_rx);
   tranif1 tran_can_tx (w_muxed_v_01, w_can_tx, mux_1_can_tx);
   */
+
   // Serial Link
   /*
   assign mux_1_slink_rcv_clk_i = (`PAD_MUX_REG_PATH.muxed_v_04_mux_sel.q == PAD_MUX_GROUP_MUXED_V_04_SEL_SERIAL_LINK_RCV_CLK_I);
@@ -616,6 +606,7 @@ astral_wrap i_dut (
   tranif1 tran_slink_6_o (w_muxed_h_02, w_slink_hostd_to_vip[6], mux_1_slink_6_o);
   tranif1 tran_slink_7_o (w_muxed_h_03, w_slink_hostd_to_vip[7], mux_1_slink_7_o);
   */
+
   // I2C
   /*
   assign mux_2_i2c_sda = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_I2C_SDA);
@@ -623,8 +614,7 @@ astral_wrap i_dut (
   tranif1 tran_i2c_sda (w_muxed_v_00, w_i2c_hostd_sda, mux_2_i2c_sda);
   tranif1 tran_i2c_scl (w_muxed_v_01, w_i2c_hostd_scl, mux_2_i2c_scl);
   */
-  pullup (w_i2c_hostd_sda);
-  pullup (w_i2c_hostd_scl);
+
   // Telecommand
   // assign mux_2_tc_active = (`PAD_MUX_REG_PATH.muxed_v_07_mux_sel.q == PAD_MUX_GROUP_MUXED_V_07_SEL_TC_ACTIVE);
   // assign mux_2_tc_clk = (`PAD_MUX_REG_PATH.muxed_v_08_mux_sel.q == PAD_MUX_GROUP_MUXED_V_08_SEL_TC_CLK);
@@ -632,6 +622,7 @@ astral_wrap i_dut (
   // tranif1 tran_tc_active (w_muxed_v_07, w_tc_active, mux_2_tc_active);
   // tranif1 tran_tc_clk (w_muxed_v_08, w_tc_clock, mux_2_tc_clk);
   // tranif1 tran_tc_data (w_muxed_v_09, w_tc_data, mux_2_tc_data);
+
   // PTME
   // assign mux_2_ptme_clk = (`PAD_MUX_REG_PATH.muxed_v_10_mux_sel.q == PAD_MUX_GROUP_MUXED_V_10_SEL_PTME_CLK);
   // assign mux_2_ptme_enc = (`PAD_MUX_REG_PATH.muxed_v_11_mux_sel.q == PAD_MUX_GROUP_MUXED_V_11_SEL_PTME_ENC);
@@ -641,6 +632,7 @@ astral_wrap i_dut (
   // tranif1 tran_ptme_clk (w_muxed_v_11, w_ptme_enc, mux_2_ptme_enc);
   // tranif1 tran_ptme_data (w_muxed_v_12, w_ptme_sync, mux_2_ptme_sync);
   // tranif1 tran_ptme_ext_clk (w_muxed_v_13, w_ptme_ext_clk, mux_2_ptme_ext_clk);
+
   // HPC
   // assign mux_2_hpc_addr[0] = (`PAD_MUX_REG_PATH.muxed_v_14_mux_sel.q == PAD_MUX_GROUP_MUXED_V_14_SEL_HPC_ADDR_0);
   // assign mux_2_hpc_addr[1] = (`PAD_MUX_REG_PATH.muxed_v_15_mux_sel.q == PAD_MUX_GROUP_MUXED_V_15_SEL_HPC_ADDR_1);
@@ -652,14 +644,17 @@ astral_wrap i_dut (
   // tranif1 tran_hpc_addr_2 (w_muxed_v_16, w_hpc_addr[2], mux_2_hpc_addr[2]);
   // tranif1 tran_hpc_cmd_en (w_muxed_v_17, w_hpc_cmd_en, mux_2_hpc_cmd_en);
   // tranif1 tran_hpc_smp (w_muxed_h_00, w_hpc_smp, mux_2_hpc_smp);
+
   // LLC LINE
   // assign mux_2_llc_line[0] = (`PAD_MUX_REG_PATH.muxed_h_01_mux_sel.q == PAD_MUX_GROUP_MUXED_H_01_SEL_LLC_LINE_0);
   // assign mux_2_llc_line[1] = (`PAD_MUX_REG_PATH.muxed_h_02_mux_sel.q == PAD_MUX_GROUP_MUXED_H_02_SEL_LLC_LINE_1);
   // tranif1 tran_llc_line_0 (w_muxed_h_01, w_llc_line[0], mux_2_llc_line[0]);
   // tranif1 tran_llc_line_1 (w_muxed_h_02, w_llc_line[1], mux_2_llc_line[1]);
+
   // OBT
   // assign mux_2_obt_ext_clk = (`PAD_MUX_REG_PATH.muxed_h_03_mux_sel.q == PAD_MUX_GROUP_MUXED_H_03_SEL_OBT_EXT_CLK);
   // tranif1 tran_obt_ext_cl (w_muxed_h_03, w_obt_ext_clk, mux_2_obt_ext_clk);
+
   // SPI OT
   /*
   assign mux_3_spih_ot_sck = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_SPI_OT_SCK);
@@ -675,6 +670,7 @@ astral_wrap i_dut (
   tranif1 tran_spih_ot_sd_2 (w_muxed_v_04, w_spi_secd_sd[2], mux_3_spih_ot_sd_2);
   tranif1 tran_spih_ot_sd_3 (w_muxed_v_05, w_spi_secd_sd[3], mux_3_spih_ot_sd_3);
   */
+
   // GPIO
   /*
   assign mux_4_gpio_0 = (`PAD_MUX_REG_PATH.muxed_v_00_mux_sel.q == PAD_MUX_GROUP_MUXED_V_00_SEL_GPIO_IO_V_0);
@@ -722,19 +718,27 @@ astral_wrap i_dut (
   tranif1 tran_gpio_20 (w_muxed_h_02, w_gpio[20], mux_4_gpio_20);
   tranif1 tran_gpio_21 (w_muxed_h_03, w_gpio[21], mux_4_gpio_21);
   */
-  
+
+  // Peripherals Pull-UP
+  // I2C
+  pullup (w_i2c_hostd_sda);
+  pullup (w_i2c_hostd_scl);
+
+  // SPI
+  pullup (w_spi_hostd_sck);
   for (genvar i = 0; i < 4; ++i) begin : gen_spih_sd_io
     pullup (w_spi_hostd_sd[i]);
   end
-
   for (genvar i = 0; i < SpihNumCs; ++i) begin : gen_spih_cs_io
     pullup (w_spi_hostd_csb[i]);
   end
 
+  // HuperBus
   for (genvar i = 0 ; i<NumPhys; i++) begin : gen_hyper_phy
     pullup (w_hyper_rwds[i]);
   end
 
+  // Serial Link
   pullup (w_slink_hostd_rcv_clk_to_vip);
 
   //////////////////
@@ -948,6 +952,8 @@ astral_wrap i_dut (
   end else begin
     assign bootmode_secd = '0;
   end
+
+  pullup (w_spi_secd_csb[1]);
 
   ///////////////////
   // Generic tasks //

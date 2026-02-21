@@ -19,7 +19,6 @@ module tb_astral;
   import cheshire_pkg::*;
   import carfield_configuration::*;
   import astral_padframe_botl_config_reg_pkg::*;
-  import pkg_internal_astral_padframe_botl::*;
 
   astral_fixture fix();
   bit jtag_check_write = 1'b0;
@@ -135,12 +134,12 @@ module tb_astral;
         $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
 `endif
       end
-      
+
       // Writing max burst length in Hyperbus configuration registers to
       // prevent the Verification IPs from triggering timing checks.
       if (preload_mode == 1) begin: gen_slink_hyperbus_cfg
         // Configure Serial link padframe
-        //fix.configure_sl_pad(jtag_check_write);
+        // fix.configure_sl_pad(jtag_check_write);
 
         -> pad_configured;
         $display("[TB] INFO: Configuring Hyperbus through serial link.");
@@ -193,13 +192,13 @@ module tb_astral;
         $fatal(1, "Unsupported boot mode %d (SD Card)!", boot_mode);
       end else if (boot_mode == 2) begin
         // Configure SPI padframe
-        //fix.configure_spi_pad(jtag_check_write);
+        // fix.configure_spi_pad(jtag_check_write);
         // Autonomous boot: Only poll return code
         $display("[TB] %t - Entering autonomous boot mode", $realtime);
         fix.chs_vip.jtag_wait_for_eoc(exit_code);
       end else begin
         // Configure I2C padframe
-        //fix.configure_i2c_pad(jtag_check_write);
+        // fix.configure_i2c_pad(jtag_check_write);
         // Autonomous boot: Only poll return code
         $display("[TB] %t - Entering autonomous boot mode", $realtime);
         fix.chs_vip.jtag_wait_for_eoc(exit_code);
@@ -239,7 +238,7 @@ module tb_astral;
       if (!$value$plusargs("SECURE_BOOT=%d",    secure_boot))       secure_boot       = 0;
       if (!$value$plusargs("SAFED_BOOTMODE=%d", safed_boot_mode))   safed_boot_mode   = 0;
       if (!$value$plusargs("SAFED_BINARY=%s",   safed_preload_elf)) safed_preload_elf = "";
-      
+
       // PLL bypass
       fix.set_bypass_pll(bypass_pll);
 
@@ -257,7 +256,7 @@ module tb_astral;
         fix.wait_fll_lock();
 
         wait (pad_configured.triggered);
-        
+
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
         $display("[TB] INFO: Configuring Hyperbus through serial link.");
@@ -492,7 +491,7 @@ module tb_astral;
   `endif
 
         wait (pad_configured.triggered);
-        
+
         $display("[TB] %t - Enabling PULP cluster clock for stand-alone tests ", $realtime);
         // Clock island after PoR
         fix.chs_vip.slink_write_32(CarSocCtrlPulpdClkEnRegAddr, 32'h1);

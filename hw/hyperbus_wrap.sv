@@ -6,9 +6,8 @@
 
 `include "register_interface/typedef.svh"
 
-module hyperbus_wrap 
+module hyperbus_wrap
   import pkg_hyperbus_padframe::*;
-  import pkg_internal_hyperbus_padframe_topr::*;
 #(
   parameter int unsigned NumChips        = -1,
   parameter int unsigned NumPhys         = 2,
@@ -72,7 +71,7 @@ module hyperbus_wrap
   input reg_req_t reg_async_mst_data_i,
   output logic reg_async_mst_req_o,
   input logic reg_async_mst_ack_i,
-  output reg_rsp_t reg_async_mst_data_o,  
+  output reg_rsp_t reg_async_mst_data_o,
 
   // Physical interace: HyperBus PADs
   inout wire logic pad_config_tc_pad_internal_signals_0,

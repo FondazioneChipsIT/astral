@@ -2,7 +2,7 @@
   int_sig = range(4)
   phys = ["phy0", "phy1"]
   pins = ["cs_no", "ck_o", "ck_no", "rwds_o", "rwds_i", "rwds_oe_o", "dq_i", "dq_o", "dq_oe_o", "reset_no", "pad_cfg_o"]
-  pads = ["cs_n", "ck", "ck_n", "rwds", "dq", "reset_n"]  
+  pads = ["cs_n", "ck", "ck_n", "rwds", "dq", "reset_n"]
   chips = {n: [""] for n in pins + pads}
   bits = {n: [""] for n in pins + pads}
   chips["cs_no"] = chips["cs_n"] = range(2)
@@ -34,9 +34,8 @@ pad_hyper_${phy}_${pin}${f"_{chip}" if chip!="" else ""}${f"_b{bit}" if bit!="" 
 
 `include "register_interface/typedef.svh"
 
-module hyperbus_wrap 
+module hyperbus_wrap
   import pkg_hyperbus_padframe::*;
-  import pkg_internal_hyperbus_padframe_topr::*;
 #(
   parameter int unsigned NumChips        = -1,
   parameter int unsigned NumPhys         = 2,
@@ -100,7 +99,7 @@ module hyperbus_wrap
   input reg_req_t reg_async_mst_data_i,
   output logic reg_async_mst_req_o,
   input logic reg_async_mst_ack_i,
-  output reg_rsp_t reg_async_mst_data_o,  
+  output reg_rsp_t reg_async_mst_data_o,
 
   // Physical interace: HyperBus PADs
 % for i in int_sig:
@@ -108,7 +107,7 @@ module hyperbus_wrap
 % endfor
 % for phy, pin, chip, bit in loop_over(pads):
   inout wire logic ${pad_conn(phy, pin, chip, bit)}${"," if not loop.last else ""}
-% endfor  
+% endfor
 );
 
 reg_req_t   reg_req;
