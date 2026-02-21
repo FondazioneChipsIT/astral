@@ -30,12 +30,13 @@ GENERIC_TEST = $(SECD_SW_DIR)/generic_test/generic_test.elf
 
 $(SECD_SW_DIR)/generic_test/generic_test.elf:
 	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
-	cp $(filter  %.elf %.dis, $(wildcard $(patsubst %/,%,$(dir $@)/*))) $(CAR_SECD_SW)
-	@echo $(SECD_PULPD_SW_DIR)
+	cp $(patsubst %/,%,$(dir $@))/generic_test.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/generic_test.dis $(CAR_SECD_SW)/
 
 # Global targets
 secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(GENERIC_TEST)
 
 secd-sw-clean:
 	# Clean all the directories in 'tests'
+	. $(CAR_ROOT)/env/secd-env.sh; \
 	$(foreach dir, $(SECD_PULPD_TEST_DIRS), $(MAKE) -C $(dir) clean;)
