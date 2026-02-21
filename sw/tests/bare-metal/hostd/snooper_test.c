@@ -38,9 +38,6 @@ void dummy_code(void) {
 
     for (int i=0; i<(int) *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET); i++) {
         *reg32(&__base_regs, CHESHIRE_SCRATCH_0_REG_OFFSET) = 0;
-        /* evita print in ogni iterazione per non rallentare; se vuoi abilitarli,
-           decommenta la riga seguente */
-        /* printf("[DBG] dummy_code: loop i=%d\n", i); */
     }
     printf("[DBG] dummy_code: exit\n");
 }
@@ -79,7 +76,7 @@ int main(void) {
     //--------------------------------------TRIGGER INTERRUPT----------------------------------------//
     // This interrupt triggers when the snooper reads a committing instruction with PC=TRIGGER_PC0
     // The trigger interrupt resets the snooper ctrl register, this stops the snooper operation
-    // allowing to read the execution trace without the risk of new instructions 
+    // allowing to read the execution trace without the risk of new instructions
     // overwriting the instructions already stored in the buffer
 
     // Configure LSBs and MSBs of TRIGGER_PC0
@@ -98,12 +95,12 @@ int main(void) {
 
     #ifdef INSTR
     // Set watermark level to 10 instructions
-    *reg32(&__base_snprcfg, CFG_REGS_WATERMARK_LEVEL_REG_OFFSET) = 0x0000000a; 
+    *reg32(&__base_snprcfg, CFG_REGS_WATERMARK_LEVEL_REG_OFFSET) = 0x0000000a;
     // Enable watermark interrupt
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_WATERMARK_EN_BIT);
     #endif
 
-    
+
 
     // Enable RANGE_0 from CTRL register, this will enable the snooper to log the RANGE_0
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_PC_RANGE_0_BIT);
@@ -141,9 +138,9 @@ int main(void) {
         *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x00); // read lsb 32bit of src PC
         *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x08); // read lsb 32bit of dst PC
         *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x10); // read ctr_type 32bit
-        printf("Addr:%X PC_SRC:%X PC_DST:%X CTR_TYPE:%X\r\n", (uintptr_t)((uint8_t *)&__base_snpr + i), 
-                                                                        *reg32(&__base_snpr, i + 0x00), 
-                                                                        *reg32(&__base_snpr, i + 0x08), 
+        printf("Addr:%X PC_SRC:%X PC_DST:%X CTR_TYPE:%X\r\n", (uintptr_t)((uint8_t *)&__base_snpr + i),
+                                                                        *reg32(&__base_snpr, i + 0x00),
+                                                                        *reg32(&__base_snpr, i + 0x08),
                                                                         *reg32(&__base_snpr, i + 0x10));
     }
     #else
@@ -152,7 +149,7 @@ int main(void) {
         printf("Addr:%X INSTR:%X\r\n", (uintptr_t)((uint8_t *)&__base_snpr + i), *reg32(&__base_snpr, i));
     }
     #endif
-	
+
     printf("[DBG] done reading snooper buffer\n");
 
     return 0;

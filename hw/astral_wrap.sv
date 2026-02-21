@@ -120,11 +120,8 @@ module astral_wrap
   // signal to pad
   static_connection_signals_pad2soc_t st_pad2soc_signals;
   static_connection_signals_soc2pad_t st_soc2pad_signals;
-  //port_signals_pad2soc_t              pad2soc_port_signals;
-  //port_signals_soc2pad_t              soc2pad_port_signals;
 
   // pad2soc
-
   // is secure boot enabled
   assign secure_boot = st_pad2soc_signals.botl.secure_boot_i;
   // safed bootmodes - no sefety island
@@ -173,22 +170,8 @@ module astral_wrap
   assign hyperbus_data_in_s[1][7] = st_pad2soc_signals.botl.hyper_dq_i_1_7;
   assign hyperbus_rwds_in_s[1]    = st_pad2soc_signals.botl.hyper_rwds_i_1;
 
-  // soc2pad
-
   // serial link
-  logic [SlinkNumChan-1:0][SlinkNumLanes-1:0] serial_link_data_out_s; //left unconnected
-  // assign soc2pad_port_signals.periph.serial_link.slink_v_0_o = serial_link_data_out_s[0][0];
-  // assign soc2pad_port_signals.periph.serial_link.slink_v_1_o = serial_link_data_out_s[0][1];
-  // assign soc2pad_port_signals.periph.serial_link.slink_v_2_o = serial_link_data_out_s[0][2];
-  // assign soc2pad_port_signals.periph.serial_link.slink_v_3_o = serial_link_data_out_s[0][3];
-  // assign soc2pad_port_signals.periph.serial_link.slink_h_0_o = serial_link_data_out_s[0][4];
-  // assign soc2pad_port_signals.periph.serial_link.slink_h_1_o = serial_link_data_out_s[0][5];
-  // assign soc2pad_port_signals.periph.serial_link.slink_h_2_o = serial_link_data_out_s[0][6];
-  // assign soc2pad_port_signals.periph.serial_link.slink_h_3_o = serial_link_data_out_s[0][7];
-  //hyperbus
-  // hyper bus 0
-
-  //  peripherals
+  logic [SlinkNumChan-1:0][SlinkNumLanes-1:0] serial_link_data_out_s;
 
   // pad2soc
   // spih
@@ -218,70 +201,16 @@ module astral_wrap
   assign st_soc2pad_signals.botl.gpio_v_o_1  = gpio_out_s[1];
   assign st_soc2pad_signals.botl.gpio_v_o_2  = gpio_out_s[2];
   assign st_soc2pad_signals.botl.gpio_v_o_3  = gpio_out_s[3];
-  // assign st_soc2pad_signals.botl.gpio_v_4_o  = gpio_out_s[4];
-  // assign st_soc2pad_signals.botl.gpio_v_5_o  = gpio_out_s[5];
-  // assign st_soc2pad_signals.botl.gpio_v_6_o  = gpio_out_s[6];
-  // assign st_soc2pad_signals.botl.gpio_v_7_o  = gpio_out_s[7];
-  // assign st_soc2pad_signals.botl.gpio_v_8_o  = gpio_out_s[8];
-  // assign st_soc2pad_signals.botl.gpio_v_9_o  = gpio_out_s[9];
-  // assign st_soc2pad_signals.botl.gpio_v_10_o = gpio_out_s[10];
-  // assign st_soc2pad_signals.botl.gpio_v_11_o = gpio_out_s[11];
-  // assign st_soc2pad_signals.botl.gpio_v_12_o = gpio_out_s[12];
-  // assign st_soc2pad_signals.botl.gpio_v_13_o = gpio_out_s[13];
-  // assign st_soc2pad_signals.botl.gpio_v_14_o = gpio_out_s[14];
-  // assign st_soc2pad_signals.botl.gpio_v_15_o = gpio_out_s[15];
-  // assign st_soc2pad_signals.botl.gpio_v_16_o = gpio_out_s[16];
-  // assign st_soc2pad_signals.botl.gpio_v_17_o = gpio_out_s[17];
-  // assign st_soc2pad_signals.botl.gpio_h_0_o  = gpio_out_s[18];
-  // assign st_soc2pad_signals.botl.gpio_h_1_o  = gpio_out_s[19];
-  // assign st_soc2pad_signals.botl.gpio_h_2_o  = gpio_out_s[20];
-  // assign st_soc2pad_signals.botl.gpio_h_3_o  = gpio_out_s[21];
   // GPIO 4-31 remain unconnected
   assign st_soc2pad_signals.botl.gpio_v_oen_i_0  = gpio_tx_en_s[0];
   assign st_soc2pad_signals.botl.gpio_v_oen_i_1  = gpio_tx_en_s[1];
   assign st_soc2pad_signals.botl.gpio_v_oen_i_2  = gpio_tx_en_s[2];
   assign st_soc2pad_signals.botl.gpio_v_oen_i_3  = gpio_tx_en_s[3];
-  // assign st_soc2pad_signals.botl.gpio_v_4_oen_i  = gpio_tx_en_s[4];
-  // assign st_soc2pad_signals.botl.gpio_v_5_oen_i  = gpio_tx_en_s[5];
-  // assign st_soc2pad_signals.botl.gpio_v_6_oen_i  = gpio_tx_en_s[6];
-  // assign st_soc2pad_signals.botl.gpio_v_7_oen_i  = gpio_tx_en_s[7];
-  // assign st_soc2pad_signals.botl.gpio_v_8_oen_i  = gpio_tx_en_s[8];
-  // assign st_soc2pad_signals.botl.gpio_v_9_oen_i  = gpio_tx_en_s[9];
-  // assign st_soc2pad_signals.botl.gpio_v_10_oen_i = gpio_tx_en_s[10];
-  // assign st_soc2pad_signals.botl.gpio_v_11_oen_i = gpio_tx_en_s[11];
-  // assign st_soc2pad_signals.botl.gpio_v_12_oen_i = gpio_tx_en_s[12];
-  // assign st_soc2pad_signals.botl.gpio_v_13_oen_i = gpio_tx_en_s[13];
-  // assign st_soc2pad_signals.botl.gpio_v_14_oen_i = gpio_tx_en_s[14];
-  // assign st_soc2pad_signals.botl.gpio_v_15_oen_i = gpio_tx_en_s[15];
-  // assign st_soc2pad_signals.botl.gpio_v_16_oen_i = gpio_tx_en_s[16];
-  // assign st_soc2pad_signals.botl.gpio_v_17_oen_i = gpio_tx_en_s[17];
-  // assign st_soc2pad_signals.botl.gpio_h_0_oen_i  = gpio_tx_en_s[18];
-  // assign st_soc2pad_signals.botl.gpio_h_1_oen_i  = gpio_tx_en_s[19];
-  // assign st_soc2pad_signals.botl.gpio_h_2_oen_i  = gpio_tx_en_s[20];
-  // assign st_soc2pad_signals.botl.gpio_h_3_oen_i  = gpio_tx_en_s[21];
   // GPIO 4-31 remain unconnected
   assign gpio_in_s[0]  = st_pad2soc_signals.botl.gpio_v_i_0;
   assign gpio_in_s[1]  = st_pad2soc_signals.botl.gpio_v_i_1;
   assign gpio_in_s[2]  = st_pad2soc_signals.botl.gpio_v_i_2;
   assign gpio_in_s[3]  = st_pad2soc_signals.botl.gpio_v_i_3;
-  // assign gpio_in_s[4]  = st_pad2soc_signals.botl.gpio_v_4_i;
-  // assign gpio_in_s[5]  = st_pad2soc_signals.botl.gpio_v_5_i;
-  // assign gpio_in_s[6]  = st_pad2soc_signals.botl.gpio_v_6_i;
-  // assign gpio_in_s[7]  = st_pad2soc_signals.botl.gpio_v_7_i;
-  // assign gpio_in_s[8]  = st_pad2soc_signals.botl.gpio_v_8_i;
-  // assign gpio_in_s[9]  = st_pad2soc_signals.botl.gpio_v_9_i;
-  // assign gpio_in_s[10] = st_pad2soc_signals.botl.gpio_v_10_i;
-  // assign gpio_in_s[11] = st_pad2soc_signals.botl.gpio_v_11_i;
-  // assign gpio_in_s[12] = st_pad2soc_signals.botl.gpio_v_12_i;
-  // assign gpio_in_s[13] = st_pad2soc_signals.botl.gpio_v_13_i;
-  // assign gpio_in_s[14] = st_pad2soc_signals.botl.gpio_v_14_i;
-  // assign gpio_in_s[15] = st_pad2soc_signals.botl.gpio_v_15_i;
-  // assign gpio_in_s[16] = st_pad2soc_signals.botl.gpio_v_16_i;
-  // assign gpio_in_s[17] = st_pad2soc_signals.botl.gpio_v_17_i;
-  // assign gpio_in_s[18] = st_pad2soc_signals.botl.gpio_h_0_i;
-  // assign gpio_in_s[19] = st_pad2soc_signals.botl.gpio_h_1_i;
-  // assign gpio_in_s[20] = st_pad2soc_signals.botl.gpio_h_2_i;
-  // assign gpio_in_s[21] = st_pad2soc_signals.botl.gpio_h_3_i;
   // GPI0 4-31 remain unconnected
   assign gpio_in_s[31:4] = '0;
 
@@ -293,7 +222,6 @@ module astral_wrap
   logic [3:0] spih_sd_o_s;
   logic [3:0] spih_sd_en_o_s;
   // TODO: CHECK POLARITY OF THE SIGNAL (SPI CS)
-  //assign st_soc2pad_signals.botl.spih_csb_o_0    = spih_csb_o_s[0];
   assign st_soc2pad_signals.botl.spih_csb_o_1    = spih_csb_o_s[1];
   assign st_soc2pad_signals.botl.spih_sck_o      = spih_sck_o_s;
   assign st_soc2pad_signals.botl.spih_sd_o_0     = spih_sd_o_s[0];
@@ -324,10 +252,6 @@ module astral_wrap
   // can0 -- carfield itf
   // ethernet
   logic [3:0] eth_txd_o_s;
-  // assign soc2pad_port_signals.periph.ethernet.eth_txd_0_o = eth_txd_o_s[0];
-  // assign soc2pad_port_signals.periph.ethernet.eth_txd_1_o = eth_txd_o_s[1];
-  // assign soc2pad_port_signals.periph.ethernet.eth_txd_2_o = eth_txd_o_s[2];
-  // assign soc2pad_port_signals.periph.ethernet.eth_txd_3_o = eth_txd_o_s[3];
 
   // External async register interface
   logic[1:0]              ext_reg_async_slv_req_src_out;
@@ -460,11 +384,11 @@ module astral_wrap
 
   // soc2pad
   // clocks
-  //assign st_soc2pad_signals.botl.fll_rt_clk_o     = clk_fll_out[carfield_pkg::RtClockIdx];
+  // FIXME: These pads should not connect to FLL out directly but to internal clock dividers
+  // verilog_lint: waive-start line-length
   assign st_soc2pad_signals.botl.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
-  //assign st_soc2pad_signals.botl.fll_alt_clk_o    = clk_fll_out[carfield_pkg::CarfieldClockIdx.AltClockIdx];
-  //assign st_soc2pad_signals.botl.fll_periph_clk_o = clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx];
   assign st_soc2pad_signals.botl.fll_secd_clk_o   = clk_fll_out[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
+  // verilog_lint: waive-stop line-length
 
   //////////////////
   // Carfield SoC //
@@ -629,8 +553,6 @@ module astral_wrap
     .rst_ni ( ref_clk_pwr_on_rst_n ),
     .static_connection_signals_pad2soc ( st_pad2soc_signals ),
     .static_connection_signals_soc2pad ( st_soc2pad_signals ),
-    //.port_signals_pad2soc ( pad2soc_port_signals ),
-    //.port_signals_soc2pad ( soc2pad_port_signals ),
     // Landing Pads
     .pad_botl_config_tc_pad_internal_signals_0 (pad_config_tc_pad_internal_signals_0),
     .pad_botl_config_tc_pad_internal_signals_1 (pad_config_tc_pad_internal_signals_1),
@@ -675,35 +597,7 @@ module astral_wrap
     .pad_botl_spih_ot_sck_pad,
     .pad_botl_spih_ot_csb_pad,
     .pad_botl_spih_ot_sd_0_pad,
-    .pad_botl_hyper_1_cs_0_n_pad(),
-    .pad_botl_hyper_1_cs_1_n_pad(),
-    .pad_botl_hyper_1_ck_pad(),
-    .pad_botl_hyper_1_ck_n_pad(),
-    .pad_botl_hyper_1_rwds_pad(),
-    .pad_botl_hyper_1_reset_n_pad(),
-    .pad_botl_hyper_1_dq_0_pad(),
-    .pad_botl_hyper_1_dq_1_pad(),
-    .pad_botl_hyper_1_dq_2_pad(),
-    .pad_botl_hyper_1_dq_3_pad(),
-    .pad_botl_hyper_1_dq_4_pad(),
-    .pad_botl_hyper_1_dq_5_pad(),
-    .pad_botl_hyper_1_dq_6_pad(),
-    .pad_botl_hyper_1_dq_7_pad(),
-    .pad_botl_hyper_0_cs_0_n_pad(),
-    .pad_botl_hyper_0_cs_1_n_pad(),
-    .pad_botl_hyper_0_ck_pad(),
-    .pad_botl_hyper_0_ck_n_pad(),
-    .pad_botl_hyper_0_rwds_pad(),
-    .pad_botl_hyper_0_reset_n_pad(),
-    .pad_botl_hyper_0_dq_0_pad(),
-    .pad_botl_hyper_0_dq_1_pad(),
-    .pad_botl_hyper_0_dq_2_pad(),
-    .pad_botl_hyper_0_dq_3_pad(),
-    .pad_botl_hyper_0_dq_4_pad(),
-    .pad_botl_hyper_0_dq_5_pad(),
-    .pad_botl_hyper_0_dq_6_pad(),
-    .pad_botl_hyper_0_dq_7_pad(),
-  // Config Interface
+    // Config Interface
     .config_req_i ( padframe_refclk_cfg_reg_req ),
     .config_rsp_o ( padframe_refclk_cfg_reg_rsp )
   );

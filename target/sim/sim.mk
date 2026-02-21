@@ -119,7 +119,6 @@ ifneq ($(CAR_PHY_SEL),)
   pargs+=+CAR_PHY_SEL=$(CAR_PHY_SEL)
 endif
 
-
 car-vsim-sim-run:
 ifneq ($(CHS_BINARY),)
 	$(eval CHS_BINARY_ABS := $(realpath $(CHS_BINARY)))
