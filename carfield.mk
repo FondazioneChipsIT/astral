@@ -28,6 +28,7 @@ SECD_ROOT ?= $(shell $(BENDER) path opentitan)
 
 # Questasim
 CAR_VSIM_DIR := $(CAR_TGT_DIR)/sim/vsim
+CAR_QSIM_DIR := $(CAR_TGT_DIR)/sim/qsim
 
 BENDER      ?= bender
 BENDER_ROOT ?= $(CAR_ROOT)/.bender
@@ -49,7 +50,7 @@ include $(CAR_ROOT)/bender-safed.mk
 ######################
 
 CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
-CAR_NONFREE_COMMIT ?= 49e0ff7888d5922815e5e730a773496013555b76 # main
+CAR_NONFREE_COMMIT ?= c4159e2db75129352f8e9148010c4717d773266b # main
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC
