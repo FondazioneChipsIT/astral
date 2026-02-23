@@ -1,8 +1,6 @@
-// Copyright 2023 ETH Zurich and University of Bologna.
+// Copyright 2026 Fondazione Chips-IT.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
-//
-// Alessandro Ottaviano <aottaviano@iis.ee.ethz.ch>
 //
 
 #include "car_memory_map.h"
@@ -20,7 +18,7 @@
  * ============================================================ */
 
 /* Address increment between consecutive test locations */
-#define INCREASE_ADDR        0x100000
+#define INCREASE_ADDR        0x10000
 // alternative values (debug / long tests)
 // #define INCREASE_ADDR     0x2000
 // #define INCREASE_ADDR     0x1000
@@ -150,10 +148,10 @@ int probe_range_lfsr_wrwr(volatile uintptr_t from, volatile uintptr_t to)
         //  Compute and store next LFSR value
         lfsr = lfsr_64bits(lfsr);
 
-        /* scrittura 64-bit: uso puntatore volatile a 64-bit; se preferisci */
+        /* 64-bit write: use volatile 64-bit pointer; if you prefer */
         writed(lfsr, addr);
 
-        /* assicurati che la scrittura sia effettivamente visibile */
+        /* ensure the write is actually visible */
         fence();
 
         uint64_t r = readd(addr);
@@ -197,7 +195,7 @@ int probe_range_lfsr_wwrr(volatile uintptr_t from, volatile uintptr_t to)
         ++i;
     }
 
-    /* Assicura che tutte le scritture siano visibili */
+    /* Ensure that all writes are visible */
     fence();
 
     /* ---------------- READ PHASE ---------------- */
