@@ -1008,8 +1008,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .AxiMaxTrans      ( Cfg.AxiMaxSlvTrans                    ),
     .CdcSyncStages    ( SyncStages                            )
   ) i_hyperbus_wrap   (
-    .clk_sys_i           ( hyp_clk            ),
-    .clk_phy_i           ( hyp_clk            ),
+    .clk_i               ( hyp_clk            ),
     .rst_ni              ( periph_rst_n       ),
     .test_mode_i         ( test_mode_i        ),
     .axi_slave_ar_data_i ( llc_ar_data        ),

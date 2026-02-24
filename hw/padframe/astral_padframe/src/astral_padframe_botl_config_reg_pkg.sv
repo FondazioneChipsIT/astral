@@ -41,4 +41,3 @@ package astral_padframe_botl_config_reg_pkg;
   };
 
 endpackage
-

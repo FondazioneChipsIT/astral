@@ -221,9 +221,9 @@ hyperbus           #(
   .PhyStartupCycles ( PhyStartupCycles ),
   .SyncStages       ( CdcSyncStages    )
 ) i_hyperbus        (
-  .clk_phy_i        ( clk_phy_i          ),
+  .clk_phy_i        ( clk_i              ),
   .rst_phy_ni       ( rst_ni             ),
-  .clk_sys_i        ( clk_sys_i          ),
+  .clk_sys_i        ( clk_i              ),
   .rst_sys_ni       ( rst_ni             ),
   .test_mode_i      ( test_mode_i        ),
   .axi_req_i        ( hyper_req          ),
@@ -241,6 +241,7 @@ hyperbus           #(
   .hyper_dq_oe_o,
   .hyper_reset_no,
   .hyper_pad_cfg_o
+);
 );
 
 pad_domain_topr_static_connection_signals_pad2soc_t pad2soc; //output
