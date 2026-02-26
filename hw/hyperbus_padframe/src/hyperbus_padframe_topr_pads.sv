@@ -64,7 +64,6 @@ module hyperbus_padframe_topr_pads
   wire io_pad_retcin;
   assign io_pad_retcin = 1'b0;
   `define io_pad_internals {pad_config_tc_pad_internal_signals_3, pad_config_tc_pad_internal_signals_2, pad_config_tc_pad_internal_signals_1, pad_config_tc_pad_internal_signals_0}
-   tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_0 ( .int_io ( `io_pad_internals ) );
    tc_pad_pwr_mng #(
     .tc_pad_orientation ( tc_pad_pkg::V              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
