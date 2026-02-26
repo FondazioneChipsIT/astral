@@ -16,12 +16,6 @@
   # connections:
   #   retcin: retcin_i
 
-- name: corner_{i}
-  multiple: 1
-  description: "Corner pad"
-  pad_type: PAD_CORNER
-  is_static: true
-
 #-----------------------#
 #                       #
 #  ****** NORTH ******  #

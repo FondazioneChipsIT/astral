@@ -209,6 +209,7 @@ hw/hyperbus_padframe/src_files.yml
 hw/hyperbus_padframe/src/*
 !hw/hyperbus_padframe/src/*_pads.sv
 !hw/hyperbus_padframe/src/pkg_*.sv
+hw/hyperbus_padframe/src/pkg_internal_hyperbus_padframe_topr.sv
 target/sim/vsim/*.bin
 target/sim/vsim/*.db
 target/sim/qsim/*.bin

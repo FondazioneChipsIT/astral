@@ -22,7 +22,6 @@
 % endfor
 module ${padframe.name}_${pad_domain.name}_pads
   import pkg_${padframe.name}::*;
-  import pkg_internal_${padframe.name}_${pad_domain.name}::*;
 (
 % if pad_domain.override_signals:
   //Override signals
