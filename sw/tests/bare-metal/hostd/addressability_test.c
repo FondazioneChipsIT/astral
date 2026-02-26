@@ -37,7 +37,7 @@
  * Hyperbus register map
  * ============================================================ */
 
-#define HYPERBUS_REG_BASE            CAR_PERIPHS_BASE_ADDR + CAR_HYPERBUS_CFG_OFFSET
+#define HYPERBUS_REG_BASE            CAR_HYPERBUS_CFG_BASE_ADDR
 
 #define HYPERBUS_PHY_IN_USE_OFFSET   0x20
 #define HYPERBUS_WHICH_PHY_OFFSET    0x24
@@ -64,20 +64,20 @@
  * PHY configuration
  * ============================================================ */
 
-#ifndef CAR_PHY_SEL
-    #define PHY_MODE 1   /* 1 = dual PHY, 0 = single PHY */
-    #define WHICH_PHY 0  /* valid only if PHY_MODE == 0 */
-#else
-    #if CAR_PHY_SEL == 0
-        #define PHY_MODE 0
-        #define WHICH_PHY 0
-    #elif CAR_PHY_SEL == 1
-        #define PHY_MODE 0
-        #define WHICH_PHY 1
-    #else
-        #error "CAR_PHY_SEL must be 0 or 1"
-    #endif
-#endif
+// #ifndef CAR_PHY_SEL
+//     #define PHY_MODE 1   /* 1 = dual PHY, 0 = single PHY */
+//     #define WHICH_PHY 0  /* valid only if PHY_MODE == 0 */
+// #else
+//     #if CAR_PHY_SEL == 0
+//         #define PHY_MODE 0
+//         #define WHICH_PHY 0
+//     #elif CAR_PHY_SEL == 1
+//         #define PHY_MODE 0
+//         #define WHICH_PHY 1
+//     #else
+//         #error "CAR_PHY_SEL must be 0 or 1"
+//     #endif
+// #endif
 
 uint64_t get_runtime_seed(void)
 {
@@ -93,13 +93,13 @@ uint64_t get_runtime_seed(void)
     // Create 64-bit seed
     uint64_t result = (s << 32) | (s ^ 0xDEADBEEF);
 
-    printf("[DBG] FORCE_SEED=%llu mixed=%llu\n", (unsigned long long)FORCE_SEED, (unsigned long long)result);
+    // printf("[DBG] FORCE_SEED=%llu mixed=%llu\n", (unsigned long long)FORCE_SEED, (unsigned long long)result);
 
     return result;
 #else
     // Default seed
     uint64_t result = (uint64_t)DEFAULT_SEED;
-    printf("[DBG] DEFAULT_SEED=%llu\n", (unsigned long long)result);
+    // printf("[DBG] DEFAULT_SEED=%llu\n", (unsigned long long)result);
     return (uint64_t)DEFAULT_SEED;
 #endif
 }
@@ -219,42 +219,7 @@ int probe_range_lfsr_wwrr(volatile uintptr_t from, volatile uintptr_t to)
 }
 
 
-int test_address_granularity(volatile uintptr_t base)
-{
-    uint64_t values[4] = {
-        0xAAAAAAAAAAAAAAAA,
-        0xBBBBBBBBBBBBBBBB,
-        0xCCCCCCCCCCCCCCCC,
-        0xDDDDDDDDDDDDDDDD
-    };
-
-    writed(values[0], base);
-    fence();
-
-    printf("BASE WRITE @0x%lx = 0x%lx\n", base, values[0]);
-
-    for (int i = 1; i < 4; i++) {
-        uintptr_t addr = base + (i * 8);
-
-        writed(values[i], addr);
-        fence();
-
-        uint64_t r = readd(base);
-
-        printf("WRITE @+%2d (0x%lx) = 0x%lx  BASE_READ = 0x%lx\n", i * 8, addr, values[i], r);
-
-        if (r != values[0]) {
-            printf("OVERLAP DETECTED starting at +%d\n", i * 8);
-            return 1;
-        }
-    }
-
-    printf("NO OVERLAP detected for 8B increments\n");
-    return 0;
-}
-
-
-int configure_hyperbus_cs(void)
+int configure_hyperbus_cs(bool phy_mode, bool which_phy)
 {
     uintptr_t base = HYPERBUS_REG_BASE;
 
@@ -263,60 +228,73 @@ int configure_hyperbus_cs(void)
     uint32_t cs1_base;
     uint32_t cs1_end;
 
-    #if PHY_MODE == 1
+    if (phy_mode == 1) {
         // PHY_MODE == 1 => dual-PHY mode
         cs0_base = 0x80000000;
         cs0_end  = 0x81000000;
         cs1_base = cs0_end;
         cs1_end  = 0x82000000;
 
-    #elif PHY_MODE == 0
+    }else if (phy_mode == 0) {
 
-        #if WHICH_PHY == 0
+        if (which_phy == 0) {
             // PHY 0 -> CS0: 0x8000_0000 - 0x807F_FFFF
             cs0_base = 0x80000000;
             cs0_end  = 0x80800000;
             cs1_base = cs0_end;
             cs1_end  = 0x81000000;
-        #elif WHICH_PHY == 1
+        }
+        else if (which_phy == 1) {
             // PHY 1 -> CS0: 0x8100_0000 - 0x817F_FFFF
             cs0_base = 0x81000000;
             cs0_end  = 0x81800000;
             cs1_base = cs0_end;
             cs1_end  = 0x82000000;
-        #else
-            #error "Invalid WHICH_PHY: must be 0 or 1 when PHY_MODE == 0"
-        #endif
+        }else{
+            printf("[ERROR] Invalid WHICH_PHY: must be 0 or 1 when PHY_MODE == 0\n");
+            return 1;
+        }
 
-    #else
-        #error "Invalid PHY_MODE: must be 0 or 1"
-    #endif
+    }else{
+        printf("[ERROR] Invalid PHY_MODE: must be 0 or 1\n");
+        return 1;
+    }
 
-    #if PHY_MODE == 1
+    if (phy_mode == 1) {
         writew(0x1, base + HYPERBUS_PHY_IN_USE_OFFSET);
-    #elif PHY_MODE == 0
+    }else if (phy_mode == 0) {
         writew(0x0, base + HYPERBUS_PHY_IN_USE_OFFSET);
 
-        #if WHICH_PHY == 0
+        if (which_phy == 0) {
             writew(0x0, base + HYPERBUS_WHICH_PHY_OFFSET);
-        #elif WHICH_PHY == 1
+        }else if (which_phy == 1) {
             writew(0x1, base + HYPERBUS_WHICH_PHY_OFFSET);
-        #endif
-    #endif
+        }else{
+            printf("[ERROR] Invalid WHICH_PHY: must be 0 or 1 when PHY_MODE == 0\n");
+            return 1;
+        }  
+    }else{
+        printf("[ERROR] Invalid PHY_MODE: must be 0 or 1\n");
+        return 1;
+    }   
 
     fence();
 
-    uint32_t phy_in_use = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
-    uint32_t which_phy  = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
+    uint32_t phy_in_use_reg  = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
+    uint32_t which_phy_reg    = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
 
-    printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use);
-    printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy);
+    printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use_reg);
+    printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy_reg);
 
-    writew(cs0_base, base + HYPERBUS_CS0_BASE_OFFSET);
+    writew(0x0, base + HYPERBUS_CS0_BASE_OFFSET);           // Reset CS0 base to 0 to prevent the "start > end" failed assertion
     writew(cs0_end,  base + HYPERBUS_CS0_END_OFFSET);
+    writew(cs0_base, base + HYPERBUS_CS0_BASE_OFFSET);
+    
 
-    writew(cs1_base, base + HYPERBUS_CS1_BASE_OFFSET);
+    writew(0x0, base + HYPERBUS_CS1_BASE_OFFSET);           // Reset CS1 base to 0 to prevent the "start > end" failedassertion
     writew(cs1_end,  base + HYPERBUS_CS1_END_OFFSET);
+    writew(cs1_base, base + HYPERBUS_CS1_BASE_OFFSET);
+    
 
     fence();
 
@@ -347,51 +325,143 @@ int main(void) {
     car_enable_domain(CAR_PULP_RST);
     car_init_uart();
 
-    // Configure Hyperbus CS registers
-    if (configure_hyperbus_cs()) {
-        printf("[ERROR] configure_hyperbus_cs failed\n");
-        return 2;
-    }
-
     uint32_t error = 0;
     uint32_t errors = 0;
+    bool PHY_MODE;              // Set to 1 for dual-PHY mode, 0 for single-PHY mode
+    bool WHICH_PHY;             // Set to 0 for PHY 0, 1 for PHY 1 (valid only if PHY_MODE == 0)
+    uint64_t *test_base;
+    uint64_t *test_end;
 
-    // Define HyperRAM address ranges depending on the PHY mode enabled
-    uint64_t *test_base = NULL;
-    uint64_t *test_end  = NULL;
 
-    #if PHY_MODE == 1
+    #ifndef CAR_PHY_SEL
+
+        // Define HyperRAM address ranges depending on the PHY mode
+        PHY_MODE = 1;
+        WHICH_PHY = 0; // don't care in dual-PHY mode
         test_base = (uint64_t *)CAR_HYPERRAM_BASE_ADDR;
         test_end  = (uint64_t *)CAR_HYPERRAM_END_ADDR;
 
-    #elif PHY_MODE == 0
+        // Configure Hyperbus CS registers
+        if (configure_hyperbus_cs(PHY_MODE, WHICH_PHY)) {
+            printf("[ERROR] configure_hyperbus_cs failed\n");
+            return 2;
+        }
 
-        #if WHICH_PHY == 0
-            test_base = (uint64_t *)CAR_HYPERRAM_0_BASE_ADDR;
-            test_end  = (uint64_t *)CAR_HYPERRAM_0_END_ADDR;
-        #elif WHICH_PHY == 1
-            test_base = (uint64_t *)CAR_HYPERRAM_1_BASE_ADDR;
-            test_end  = (uint64_t *)CAR_HYPERRAM_1_END_ADDR;
-        #else
-            #error "Invalid WHICH_PHY: must be 0 or 1 when PHY_MODE == 0"
-        #endif
+        // Probe HyperRAM ranges
+        error = probe_range_lfsr_wrwr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] DUAL-PHY L3: WRWR failed (errors=%u)\n", error);
+            errors += error;
+        }
+
+        error = probe_range_lfsr_wwrr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] DUAL-PHY L3: WWRR failed (errors=%u)\n", error);
+            errors += error;
+        }
+
+        // Define HyperRAM address ranges depending on the PHY mode
+        PHY_MODE = 0;
+        WHICH_PHY = 0;
+        test_base = (uint64_t *)CAR_HYPERRAM_0_BASE_ADDR;
+        test_end  = (uint64_t *)CAR_HYPERRAM_0_END_ADDR;
+
+        // Configure Hyperbus CS registers
+        if (configure_hyperbus_cs(PHY_MODE, WHICH_PHY)) {
+            printf("[ERROR] configure_hyperbus_cs failed\n");
+            return 2;
+        }
+    
+        // Probe HyperRAM ranges
+        error = probe_range_lfsr_wrwr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] SINGLE-PHY-0 L3: WRWR failed (errors=%u)\n", error);
+            errors += error;
+        }
+    
+        error = probe_range_lfsr_wwrr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] SINGLE-PHY-0 L3: WWRR failed (errors=%u)\n", error);
+            errors += error;
+        }
+
+        // Define HyperRAM address ranges depending on the PHY mode
+        WHICH_PHY = 1;
+        test_base = (uint64_t *)CAR_HYPERRAM_1_BASE_ADDR;
+        test_end  = (uint64_t *)CAR_HYPERRAM_1_END_ADDR;
+
+        if (configure_hyperbus_cs(PHY_MODE, WHICH_PHY)) {
+            printf("[ERROR] configure_hyperbus_cs failed\n");
+            return 2;
+        }
+
+        // Probe HyperRAM ranges
+        error = probe_range_lfsr_wrwr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] SINGLE-PHY-1 L3: WRWR failed (errors=%u)\n", error);
+            errors += error;
+        }
+    
+        error = probe_range_lfsr_wwrr(test_base, test_end);
+        if (error) {
+            printf("[ERROR] SINGLE-PHY-1 L3: WWRR failed (errors=%u)\n", error);
+            errors += error;
+        }
 
     #else
-        #error "Invalid PHY_MODE: must be 0 or 1"
+        #if CAR_PHY_SEL == 0
+            // Define HyperRAM address ranges depending on the PHY mode
+            PHY_MODE = 0;
+            WHICH_PHY = 0;
+            test_base = (uint64_t *)CAR_HYPERRAM_0_BASE_ADDR;
+            test_end  = (uint64_t *)CAR_HYPERRAM_0_END_ADDR;
+
+            // Configure Hyperbus CS registers
+            if (configure_hyperbus_cs(PHY_MODE, WHICH_PHY)) {
+                printf("[ERROR] configure_hyperbus_cs failed\n");
+                return 2;
+            }
+        
+            // Probe HyperRAM ranges
+            error = probe_range_lfsr_wrwr(test_base, test_end);
+            if (error) {
+                printf("[ERROR] SINGLE-PHY-0 L3: WRWR failed (errors=%u)\n", error);
+                errors += error;
+            }
+        
+            error = probe_range_lfsr_wwrr(test_base, test_end);
+            if (error) {
+                printf("[ERROR] SINGLE-PHY-0 L3: WWRR failed (errors=%u)\n", error);
+                errors += error;
+            }
+        #elif CAR_PHY_SEL == 1
+            // Define HyperRAM address ranges depending on the PHY mode
+            PHY_MODE = 0;
+            WHICH_PHY = 1;
+            test_base = (uint64_t *)CAR_HYPERRAM_1_BASE_ADDR;
+            test_end  = (uint64_t *)CAR_HYPERRAM_1_END_ADDR;
+
+            if (configure_hyperbus_cs(PHY_MODE, WHICH_PHY)) {
+                printf("[ERROR] configure_hyperbus_cs failed\n");
+                return 2;
+            }
+
+            // Probe HyperRAM ranges
+            error = probe_range_lfsr_wrwr(test_base, test_end);
+            if (error) {
+                printf("[ERROR] SINGLE-PHY-1 L3: WRWR failed (errors=%u)\n", error);
+                errors += error;
+            }
+        
+            error = probe_range_lfsr_wwrr(test_base, test_end);
+            if (error) {
+                printf("[ERROR] SINGLE-PHY-1 L3: WWRR failed (errors=%u)\n", error);
+                errors += error;
+            }
+        #else
+            #error "CAR_PHY_SEL must be 0 or 1"
+        #endif
     #endif
-
-    // Probe HyperRAM ranges
-    error = probe_range_lfsr_wrwr(test_base, test_end);
-    if (error) {
-        printf("[ERROR] L3: WRWR failed (errors=%u)\n", error);
-        errors += error;
-    }
-
-    error = probe_range_lfsr_wwrr(test_base, test_end);
-    if (error) {
-        printf("[ERROR] L3: WWRR failed (errors=%u)\n", error);
-        errors += error;
-    }
 
     return errors;
 }
