@@ -50,7 +50,7 @@ int main(void)
     }
 
     // enable all interrupt for cva6 core 0
-    err = car_irq_router_range_enable(0, IRQ_ROUTER_NUM_IRQ_SRCS, IRQ_ROUTER_TARGET_CVA6_CLIC0);
+    err = car_irq_router_range_enable(0, IRQ_ROUTER_NUM_IRQ_SRCS, IRQ_ROUTER_TARGET_CVA6_CLIC);
     if (err) {
         printf("car_irq_router_range_enable() failed\n");
         uart_write_flush(&__base_uart);
@@ -58,23 +58,7 @@ int main(void)
     }
 
     // check that they are enabled
-    err = check_irq_routed(IRQ_ROUTER_TARGET_CVA6_CLIC0);
-    if (err) {
-        printf("check_irq_routed() failed for core 1\n");
-        uart_write_flush(&__base_uart);
-        return 1;
-    }
-
-    // enable all interrupt for cva6 core 0
-    err = car_irq_router_range_enable(0, IRQ_ROUTER_NUM_IRQ_SRCS, IRQ_ROUTER_TARGET_CVA6_CLIC1);
-    if (err) {
-        printf("car_irq_router_range_enable() failed\n");
-        uart_write_flush(&__base_uart);
-        return 1;
-    }
-
-    // check that they are enabled
-    err = check_irq_routed(IRQ_ROUTER_TARGET_CVA6_CLIC1);
+    err = check_irq_routed(IRQ_ROUTER_TARGET_CVA6_CLIC);
     if (err) {
         printf("check_irq_routed() failed for core 1\n");
         uart_write_flush(&__base_uart);
@@ -82,7 +66,7 @@ int main(void)
     }
 
     // enable all interrupt for safety island
-    err = car_irq_router_range_enable(0, IRQ_ROUTER_NUM_IRQ_SRCS, IRQ_ROUTER_TARGET_SAFETY_ISLAND);
+    err = car_irq_router_range_enable(0, IRQ_ROUTER_NUM_IRQ_SRCS, IRQ_ROUTER_TARGET_SECURITY_ISLAND);
     if (err) {
         printf("car_irq_router_range_enable() failed\n");
         uart_write_flush(&__base_uart);
@@ -90,17 +74,16 @@ int main(void)
     }
 
     // check that they are enabled
-    err = check_irq_routed(IRQ_ROUTER_TARGET_SAFETY_ISLAND);
+    err = check_irq_routed(IRQ_ROUTER_TARGET_SECURITY_ISLAND);
     if (err) {
-        printf("check_irq_routed() failed for safety island\n");
+        printf("check_irq_routed() failed for security island\n");
         uart_write_flush(&__base_uart);
         return 1;
     }
 
     // disable all interrupts in router
     err = car_irq_router_range_disable(0, IRQ_ROUTER_NUM_IRQ_SRCS,
-                                       IRQ_ROUTER_TARGET_PLIC | IRQ_ROUTER_TARGET_CVA6_CLIC0 |
-                                           IRQ_ROUTER_TARGET_CVA6_CLIC1 | IRQ_ROUTER_TARGET_SAFETY_ISLAND);
+                                       IRQ_ROUTER_TARGET_PLIC | IRQ_ROUTER_TARGET_CVA6_CLIC | IRQ_ROUTER_TARGET_SECURITY_ISLAND);
     if (err) {
         printf("car_irq_router_range_enable() failed\n");
         uart_write_flush(&__base_uart);
