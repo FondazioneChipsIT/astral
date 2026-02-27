@@ -60,6 +60,8 @@
 #define CAR_HYPERRAM_1_BASE_ADDR     CAR_HYPERRAM_0_END_ADDR
 #define CAR_HYPERRAM_1_END_ADDR      CAR_HYPERRAM_END_ADDR
 
+
+
 uint64_t get_runtime_seed(void)
 {
 #ifdef FORCE_SEED
@@ -255,18 +257,20 @@ int configure_hyperbus_cs(bool phy_mode, bool which_phy)
 
     fence();
 
-    // uint32_t phy_in_use_reg  = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
-    // uint32_t which_phy_reg    = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
+    #ifdef DEBUG
+        uint32_t phy_in_use_reg  = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
+        uint32_t which_phy_reg    = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
 
-    // printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use_reg);
-    // printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy_reg);
+        printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use_reg);
+        printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy_reg);
+    #endif
 
     writew(0x0, base + HYPERBUS_CS0_BASE_OFFSET);           // Reset CS0 base to 0 to prevent the "start > end" failed assertion
     writew(cs0_end,  base + HYPERBUS_CS0_END_OFFSET);
     writew(cs0_base, base + HYPERBUS_CS0_BASE_OFFSET);
     
 
-    writew(0x0, base + HYPERBUS_CS1_BASE_OFFSET);           // Reset CS1 base to 0 to prevent the "start > end" failedassertion
+    writew(0x0, base + HYPERBUS_CS1_BASE_OFFSET);           // Reset CS1 base to 0 to prevent the "start > end" failed assertion
     writew(cs1_end,  base + HYPERBUS_CS1_END_OFFSET);
     writew(cs1_base, base + HYPERBUS_CS1_BASE_OFFSET);
     
@@ -278,10 +282,12 @@ int configure_hyperbus_cs(bool phy_mode, bool which_phy)
     uint32_t r2 = readw(base + HYPERBUS_CS1_BASE_OFFSET);
     uint32_t r3 = readw(base + HYPERBUS_CS1_END_OFFSET );
 
-    // printf("[DBG] CS0 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_BASE_OFFSET), cs0_base, r0);
-    // printf("[DBG] CS0 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_END_OFFSET),  cs0_end,  r1);
-    // printf("[DBG] CS1 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_BASE_OFFSET), cs1_base, r2);
-    // printf("[DBG] CS1 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_END_OFFSET),  cs1_end,  r3);
+    #ifdef DEBUG
+        printf("[DBG] CS0 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_BASE_OFFSET), cs0_base, r0);
+        printf("[DBG] CS0 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_END_OFFSET),  cs0_end,  r1);
+        printf("[DBG] CS1 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_BASE_OFFSET), cs1_base, r2);
+        printf("[DBG] CS1 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_END_OFFSET),  cs1_end,  r3);
+    #endif
 
     if (r0 != cs0_base || r1 != cs0_end ||
         r2 != cs1_base || r3 != cs1_end) {
