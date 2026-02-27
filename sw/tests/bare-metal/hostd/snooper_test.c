@@ -12,145 +12,170 @@
 #include "params.h"
 #include "util.h"
 #include "regs/snooper_regs.h"
-#include "printf.h"
 #include "car_util.h"
-
-#define INSTR
 
 void set_register_bit(void *base_addr, uint32_t reg_offset, uint32_t bit_position) {
     uint32_t reg_value = *reg32(base_addr, reg_offset);
     reg_value |= (1 << bit_position);
     *reg32(base_addr, reg_offset) = reg_value;
-    /* PRINT: indicate which bit was set */
-    printf("[DBG] set_register_bit: reg_offset=0x%X bit=%u new_val=0x%08X\n",
-           reg_offset, bit_position, *reg32(base_addr, reg_offset));
 }
 
-void dummy_code(void) {
-    printf("[DBG] dummy_code: entry\n");
-    *reg32(&__base_regs, CHESHIRE_SCRATCH_0_REG_OFFSET) = 0;
-    *reg32(&__base_regs, CHESHIRE_SCRATCH_1_REG_OFFSET) = 1;
-    *reg32(&__base_regs, CHESHIRE_SCRATCH_2_REG_OFFSET) = 2;
-    *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET) = 3;
-
-    printf("[DBG] dummy_code: about to loop, SCRATCH_3=%u\n",
-           *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET));
-
-    for (int i=0; i<(int) *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET); i++) {
-        *reg32(&__base_regs, CHESHIRE_SCRATCH_0_REG_OFFSET) = 0;
-    }
-    printf("[DBG] dummy_code: exit\n");
+void clear_register_bit(void *base_addr, uint32_t reg_offset, uint32_t bit_position) {
+    uint32_t reg_value = *reg32(base_addr, reg_offset);
+    reg_value &= ~(1U << bit_position);
+    *reg32(base_addr, reg_offset) = reg_value;
 }
 
 int main(void) {
+    extern char dummy1_code_start, dummy1_code_end, dummy2_code_start, dummy2_code_end;
 
-    car_init_uart();
-    printf("Start:\n");
-    extern char dummy_code_start, dummy_code_end;
+    uint32_t instructions[] = {0xf3000017, 0xf3000017, 
+                                0x00100013, 0xda678013,
+                                0xf3000017, 0x00200013, 
+                                0xd9a78013, 0xf3000017, 
+                                0x00300013, 0xd8e78013,
+                                0xf3000017, 0xf3000017, 
+                                0xd8270013, 0xf3000017,  
+                                0xd7278013, 0xf3000017, 
+                                0xd6678013};
+
+
+    //---------------------------------------------------------------------------------------------//
+    //--------------------------------------INSTR MODE TEST----------------------------------------//
+    //---------------------------------------------------------------------------------------------//
+
+    // Enable security island
+    car_enable_domain(CAR_SECURITY_RST);
 
     // Configure LSBs and MSBs of START_ADDRESS for RANGE_0, first and only logging region
     *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_BASE_H_REG_OFFSET) = 0x00000000;
-    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_BASE_L_REG_OFFSET) = (uint32_t)&dummy_code_start;
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_BASE_L_REG_OFFSET) = (uintptr_t)&dummy1_code_start;
 
     // Configure LSBs and MSBs of END_ADDRESS for RANGE_0, first and only logging region
     *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_LAST_H_REG_OFFSET) = 0x00000000;
-    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_LAST_L_REG_OFFSET) = (uint32_t)&dummy_code_end;
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_LAST_L_REG_OFFSET) = (uintptr_t)&dummy1_code_end;
 
-    /* PRINT: show configured addresses */
-    printf("[DBG] Configured RANGE_0: start=%p end=%p\n",
-           (void *)&dummy_code_start, (void *)&dummy_code_end);
-
-    // Configure Snooper to log only instrucitions executed in M mode
+    // Configure Snooper to log only instructions executed in M mode
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_M_MODE_BIT);
 
     // Set this bit to snoop from core 1 instead of core 0
     // set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_CORE_SELECT_BIT);
 
-    // Configure Snooper Logging mode: Instr or Addr (default)
-    // Instr mode to log all instructions opcodes
-    // Addr mode to log PC src, PC dst and ctr_type of branches and jumps
-    #ifdef INSTR
+    // Configure Snooper Logging mode: Instr
+    // Instr mode to log the opcode of every instruction
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_TRACE_MODE_OFFSET);
-    #endif
 
-    //--------------------------------------TRIGGER INTERRUPT----------------------------------------//
+    // Enable RANGE_0 from CTRL register, this will enable the snooper to log the RANGE_0
+    set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_PC_RANGE_0_BIT);
+
+    fence();
+
+    asm volatile (
+        "dummy1_code_start: \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "li	zero,1 \n\r"
+        "addi	zero,a5,-602 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "li	zero,2 \n\r"
+        "addi	zero,a5,-614 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "li	zero,3 \n\r"
+        "addi	zero,a5,-626 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "addi	zero,a4,-638 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "addi	zero,a5,-654 \n\r"
+        "auipc	zero,0xf3000 \n\r"
+        "dummy1_code_end: \n\r"
+        "addi	zero,a5,-666 \n\r"
+    );
+
+    // Stop snooper logging
+    clear_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_PC_RANGE_0_BIT);
+
+    int base, last, new_base, new_last;
+
+    base = *reg32(&__base_snprcfg, CFG_REGS_BASE_REG_OFFSET);
+    last = *reg32(&__base_snprcfg, CFG_REGS_LAST_REG_OFFSET);
+
+    for(int i=base;i<=last;i=i+4) { // Instruction mode
+        if (*reg32(&__base_snpr, i) != instructions[i/4])
+            return 1; // return error in case the logged instruction is different from the expected instruction
+    }
+
+    //--------------------------------------------------------------------------------------------//
+    //--------------------------------------ADDR MODE TEST----------------------------------------//
+    //--------------------------------------------------------------------------------------------//
+
+    // Configure LSBs and MSBs of START_ADDRESS for RANGE_0, first and only logging region
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_BASE_H_REG_OFFSET) = 0x00000000;
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_BASE_L_REG_OFFSET) = (uintptr_t)&dummy2_code_start;
+
+    // Configure LSBs and MSBs of END_ADDRESS for RANGE_0, first and only logging region
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_LAST_H_REG_OFFSET) = 0x00000000;
+    *reg32(&__base_snprcfg, CFG_REGS_RANGE_0_LAST_L_REG_OFFSET) = (uintptr_t)&dummy2_code_end;
+
+    // Configure Snooper Logging mode: Addr
+    // Addr mode to log PC src, PC dst and ctr_type of branches and jumps
+    clear_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_TRACE_MODE_OFFSET);
+
+    // enable watermark interrupt for security island
+    car_irq_router_enable(58, IRQ_ROUTER_TARGET_SECURITY_ISLAND);
+    // enable trigger interrupt for security island
+    car_irq_router_enable(59, IRQ_ROUTER_TARGET_SECURITY_ISLAND);
+
+
+    //-------------------------------------TRIGGER INTERRUPT---------------------------------------//
     // This interrupt triggers when the snooper reads a committing instruction with PC=TRIGGER_PC0
     // The trigger interrupt resets the snooper ctrl register, this stops the snooper operation
-    // allowing to read the execution trace without the risk of new instructions
+    // allowing to read the execution trace without the risk of new instructions 
     // overwriting the instructions already stored in the buffer
 
     // Configure LSBs and MSBs of TRIGGER_PC0
-    // *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_H_REG_OFFSET) = 0x00000000;
-    // *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_L_REG_OFFSET) = (uint32_t)&dummy_code_end;
+    *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_H_REG_OFFSET) = 0x00000000;
+    *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_L_REG_OFFSET) = (uintptr_t)&dummy2_code_end;
     // Enable trigger interrupt for PC0
-    // set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_TRIG_PC_0_BIT);
+    set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_TRIG_PC_0_BIT);
 
-    // printf("[DBG] TRIG_PC0 set to %p (H=0x%08X L=0x%08X)\n", (void*)dummy_code_end, *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_H_REG_OFFSET), *reg32(&__base_snprcfg, CFG_REGS_TRIG_PC0_L_REG_OFFSET));
 
-    //-------------------------------------WATERMARK INTERRUPT---------------------------------------//
+    //------------------------------------WATERMARK INTERRUPT--------------------------------------//
     // Watermark interrupt can only be used in instruction mode
     // This interrupt triggers when the numbers of instructions stored in the buffer minus
     // the number of instructions previously read through AXI is higher than the watermark lvl
     // The interrupt is high as long as this condition is met and does not stop the snooper operation
 
-    #ifdef INSTR
     // Set watermark level to 10 instructions
-    *reg32(&__base_snprcfg, CFG_REGS_WATERMARK_LEVEL_REG_OFFSET) = 0x0000000a;
+    *reg32(&__base_snprcfg, CFG_REGS_WATERMARK_LEVEL_REG_OFFSET) = 0x0000000a; 
     // Enable watermark interrupt
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_WATERMARK_EN_BIT);
-    #endif
-
 
 
     // Enable RANGE_0 from CTRL register, this will enable the snooper to log the RANGE_0
     set_register_bit(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET,CFG_REGS_CTRL_PC_RANGE_0_BIT);
 
-    /* PRINT: current CTRL register value after all set_register_bit calls */
-    printf("[DBG] CTRL reg after setup = 0x%08X\n", *reg32(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET));
-
     fence();
 
-    asm volatile ("dummy_code_start:");
+    asm volatile ("dummy2_code_start:");
 
-    dummy_code();
-
-    asm volatile ("dummy_code_end:");
-
-    // Poll CTRL until RANGE_0 bit is cleared by the trigger (snooper stopped)
-    // printf("[DBG] Waiting for snooper to stop (polling CTRL)...\n");
-    // while (*reg32(&__base_snprcfg, CFG_REGS_CTRL_REG_OFFSET) & (1 << CFG_REGS_CTRL_PC_RANGE_0_BIT)) {
-    //     // optional: small delay or NOP to avoid hammering the register bus
-    //     // asm volatile("nop");
-    // }
-    // printf("[DBG] Snooper stopped by TRIG_PC0 (CTRL cleared)\n");
-
-
-    int base, last;
-
-    base = *reg32(&__base_snprcfg, CFG_REGS_BASE_REG_OFFSET);
-    last = *reg32(&__base_snprcfg, CFG_REGS_LAST_REG_OFFSET);
-
-    /* PRINT: show base/last that will be iterated */
-    printf("[DBG] Snooper buffer base=0x%X last=0x%X\n", base, last);
-
-    #ifndef INSTR
-    for(int i=base;i<=last;i=i+20) { // Address mode
-        *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x00); // read lsb 32bit of src PC
-        *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x08); // read lsb 32bit of dst PC
-        *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i + 0x10); // read ctr_type 32bit
-        printf("Addr:%X PC_SRC:%X PC_DST:%X CTR_TYPE:%X\r\n", (uintptr_t)((uint8_t *)&__base_snpr + i),
-                                                                        *reg32(&__base_snpr, i + 0x00),
-                                                                        *reg32(&__base_snpr, i + 0x08),
-                                                                        *reg32(&__base_snpr, i + 0x10));
+    *reg32(&__base_regs, CHESHIRE_SCRATCH_0_REG_OFFSET) = 0;
+    *reg32(&__base_regs, CHESHIRE_SCRATCH_1_REG_OFFSET) = 1;
+    *reg32(&__base_regs, CHESHIRE_SCRATCH_2_REG_OFFSET) = 2;
+    *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET) = 3;
+    for (int i=0; i<(int) *reg32(&__base_regs, CHESHIRE_SCRATCH_3_REG_OFFSET); i++) {
+        *reg32(&__base_regs, CHESHIRE_SCRATCH_0_REG_OFFSET) = 0;  
     }
-    #else
-    for(int i=base;i<=last;i=i+4) { // Instruction mode
-        *reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) = *reg32(&__base_snpr, i); // read instr opcode 32bit
-        printf("Addr:%X INSTR:%X\r\n", (uintptr_t)((uint8_t *)&__base_snpr + i), *reg32(&__base_snpr, i));
-    }
-    #endif
 
-    printf("[DBG] done reading snooper buffer\n");
+    asm volatile ("dummy2_code_end:");
+
+    new_base = last + 4;
+    new_last = *reg32(&__base_snprcfg, CFG_REGS_LAST_REG_OFFSET);
+
+    for(int i=new_base;i<new_last;i=i+20) { // Address mode
+        if ((*reg32(&__base_snpr, i + 0x00) <= (uintptr_t)&dummy2_code_start) || (*reg32(&__base_snpr, i + 0x00) >= (uintptr_t)&dummy2_code_end))
+            return 1; // return error in case the buffer contains a PC outside of the logging region
+    }
 
     return 0;
 }

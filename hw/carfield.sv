@@ -1694,6 +1694,28 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
   // For the security island. OR together interrupts coming from the host domain and the safe domain
   assign secd_mbox_intr = hostd_secd_mbox_intr_ored | safed_secd_mbox_intr;
 
+  // CFI Snooper interrupts for security island
+  logic cfi_req_irq, cfi_watermark_irq;
+
+  sync #(
+      .STAGES    (SyncStages),
+      .ResetValue(1'b0)
+  ) i_sync_cfireq (
+      .clk_i(security_clk),
+      .rst_ni(security_rst_n),
+      .serial_i(chs_intrs_distributed[$bits(cheshire_int_intr_t)-1]),
+      .serial_o(cfi_req_irq)
+  );
+  sync #(
+      .STAGES    (SyncStages),
+      .ResetValue(1'b0)
+  ) i_sync_cfiwatermark (
+      .clk_i(security_clk),
+      .rst_ni(security_rst_n),
+      .serial_i(chs_intrs_distributed[$bits(cheshire_int_intr_t)-2]),
+      .serial_o(cfi_watermark_irq)
+  );
+
   assign security_rst_n = rsts_n[CarfieldDomainIdx.secured];
   assign security_pwr_on_rst_n = pwr_on_rsts_n[CarfieldDomainIdx.secured];
   assign security_clk = domain_clk_gated[CarfieldDomainIdx.secured];
@@ -1755,8 +1777,8 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
     .test_enable_i    ( test_mode_i     ),
     // Interrupt signals
     .irq_ibex_i       ( secd_mbox_intr  ), // from hostd or safed
-    .cfi_req_irq_i    ( '0 ), // TODO: FIXME and connect to Cheshire
-    .cfi_watermark_irq_i ( '0 ), // TODO: FIXME and connect to Cheshire
+    .cfi_req_irq_i    ( cfi_req_irq     ),
+    .cfi_watermark_irq_i ( cfi_watermark_irq ),
      // JTAG port
     .jtag_tck_i       ( jtag_ot_tck_i   ),
     .jtag_tms_i       ( jtag_ot_tms_i   ),

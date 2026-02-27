@@ -129,7 +129,7 @@ CLINTCORES     := 3
 # PLIC interruptible harts
 PLICCORES      := 6
 # PLIC number of input interrupts
-PLIC_NUM_INTRS := 89
+PLIC_NUM_INTRS := 92
 
 # Serial Link configuration in cheshire
 SERIAL_LINK_NUM_BITS := 16

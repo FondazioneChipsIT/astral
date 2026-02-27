@@ -124,7 +124,7 @@ packages:
       Git: https://github.com/AlSaqr-platform/can_bus.git
     dependencies: []
   cheshire:
-    revision: 389d6636b92115dc4cc5cc8ba49f31a079cb7d7a
+    revision: 5a9ff3ebac8bec2cd6a31de5359e70402addf4d7
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cheshire.git
@@ -220,7 +220,7 @@ packages:
       Git: https://github.com/pulp-platform/cv32e40x.git
     dependencies: []
   cva6:
-    revision: 37530c7419fd0526120bdd8c71eb21f94700864c
+    revision: 966d5e252a9aa346d1abf83ec2da263583d9c1b8
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cva6.git
@@ -564,7 +564,7 @@ packages:
     - common_cells
     - register_interface
   snooper:
-    revision: 9acbfe6b0e29148100aea08a9f052486d5e74033
+    revision: 4834337501410acc95aa572f61e65ab0dcbaa241
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cfi-snooper.git
