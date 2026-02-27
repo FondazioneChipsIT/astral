@@ -60,25 +60,6 @@
 #define CAR_HYPERRAM_1_BASE_ADDR     CAR_HYPERRAM_0_END_ADDR
 #define CAR_HYPERRAM_1_END_ADDR      CAR_HYPERRAM_END_ADDR
 
-/* ============================================================
- * PHY configuration
- * ============================================================ */
-
-// #ifndef CAR_PHY_SEL
-//     #define PHY_MODE 1   /* 1 = dual PHY, 0 = single PHY */
-//     #define WHICH_PHY 0  /* valid only if PHY_MODE == 0 */
-// #else
-//     #if CAR_PHY_SEL == 0
-//         #define PHY_MODE 0
-//         #define WHICH_PHY 0
-//     #elif CAR_PHY_SEL == 1
-//         #define PHY_MODE 0
-//         #define WHICH_PHY 1
-//     #else
-//         #error "CAR_PHY_SEL must be 0 or 1"
-//     #endif
-// #endif
-
 uint64_t get_runtime_seed(void)
 {
 #ifdef FORCE_SEED
@@ -93,14 +74,12 @@ uint64_t get_runtime_seed(void)
     // Create 64-bit seed
     uint64_t result = (s << 32) | (s ^ 0xDEADBEEF);
 
-    // printf("[DBG] FORCE_SEED=%llu mixed=%llu\n", (unsigned long long)FORCE_SEED, (unsigned long long)result);
 
     return result;
 #else
     // Default seed
     uint64_t result = (uint64_t)DEFAULT_SEED;
-    // printf("[DBG] DEFAULT_SEED=%llu\n", (unsigned long long)result);
-    return (uint64_t)DEFAULT_SEED;
+    return result;
 #endif
 }
 
@@ -142,8 +121,6 @@ int probe_range_lfsr_wrwr(volatile uintptr_t from, volatile uintptr_t to)
     const uintptr_t incr = INCREASE_ADDR;
     uint64_t lfsr = get_runtime_seed();
 
-    printf("[WRWR] seed=0x%016lx\n", lfsr);
-
     int i = 0;
 
     while (addr < to) {
@@ -178,8 +155,6 @@ int probe_range_lfsr_wwrr(volatile uintptr_t from, volatile uintptr_t to)
 
     uint64_t seed = get_runtime_seed();
     uint64_t lfsr = seed;
-
-    printf("[WWRR] seed=0x%016lx\n", seed);
 
     /* ---------------- WRITE PHASE ---------------- */
     int i = 0;
@@ -280,11 +255,11 @@ int configure_hyperbus_cs(bool phy_mode, bool which_phy)
 
     fence();
 
-    uint32_t phy_in_use_reg  = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
-    uint32_t which_phy_reg    = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
+    // uint32_t phy_in_use_reg  = readw(base + HYPERBUS_PHY_IN_USE_OFFSET);
+    // uint32_t which_phy_reg    = readw(base + HYPERBUS_WHICH_PHY_OFFSET);
 
-    printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use_reg);
-    printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy_reg);
+    // printf("[DBG] phys_in_use @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_PHY_IN_USE_OFFSET), phy_in_use_reg);
+    // printf("[DBG] which_phy   @0x%lx = 0x%08x\n", (unsigned long)(base + HYPERBUS_WHICH_PHY_OFFSET), which_phy_reg);
 
     writew(0x0, base + HYPERBUS_CS0_BASE_OFFSET);           // Reset CS0 base to 0 to prevent the "start > end" failed assertion
     writew(cs0_end,  base + HYPERBUS_CS0_END_OFFSET);
@@ -303,10 +278,10 @@ int configure_hyperbus_cs(bool phy_mode, bool which_phy)
     uint32_t r2 = readw(base + HYPERBUS_CS1_BASE_OFFSET);
     uint32_t r3 = readw(base + HYPERBUS_CS1_END_OFFSET );
 
-    printf("[DBG] CS0 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_BASE_OFFSET), cs0_base, r0);
-    printf("[DBG] CS0 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_END_OFFSET),  cs0_end,  r1);
-    printf("[DBG] CS1 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_BASE_OFFSET), cs1_base, r2);
-    printf("[DBG] CS1 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_END_OFFSET),  cs1_end,  r3);
+    // printf("[DBG] CS0 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_BASE_OFFSET), cs0_base, r0);
+    // printf("[DBG] CS0 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS0_END_OFFSET),  cs0_end,  r1);
+    // printf("[DBG] CS1 BASE @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_BASE_OFFSET), cs1_base, r2);
+    // printf("[DBG] CS1 END  @0x%lx wrote=0x%08x read=0x%08x\n", (unsigned long)(base + HYPERBUS_CS1_END_OFFSET),  cs1_end,  r3);
 
     if (r0 != cs0_base || r1 != cs0_end ||
         r2 != cs1_base || r3 != cs1_end) {
