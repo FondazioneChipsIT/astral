@@ -1,4 +1,6 @@
 // Copyright 2026 Fondazione Chips-IT.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
 //
 // Author: Riccardo Fiorani Gallotta <riccardo.fiorani3@unibo.it>
 //
