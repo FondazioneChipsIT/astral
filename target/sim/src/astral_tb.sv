@@ -140,10 +140,10 @@ module tb_astral;
       if (preload_mode == 1) begin: gen_slink_hyperbus_cfg
         // Configure Serial link padframe
         // fix.configure_sl_pad(jtag_check_write);
-
-        -> pad_configured;
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+        $fatal(1, "[TB] ERROR: Preload mode 1 not supported.");
+        // -> pad_configured;
+        // $display("[TB] INFO: Configuring Hyperbus through serial link.");
+        // fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
       end else begin: gen_jtag_hyperbus_cfg
         $display("[TB] INFO: Configuring Hyperbus through JTAG.");
         fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);

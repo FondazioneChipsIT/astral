@@ -211,3 +211,6 @@ hw/hyperbus_padframe/src/*
 !hw/hyperbus_padframe/src/pkg_*.sv
 target/sim/vsim/*.bin
 target/sim/vsim/*.db
+target/sim/qsim/*.bin
+target/sim/qsim/*.db
+target/sim/qsim/work

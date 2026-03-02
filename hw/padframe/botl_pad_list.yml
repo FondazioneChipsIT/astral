@@ -386,9 +386,9 @@
   pad_type: PAD_BIDIR_V
   is_static: true
   connections:
-    chip2pad: spih_ot_sd_o_{1+i}
-    pad2chip: spih_ot_sd_i_{1+i}
-    input_en: ~spih_ot_sd_oen_i_{1+i}
-    output_en: spih_ot_sd_oen_i_{1+i}
+    chip2pad: spih_ot_sd_o_{i}
+    pad2chip: spih_ot_sd_i_{i}
+    input_en: ~spih_ot_sd_oen_i_{i}
+    output_en: spih_ot_sd_oen_i_{i}
     drive_strength: drive_strength_grp_8
     slew_en: slew_en_grp_8

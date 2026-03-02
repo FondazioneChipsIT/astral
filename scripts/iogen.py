@@ -219,6 +219,19 @@ else:
     print(f"\n'direction' not found in configuration yml file: {config_yml}")
     exit(1)
 
+if 'distribute' in config_data:
+    config_set['distribute'] = {}
+    if config_data['distribute'] == "gap":
+        config_set['distribute'] = "gap"
+    elif config_data['distribute'] == "center":
+        config_set['distribute'] = "center"
+    else:
+        print(f"\n'distribute' has a wrong value in configuration yml file: {config_yml}")
+        exit(1)
+else:
+    print(f"\n'distribute' not found in configuration yml file: {config_yml}")
+    exit(1)
+
 if 'pad_types' in config_data:
     config_set['pad_types'] = {}
     if config_data['pad_types'] == None:
@@ -532,8 +545,9 @@ for side in sides:
         exit(1)
     if len(pad_need_offset) > 0:
         pads_width = 0.
-        for pad_number in pad_need_offset:
-            pads_width += config_set['pad_types'][csv.loc[csv['pad_nr']==pad_number, 'type'].item()]['width']
+        if config_data['distribute'] == "gap":
+            for pad_number in pad_need_offset:
+                pads_width += config_set['pad_types'][csv.loc[csv['pad_nr']==pad_number, 'type'].item()]['width']
         if config_set[side]['pad_numbers'].index(pad_need_offset[0]) != 0:
             pad_index = config_set[side]['pad_numbers'].index(pad_need_offset[0])-1 
             pads_width += config_set['pad_types'][csv.loc[csv['pad_nr']==config_set[side]['pad_numbers'][pad_index], 'type'].item()]['width']
@@ -541,8 +555,12 @@ for side in sides:
         i = 1
         for pad_number in pad_need_offset:
             pad_index = config_set[side]['pad_numbers'].index(pad_number)
-            pad_positions[side]['pads'][pad_index]['offset'] = snap_to_step(left + i * step, config_set['io_step'])
-            left += config_set['pad_types'][csv.loc[csv['pad_nr']==pad_number, 'type'].item()]['width']
+            pad_width = config_set['pad_types'][csv.loc[csv['pad_nr']==pad_number, 'type'].item()]['width']
+            if config_data['distribute'] == "gap":
+                pad_positions[side]['pads'][pad_index]['offset'] = snap_to_step(left + i * step, config_set['io_step'])
+                left += pad_width
+            if config_data['distribute'] == "center":
+                pad_positions[side]['pads'][pad_index]['offset'] = snap_to_step(left + i * step - pad_width/2., config_set['io_step'])
             i += 1
     for pad in pad_positions[side]['pads']:
         if pad_positions[side]['reverse']:

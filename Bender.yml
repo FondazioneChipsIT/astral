@@ -102,6 +102,7 @@ sources:
   - hw/regs/carfield_reg_top.sv
   - hw/padframe/tc_pad_pkg.sv
   - hw/padframe/astral_padframe/src/pkg_astral_padframe.sv
+  - hw/padframe/astral_padframe/src/pkg_internal_astral_padframe_botl.sv
   - hw/hyperbus_padframe/src/pkg_hyperbus_padframe.sv
   - hw/hyperbus_padframe/src/hyperbus_padframe_topr_pads.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_config_reg_pkg.sv
@@ -110,6 +111,10 @@ sources:
   - hw/padframe/astral_padframe/src/astral_padframe_botl_muxer.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl.sv
   - hw/padframe/astral_padframe/src/astral_padframe.sv
+  - hw/padframe/config_reg/top_padframe_config_reg_pkg.sv
+  - hw/padframe/config_reg/top_padframe_config_reg_top.sv
+  - hw/padframe/top_padframe_pkg.sv
+  - hw/padframe/top_padframe_wrapper.sv
   # Level 1
   - hw/cheshire_wrap.sv
   - hw/hyperbus_wrap.sv
@@ -189,7 +194,6 @@ sources:
       - target/gf22/sourcecode/fll/behavioral/gf22_FLL_model.vhd
       - target/gf22/sourcecode/fll_wrap.sv
       # PAD Model
-      # - tech/sourcecode/pad/io_gppr_12lpplus_t18_mv08_mv18_fs18_rvt_dr.v
       # - tech/sourcecode/ptme_ram.sv
 
   - target: all(xilinx, fpga, xilinx_vanilla)

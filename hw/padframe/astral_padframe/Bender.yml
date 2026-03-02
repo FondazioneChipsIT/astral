@@ -18,6 +18,7 @@ export_include_dirs:
 
 sources:
   - src/pkg_astral_padframe.sv
+  - src/pkg_internal_astral_padframe_botl.sv
   - src/astral_padframe_botl_config_reg_pkg.sv
   - src/astral_padframe_botl_config_reg_top.sv
   - src/astral_padframe_botl_pads.sv
