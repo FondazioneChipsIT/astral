@@ -108,6 +108,8 @@ module hyperbus_wrap
   inout wire logic pad_hyper_phy1_reset_n_pad
 );
 
+logic rst_n;
+
 reg_req_t   reg_req;
 reg_rsp_t   reg_rsp;
 
@@ -149,7 +151,7 @@ axi_cdc_dst      #(
   .async_data_slave_r_rptr_i  ( axi_slave_r_rptr_i  ),
   // synchronous master port
   .dst_clk_i                  ( clk_i ),
-  .dst_rst_ni                 ( rst_ni    ),
+  .dst_rst_ni                 ( rst_n ),
   .dst_req_o                  ( hyper_req ),
   .dst_resp_i                 ( hyper_rsp )
 );
@@ -160,7 +162,7 @@ reg_cdc_dst #(
   .rsp_t    ( reg_rsp_t )
 ) i_hyper_reg_cdc_dst (
   .dst_clk_i   ( clk_i ),
-  .dst_rst_ni  ( rst_ni ),
+  .dst_rst_ni  ( rst_n ),
   .dst_req_o   ( reg_req ),
   .dst_rsp_i   ( reg_rsp ),
 
@@ -171,6 +173,14 @@ reg_cdc_dst #(
   .async_req_o (reg_async_mst_req_o),
   .async_ack_i (reg_async_mst_ack_i),
   .async_data_o(reg_async_mst_data_o)
+);
+
+rstgen i_hyper_rstgen (
+  .clk_i   ( clk_i ),
+  .rst_ni,
+  .test_mode_i,
+  .rst_no  ( rst_n ),
+  .init_no ( )
 );
 
 logic [NumPhys-1:0][NumChips-1:0] hyper_cs_no;
@@ -210,9 +220,9 @@ hyperbus           #(
   .SyncStages       ( CdcSyncStages    )
 ) i_hyperbus        (
   .clk_phy_i        ( clk_i              ),
-  .rst_phy_ni       ( rst_ni             ),
+  .rst_phy_ni       ( rst_n              ),
   .clk_sys_i        ( clk_i              ),
-  .rst_sys_ni       ( rst_ni             ),
+  .rst_sys_ni       ( rst_n              ),
   .test_mode_i      ( test_mode_i        ),
   .axi_req_i        ( hyper_req          ),
   .axi_rsp_o        ( hyper_rsp          ),
