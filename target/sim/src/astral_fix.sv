@@ -504,7 +504,7 @@ module astral_fixture;
   // Muxed Pads Connections //
   ////////////////////////////
 
-  `define PAD_MUX_REG_PATH i_dut.i_astral_padframe.i_periph.i_periph_muxer.s_reg2hw
+  //`define PAD_MUX_REG_PATH i_dut.i_astral_padframe.i_periph.i_periph_muxer.s_reg2hw
 
   // SPI
   /*

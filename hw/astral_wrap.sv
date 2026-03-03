@@ -13,7 +13,7 @@ module astral_wrap
   import carfield_chip_pkg::*;
   import carfield_reg_pkg::*;
   import cheshire_pkg::*;
-  import pkg_astral_padframe::*;
+  import top_padframe_pkg::*;
 #(
   parameter cheshire_cfg_t Cfg = carfield_pkg::CarfieldCfgDefault
 ) (
@@ -118,24 +118,24 @@ module astral_wrap
   carfield_reg_rsp_t padframe_refclk_cfg_reg_rsp;
 
   // signal to pad
-  static_connection_signals_pad2soc_t st_pad2soc_signals;
-  static_connection_signals_soc2pad_t st_soc2pad_signals;
+  top_padframe_signals_pad2soc_t st_pad2soc_signals;
+  top_padframe_signals_soc2pad_t st_soc2pad_signals;
 
   // pad2soc
   // is secure boot enabled
-  assign secure_boot = st_pad2soc_signals.botl.secure_boot_i;
+  assign secure_boot = st_pad2soc_signals.secure_boot_i;
   // safed bootmodes - no sefety island
   logic [1:0] bootmode_safe_isln_s;
   assign bootmode_safe_isln_s[0] = 1'b0;
   assign bootmode_safe_isln_s[1] = 1'b0;
   // secd bootmodes
   logic [1:0] bootmode_sec_isln_s;
-  assign bootmode_sec_isln_s[0] = st_pad2soc_signals.botl.ot_boot_mode_i;
+  assign bootmode_sec_isln_s[0] = st_pad2soc_signals.ot_boot_mode_i;
   assign bootmode_sec_isln_s[1] = 1'b0;
   // hostd bootmodes
   logic [1:0] bootmode_host_s;
-  assign bootmode_host_s[0] = st_pad2soc_signals.botl.boot_mode_i_0;
-  assign bootmode_host_s[1] = st_pad2soc_signals.botl.boot_mode_i_1;
+  assign bootmode_host_s[0] = st_pad2soc_signals.boot_mode_i_0;
+  assign bootmode_host_s[1] = st_pad2soc_signals.boot_mode_i_1;
   // serial link
   logic [SlinkNumChan-1:0][SlinkNumLanes-1:0] serial_link_data_in_s; //left unconnected
   assign serial_link_data_in_s[0][0] = '0;
@@ -146,29 +146,6 @@ module astral_wrap
   assign serial_link_data_in_s[0][5] = '0;
   assign serial_link_data_in_s[0][6] = '0;
   assign serial_link_data_in_s[0][7] = '0;
-  // hyperbus signals
-  logic [carfield_pkg::NumHyperBusPhys-1:0] hyperbus_rwds_in_s;
-  logic [carfield_pkg::NumHyperBusPhys-1:0][7:0] hyperbus_data_in_s;
-  // hyperbus 0
-  assign hyperbus_data_in_s[0][0] = st_pad2soc_signals.botl.hyper_dq_i_0_0;
-  assign hyperbus_data_in_s[0][1] = st_pad2soc_signals.botl.hyper_dq_i_0_1;
-  assign hyperbus_data_in_s[0][2] = st_pad2soc_signals.botl.hyper_dq_i_0_2;
-  assign hyperbus_data_in_s[0][3] = st_pad2soc_signals.botl.hyper_dq_i_0_3;
-  assign hyperbus_data_in_s[0][4] = st_pad2soc_signals.botl.hyper_dq_i_0_4;
-  assign hyperbus_data_in_s[0][5] = st_pad2soc_signals.botl.hyper_dq_i_0_5;
-  assign hyperbus_data_in_s[0][6] = st_pad2soc_signals.botl.hyper_dq_i_0_6;
-  assign hyperbus_data_in_s[0][7] = st_pad2soc_signals.botl.hyper_dq_i_0_7;
-  assign hyperbus_rwds_in_s[0]    = st_pad2soc_signals.botl.hyper_rwds_i_0;
-  // hyperbus 1
-  assign hyperbus_data_in_s[1][0] = st_pad2soc_signals.botl.hyper_dq_i_1_0;
-  assign hyperbus_data_in_s[1][1] = st_pad2soc_signals.botl.hyper_dq_i_1_1;
-  assign hyperbus_data_in_s[1][2] = st_pad2soc_signals.botl.hyper_dq_i_1_2;
-  assign hyperbus_data_in_s[1][3] = st_pad2soc_signals.botl.hyper_dq_i_1_3;
-  assign hyperbus_data_in_s[1][4] = st_pad2soc_signals.botl.hyper_dq_i_1_4;
-  assign hyperbus_data_in_s[1][5] = st_pad2soc_signals.botl.hyper_dq_i_1_5;
-  assign hyperbus_data_in_s[1][6] = st_pad2soc_signals.botl.hyper_dq_i_1_6;
-  assign hyperbus_data_in_s[1][7] = st_pad2soc_signals.botl.hyper_dq_i_1_7;
-  assign hyperbus_rwds_in_s[1]    = st_pad2soc_signals.botl.hyper_rwds_i_1;
 
   // serial link
   logic [SlinkNumChan-1:0][SlinkNumLanes-1:0] serial_link_data_out_s;
@@ -176,16 +153,16 @@ module astral_wrap
   // pad2soc
   // spih
   logic [ 3:0] spih_sd_i_s;
-  assign spih_sd_i_s[0] = st_pad2soc_signals.botl.spih_sd_i_0;
-  assign spih_sd_i_s[1] = st_pad2soc_signals.botl.spih_sd_i_1;
-  assign spih_sd_i_s[2] = st_pad2soc_signals.botl.spih_sd_i_2;
-  assign spih_sd_i_s[3] = st_pad2soc_signals.botl.spih_sd_i_3;
+  assign spih_sd_i_s[0] = st_pad2soc_signals.spih_sd_i_0;
+  assign spih_sd_i_s[1] = st_pad2soc_signals.spih_sd_i_1;
+  assign spih_sd_i_s[2] = st_pad2soc_signals.spih_sd_i_2;
+  assign spih_sd_i_s[3] = st_pad2soc_signals.spih_sd_i_3;
   // spih_ot
   logic [ 3:0] spih_ot_sd_i_s;
-  assign spih_ot_sd_i_s[0] = st_pad2soc_signals.botl.spih_ot_sd_i_0;
-  assign spih_ot_sd_i_s[1] = st_pad2soc_signals.botl.spih_ot_sd_i_1;
-  assign spih_ot_sd_i_s[2] = st_pad2soc_signals.botl.spih_ot_sd_i_2;
-  assign spih_ot_sd_i_s[3] = st_pad2soc_signals.botl.spih_ot_sd_i_3;
+  assign spih_ot_sd_i_s[0] = st_pad2soc_signals.spih_ot_sd_i_0;
+  assign spih_ot_sd_i_s[1] = st_pad2soc_signals.spih_ot_sd_i_1;
+  assign spih_ot_sd_i_s[2] = st_pad2soc_signals.spih_ot_sd_i_2;
+  assign spih_ot_sd_i_s[3] = st_pad2soc_signals.spih_ot_sd_i_3;
   // ethernet
   logic [3:0] eth_rxd_i_s;
   assign eth_rxd_i_s[0] = '0;
@@ -197,20 +174,20 @@ module astral_wrap
   logic [31:0] gpio_out_s;
   logic [31:0] gpio_tx_en_s;
   logic [31:0] gpio_in_s;
-  assign st_soc2pad_signals.botl.gpio_v_o_0  = gpio_out_s[0];
-  assign st_soc2pad_signals.botl.gpio_v_o_1  = gpio_out_s[1];
-  assign st_soc2pad_signals.botl.gpio_v_o_2  = gpio_out_s[2];
-  assign st_soc2pad_signals.botl.gpio_v_o_3  = gpio_out_s[3];
+  assign st_soc2pad_signals.gpio_v_o_0  = gpio_out_s[0];
+  assign st_soc2pad_signals.gpio_v_o_1  = gpio_out_s[1];
+  assign st_soc2pad_signals.gpio_v_o_2  = gpio_out_s[2];
+  assign st_soc2pad_signals.gpio_v_o_3  = gpio_out_s[3];
   // GPIO 4-31 remain unconnected
-  assign st_soc2pad_signals.botl.gpio_v_oen_i_0  = gpio_tx_en_s[0];
-  assign st_soc2pad_signals.botl.gpio_v_oen_i_1  = gpio_tx_en_s[1];
-  assign st_soc2pad_signals.botl.gpio_v_oen_i_2  = gpio_tx_en_s[2];
-  assign st_soc2pad_signals.botl.gpio_v_oen_i_3  = gpio_tx_en_s[3];
+  assign st_soc2pad_signals.gpio_v_oen_i_0  = gpio_tx_en_s[0];
+  assign st_soc2pad_signals.gpio_v_oen_i_1  = gpio_tx_en_s[1];
+  assign st_soc2pad_signals.gpio_v_oen_i_2  = gpio_tx_en_s[2];
+  assign st_soc2pad_signals.gpio_v_oen_i_3  = gpio_tx_en_s[3];
   // GPIO 4-31 remain unconnected
-  assign gpio_in_s[0]  = st_pad2soc_signals.botl.gpio_v_i_0;
-  assign gpio_in_s[1]  = st_pad2soc_signals.botl.gpio_v_i_1;
-  assign gpio_in_s[2]  = st_pad2soc_signals.botl.gpio_v_i_2;
-  assign gpio_in_s[3]  = st_pad2soc_signals.botl.gpio_v_i_3;
+  assign gpio_in_s[0]  = st_pad2soc_signals.gpio_v_i_0;
+  assign gpio_in_s[1]  = st_pad2soc_signals.gpio_v_i_1;
+  assign gpio_in_s[2]  = st_pad2soc_signals.gpio_v_i_2;
+  assign gpio_in_s[3]  = st_pad2soc_signals.gpio_v_i_3;
   // GPI0 4-31 remain unconnected
   assign gpio_in_s[31:4] = '0;
 
@@ -222,16 +199,16 @@ module astral_wrap
   logic [3:0] spih_sd_o_s;
   logic [3:0] spih_sd_en_o_s;
   // TODO: CHECK POLARITY OF THE SIGNAL (SPI CS)
-  assign st_soc2pad_signals.botl.spih_csb_o_1    = spih_csb_o_s[1];
-  assign st_soc2pad_signals.botl.spih_sck_o      = spih_sck_o_s;
-  assign st_soc2pad_signals.botl.spih_sd_o_0     = spih_sd_o_s[0];
-  assign st_soc2pad_signals.botl.spih_sd_o_1     = spih_sd_o_s[1];
-  assign st_soc2pad_signals.botl.spih_sd_o_2     = spih_sd_o_s[2];
-  assign st_soc2pad_signals.botl.spih_sd_o_3     = spih_sd_o_s[3];
-  assign st_soc2pad_signals.botl.spih_sd_oen_i_0 = spih_sd_en_o_s[0];
-  assign st_soc2pad_signals.botl.spih_sd_oen_i_1 = spih_sd_en_o_s[1];
-  assign st_soc2pad_signals.botl.spih_sd_oen_i_2 = spih_sd_en_o_s[2];
-  assign st_soc2pad_signals.botl.spih_sd_oen_i_3 = spih_sd_en_o_s[3];
+  assign st_soc2pad_signals.spih_csb_o_1    = spih_csb_o_s[1];
+  assign st_soc2pad_signals.spih_sck_o      = spih_sck_o_s;
+  assign st_soc2pad_signals.spih_sd_o_0     = spih_sd_o_s[0];
+  assign st_soc2pad_signals.spih_sd_o_1     = spih_sd_o_s[1];
+  assign st_soc2pad_signals.spih_sd_o_2     = spih_sd_o_s[2];
+  assign st_soc2pad_signals.spih_sd_o_3     = spih_sd_o_s[3];
+  assign st_soc2pad_signals.spih_sd_oen_i_0 = spih_sd_en_o_s[0];
+  assign st_soc2pad_signals.spih_sd_oen_i_1 = spih_sd_en_o_s[1];
+  assign st_soc2pad_signals.spih_sd_oen_i_2 = spih_sd_en_o_s[2];
+  assign st_soc2pad_signals.spih_sd_oen_i_3 = spih_sd_en_o_s[3];
   // i2c -- carfield itf
   // spi_ot
   logic       spih_ot_sck_o_s;
@@ -239,16 +216,16 @@ module astral_wrap
   logic [3:0] spih_ot_sd_o_s;
   logic [3:0] spih_ot_sd_en_o_s;
   // TODO: CHECK POLARITY OF THE SIGNAL (SPI CS)
-  assign st_soc2pad_signals.botl.spih_ot_csb_o      = spih_ot_csb_o_s;
-  assign st_soc2pad_signals.botl.spih_ot_sck_o      = spih_ot_sck_o_s;
-  assign st_soc2pad_signals.botl.spih_ot_sd_o_0     = spih_ot_sd_o_s[0];
-  assign st_soc2pad_signals.botl.spih_ot_sd_o_1     = spih_ot_sd_o_s[1];
-  assign st_soc2pad_signals.botl.spih_ot_sd_o_2     = spih_ot_sd_o_s[2];
-  assign st_soc2pad_signals.botl.spih_ot_sd_o_3     = spih_ot_sd_o_s[3];
-  assign st_soc2pad_signals.botl.spih_ot_sd_oen_i_0 = spih_ot_sd_en_o_s[0];
-  assign st_soc2pad_signals.botl.spih_ot_sd_oen_i_1 = spih_ot_sd_en_o_s[1];
-  assign st_soc2pad_signals.botl.spih_ot_sd_oen_i_2 = spih_ot_sd_en_o_s[2];
-  assign st_soc2pad_signals.botl.spih_ot_sd_oen_i_3 = spih_ot_sd_en_o_s[3];
+  assign st_soc2pad_signals.spih_ot_csb_o      = spih_ot_csb_o_s;
+  assign st_soc2pad_signals.spih_ot_sck_o      = spih_ot_sck_o_s;
+  assign st_soc2pad_signals.spih_ot_sd_o_0     = spih_ot_sd_o_s[0];
+  assign st_soc2pad_signals.spih_ot_sd_o_1     = spih_ot_sd_o_s[1];
+  assign st_soc2pad_signals.spih_ot_sd_o_2     = spih_ot_sd_o_s[2];
+  assign st_soc2pad_signals.spih_ot_sd_o_3     = spih_ot_sd_o_s[3];
+  assign st_soc2pad_signals.spih_ot_sd_oen_i_0 = spih_ot_sd_en_o_s[0];
+  assign st_soc2pad_signals.spih_ot_sd_oen_i_1 = spih_ot_sd_en_o_s[1];
+  assign st_soc2pad_signals.spih_ot_sd_oen_i_2 = spih_ot_sd_en_o_s[2];
+  assign st_soc2pad_signals.spih_ot_sd_oen_i_3 = spih_ot_sd_en_o_s[3];
   // can0 -- carfield itf
   // ethernet
   logic [3:0] eth_txd_o_s;
@@ -278,9 +255,9 @@ module astral_wrap
   logic[carfield_pkg::NumFll-1:0] domain_clk;
 
   // ref_clk
-  assign ref_clk      = st_pad2soc_signals.botl.ref_clk_i;
+  assign ref_clk      = st_pad2soc_signals.ref_clk_i;
   // power on reset
-  assign pwr_on_rst_n = st_pad2soc_signals.botl.pwr_on_rst_ni;
+  assign pwr_on_rst_n = st_pad2soc_signals.pwr_on_rst_ni;
 
   assign clk_fll_e   = '{default: 1'b1};
 
@@ -288,11 +265,11 @@ module astral_wrap
     .DIV_VALUE            ( 100  ),
     .ENABLE_CLOCK_IN_RESET( 1'b1 )
   ) i_rt_clk_div (
-    .clk_i          ( clk_fll_out[carfield_pkg::RtClockIdx]),
-    .rst_ni         ( pwr_on_rst_n                         ),
-    .en_i           ( 1'b1                                 ),
-    .test_mode_en_i ( 1'b0                                 ),
-    .clk_o          ( domain_clk[carfield_pkg::RtClockIdx] )
+    .clk_i          ( clk_fll_out[carfield_pkg::RtClockIdx] ),
+    .rst_ni         ( pwr_on_rst_n                          ),
+    .en_i           ( 1'b1                                  ),
+    .test_mode_en_i ( 1'b0                                  ),
+    .clk_o          ( domain_clk[carfield_pkg::RtClockIdx]  )
   );
 
   for (genvar i = 1; i < carfield_pkg::NumFll; i++)
@@ -322,27 +299,27 @@ module astral_wrap
     .reg_req_t      ( carfield_reg_req_t   ),
     .reg_rsp_t      ( carfield_reg_rsp_t   )
   ) i_fll_wrap (
-    .clk_ref_i           ( ref_clk                                ),
-    .rst_n_i             ( ref_clk_pwr_on_rst_n                   ),
-    .clk_bypass_i        ( st_pad2soc_signals.botl.ref_clk_i      ),
-    .bypass_i            ( st_pad2soc_signals.botl.fll_bypass_i   ),
-    .async_req_i         ( ext_reg_async_slv_req_src_out[0]       ),
-    .async_ack_o         ( ext_reg_async_slv_ack_src_in[0]        ),
-    .async_data_i        ( ext_reg_async_slv_data_src_out[0]      ),
-    .async_req_o         ( ext_reg_async_slv_req_src_in[0]        ),
-    .async_ack_i         ( ext_reg_async_slv_ack_src_out[0]       ),
-    .async_data_o        ( ext_reg_async_slv_data_src_in[0]       ),
-    .clk_fll_out_o       ( clk_fll_out                            ),
-    .clk_fll_e_i         ( clk_fll_e                              ),
-    .fll_lock_o          ( fll_lock                               ),
-    .fll_pwd_i           ( fll_pwd                                ),
-    .fll_ret_i           ( fll_ret                                ),
-    .fll_test_mode_i     ( fll_test_mode                          ),
-    .fll_scan_e_i        ( fll_scan_e                             ),
-    .fll_scan_in_i       ( fll_scan_in                            ),
-    .fll_scan_out_o      ( fll_scan_out                           ),
-    .fll_scan_jtag_in_i  ( fll_scan_jtag_in                       ),
-    .fll_scan_jtag_out_o ( fll_scan_jtag_out                      )
+    .clk_ref_i           ( ref_clk                           ),
+    .rst_n_i             ( ref_clk_pwr_on_rst_n              ),
+    .clk_bypass_i        ( st_pad2soc_signals.ref_clk_i      ),
+    .bypass_i            ( st_pad2soc_signals.fll_bypass_i   ),
+    .async_req_i         ( ext_reg_async_slv_req_src_out[0]  ),
+    .async_ack_o         ( ext_reg_async_slv_ack_src_in[0]   ),
+    .async_data_i        ( ext_reg_async_slv_data_src_out[0] ),
+    .async_req_o         ( ext_reg_async_slv_req_src_in[0]   ),
+    .async_ack_i         ( ext_reg_async_slv_ack_src_out[0]  ),
+    .async_data_o        ( ext_reg_async_slv_data_src_in[0]  ),
+    .clk_fll_out_o       ( clk_fll_out                       ),
+    .clk_fll_e_i         ( clk_fll_e                         ),
+    .fll_lock_o          ( fll_lock                          ),
+    .fll_pwd_i           ( fll_pwd                           ),
+    .fll_ret_i           ( fll_ret                           ),
+    .fll_test_mode_i     ( fll_test_mode                     ),
+    .fll_scan_e_i        ( fll_scan_e                        ),
+    .fll_scan_in_i       ( fll_scan_in                       ),
+    .fll_scan_out_o      ( fll_scan_out                      ),
+    .fll_scan_jtag_in_i  ( fll_scan_jtag_in                  ),
+    .fll_scan_jtag_out_o ( fll_scan_jtag_out                 )
   );
 `else
   logic              dummy_rst;
@@ -386,8 +363,8 @@ module astral_wrap
   // clocks
   // FIXME: These pads should not connect to FLL out directly but to internal clock dividers
   // verilog_lint: waive-start line-length
-  assign st_soc2pad_signals.botl.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
-  assign st_soc2pad_signals.botl.fll_secd_clk_o   = clk_fll_out[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
+  assign st_soc2pad_signals.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
+  assign st_soc2pad_signals.fll_secd_clk_o   = clk_fll_out[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
   // verilog_lint: waive-stop line-length
 
   //////////////////
@@ -403,80 +380,80 @@ module astral_wrap
     .reg_req_t   ( carfield_reg_req_t ),
     .reg_rsp_t   ( carfield_reg_rsp_t )
   ) i_dut (
-    .domain_clk_i               ( domain_clk[carfield_pkg::NumFll-1:0]              ),
-    .pwr_on_rst_ni              ( pwr_on_rst_n                                      ),
-    .test_mode_i                ( '0                                                ),
-    .boot_mode_i                ( bootmode_host_s[1:0]                              ),
-    .fll_lock_i                 ( fll_lock                                          ),
-    .jtag_tck_i                 ( st_pad2soc_signals.botl.jtag_tclk_i               ),
-    .jtag_trst_ni               ( st_pad2soc_signals.botl.jtag_trst_ni              ),
-    .jtag_tms_i                 ( st_pad2soc_signals.botl.jtag_tms_i                ),
-    .jtag_tdi_i                 ( st_pad2soc_signals.botl.jtag_tdi_i                ),
-    .jtag_tdo_o                 ( st_soc2pad_signals.botl.jtag_tdo_o                ),
-    .jtag_tdo_oe_o              (                                                   ),
-    .jtag_ot_tck_i              ( st_pad2soc_signals.botl.jtag_ot_tclk_i            ),
-    .jtag_ot_trst_ni            ( st_pad2soc_signals.botl.jtag_ot_trst_ni           ),
-    .jtag_ot_tms_i              ( st_pad2soc_signals.botl.jtag_ot_tms_i             ),
-    .jtag_ot_tdi_i              ( st_pad2soc_signals.botl.jtag_ot_tdi_i             ),
-    .jtag_ot_tdo_o              ( st_soc2pad_signals.botl.jtag_ot_tdo_o             ),
-    .jtag_ot_tdo_oe_o           (                                                   ),
-    .bootmode_ot_i              ( bootmode_sec_isln_s                               ),
-    .jtag_safety_island_tck_i   ( '0                                                ),
-    .jtag_safety_island_trst_ni ( '0                                                ),
-    .jtag_safety_island_tms_i   ( '0                                                ),
-    .jtag_safety_island_tdi_i   ( '0                                                ),
-    .jtag_safety_island_tdo_o   (                                                   ),
-    .bootmode_safe_isln_i       ( bootmode_safe_isln_s                              ),
-    .secure_boot_i              ( secure_boot                                       ),
-    .uart_tx_o                  ( st_soc2pad_signals.botl.uart_tx_o                 ),
-    .uart_rx_i                  ( st_pad2soc_signals.botl.uart_rx_i                 ),
-    .uart_ot_tx_o               ( st_soc2pad_signals.botl.ot_uart_tx_o              ),
-    .uart_ot_rx_i               ( st_pad2soc_signals.botl.ot_uart_rx_i              ),
-    .i2c_sda_o                  (                                                   ),
-    .i2c_sda_i                  ( '0                                                ),
-    .i2c_sda_en_o               (                                                   ),
-    .i2c_scl_o                  (                                                   ),
-    .i2c_scl_i                  ( '0                                                ),
-    .i2c_scl_en_o               (                                                   ),
-    .spih_sck_o                 ( spih_sck_o_s                                      ),
-    .spih_sck_en_o              (                                                   ),
-    .spih_csb_o                 ( spih_csb_o_s                                      ),
-    .spih_csb_en_o              (                                                   ),
-    .spih_sd_o                  ( spih_sd_o_s                                       ),
-    .spih_sd_en_o               ( spih_sd_en_o_s                                    ),
-    .spih_sd_i                  ( spih_sd_i_s                                       ),
+    .domain_clk_i               ( domain_clk[carfield_pkg::NumFll-1:0] ),
+    .pwr_on_rst_ni              ( pwr_on_rst_n                         ),
+    .test_mode_i                ( '0                                   ),
+    .boot_mode_i                ( bootmode_host_s[1:0]                 ),
+    .fll_lock_i                 ( fll_lock                             ),
+    .jtag_tck_i                 ( st_pad2soc_signals.jtag_tclk_i       ),
+    .jtag_trst_ni               ( st_pad2soc_signals.jtag_trst_ni      ),
+    .jtag_tms_i                 ( st_pad2soc_signals.jtag_tms_i        ),
+    .jtag_tdi_i                 ( st_pad2soc_signals.jtag_tdi_i        ),
+    .jtag_tdo_o                 ( st_soc2pad_signals.jtag_tdo_o        ),
+    .jtag_tdo_oe_o              (                                      ),
+    .jtag_ot_tck_i              ( st_pad2soc_signals.jtag_ot_tclk_i    ),
+    .jtag_ot_trst_ni            ( st_pad2soc_signals.jtag_ot_trst_ni   ),
+    .jtag_ot_tms_i              ( st_pad2soc_signals.jtag_ot_tms_i     ),
+    .jtag_ot_tdi_i              ( st_pad2soc_signals.jtag_ot_tdi_i     ),
+    .jtag_ot_tdo_o              ( st_soc2pad_signals.jtag_ot_tdo_o     ),
+    .jtag_ot_tdo_oe_o           (                                      ),
+    .bootmode_ot_i              ( bootmode_sec_isln_s                  ),
+    .jtag_safety_island_tck_i   ( '0                                   ),
+    .jtag_safety_island_trst_ni ( '0                                   ),
+    .jtag_safety_island_tms_i   ( '0                                   ),
+    .jtag_safety_island_tdi_i   ( '0                                   ),
+    .jtag_safety_island_tdo_o   (                                      ),
+    .bootmode_safe_isln_i       ( bootmode_safe_isln_s                 ),
+    .secure_boot_i              ( secure_boot                          ),
+    .uart_tx_o                  ( st_soc2pad_signals.uart_tx_o         ),
+    .uart_rx_i                  ( st_pad2soc_signals.uart_rx_i         ),
+    .uart_ot_tx_o               ( st_soc2pad_signals.ot_uart_tx_o      ),
+    .uart_ot_rx_i               ( st_pad2soc_signals.ot_uart_rx_i      ),
+    .i2c_sda_o                  (                                      ),
+    .i2c_sda_i                  ( '0                                   ),
+    .i2c_sda_en_o               (                                      ),
+    .i2c_scl_o                  (                                      ),
+    .i2c_scl_i                  ( '0                                   ),
+    .i2c_scl_en_o               (                                      ),
+    .spih_sck_o                 ( spih_sck_o_s                         ),
+    .spih_sck_en_o              (                                      ),
+    .spih_csb_o                 ( spih_csb_o_s                         ),
+    .spih_csb_en_o              (                                      ),
+    .spih_sd_o                  ( spih_sd_o_s                          ),
+    .spih_sd_en_o               ( spih_sd_en_o_s                       ),
+    .spih_sd_i                  ( spih_sd_i_s                          ),
     // spi secd
-    .spih_ot_sck_o              ( spih_ot_sck_o_s                                   ),
-    .spih_ot_sck_en_o           (                                                   ),
-    .spih_ot_csb_o              ( spih_ot_csb_o_s                                   ),
-    .spih_ot_csb_en_o           (                                                   ),
-    .spih_ot_sd_o               ( spih_ot_sd_o_s                                    ),
-    .spih_ot_sd_en_o            ( spih_ot_sd_en_o_s                                 ),
-    .spih_ot_sd_i               ( spih_ot_sd_i_s                                    ),
+    .spih_ot_sck_o              ( spih_ot_sck_o_s                      ),
+    .spih_ot_sck_en_o           (                                      ),
+    .spih_ot_csb_o              ( spih_ot_csb_o_s                      ),
+    .spih_ot_csb_en_o           (                                      ),
+    .spih_ot_sd_o               ( spih_ot_sd_o_s                       ),
+    .spih_ot_sd_en_o            ( spih_ot_sd_en_o_s                    ),
+    .spih_ot_sd_i               ( spih_ot_sd_i_s                       ),
     // ethernet
-    .eth_rxck_i                 ( '0                                                ),
-    .eth_rxctl_i                ( '0                                                ),
-    .eth_rxd_i                  ( eth_rxd_i_s                                       ),
-    .eth_md_i                   ( '0                                                ),
-    .eth_txck_o                 (                                                   ),
-    .eth_txctl_o                (                                                   ),
-    .eth_txd_o                  ( eth_txd_o_s                                       ),
-    .eth_md_o                   (                                                   ),
-    .eth_md_oe                  (                                                   ),
-    .eth_mdc_o                  (                                                   ),
-    .eth_rst_n_o                (                                                   ),
+    .eth_rxck_i                 ( '0                                   ),
+    .eth_rxctl_i                ( '0                                   ),
+    .eth_rxd_i                  ( eth_rxd_i_s                          ),
+    .eth_md_i                   ( '0                                   ),
+    .eth_txck_o                 (                                      ),
+    .eth_txctl_o                (                                      ),
+    .eth_txd_o                  ( eth_txd_o_s                          ),
+    .eth_md_o                   (                                      ),
+    .eth_md_oe                  (                                      ),
+    .eth_mdc_o                  (                                      ),
+    .eth_rst_n_o                (                                      ),
     // can bus
-    .can_rx_i                   ( '0                                                ),
-    .can_tx_o                   (                                                   ),
+    .can_rx_i                   ( '0                                   ),
+    .can_tx_o                   (                                      ),
     // gpios
-    .gpio_i                     ( gpio_in_s                                         ),
-    .gpio_o                     ( gpio_out_s                                        ),
-    .gpio_en_o                  ( gpio_tx_en_s                                      ),
+    .gpio_i                     ( gpio_in_s                            ),
+    .gpio_o                     ( gpio_out_s                           ),
+    .gpio_en_o                  ( gpio_tx_en_s                         ),
     // serial link
-    .slink_rcv_clk_i            ( '0                                                ),
-    .slink_rcv_clk_o            (                                                   ),
-    .slink_i                    ( serial_link_data_in_s                             ),
-    .slink_o                    ( serial_link_data_out_s                            ),
+    .slink_rcv_clk_i            ( '0                                   ),
+    .slink_rcv_clk_o            (                                      ),
+    .slink_i                    ( serial_link_data_in_s                ),
+    .slink_o                    ( serial_link_data_out_s               ),
     // hyperbus
     .pad_config_tc_pad_internal_signals_0(pad_config_tc_pad_internal_signals_0),
     .pad_config_tc_pad_internal_signals_1(pad_config_tc_pad_internal_signals_1),
@@ -510,14 +487,14 @@ module astral_wrap
     .pad_hyper_phy1_dq_b6_pad,
     .pad_hyper_phy1_dq_b7_pad,
     .pad_hyper_phy1_reset_n_pad,
-    .ext_reg_async_slv_req_o    ( ext_reg_async_slv_req_src_out                     ),
-    .ext_reg_async_slv_ack_i    ( ext_reg_async_slv_ack_src_in                      ),
-    .ext_reg_async_slv_data_o   ( ext_reg_async_slv_data_src_out                    ),
-    .ext_reg_async_slv_req_i    ( ext_reg_async_slv_req_src_in                      ),
-    .ext_reg_async_slv_ack_o    ( ext_reg_async_slv_ack_src_out                     ),
-    .ext_reg_async_slv_data_i   ( ext_reg_async_slv_data_src_in                     ),
+    .ext_reg_async_slv_req_o    ( ext_reg_async_slv_req_src_out  ),
+    .ext_reg_async_slv_ack_i    ( ext_reg_async_slv_ack_src_in   ),
+    .ext_reg_async_slv_data_o   ( ext_reg_async_slv_data_src_out ),
+    .ext_reg_async_slv_req_i    ( ext_reg_async_slv_req_src_in   ),
+    .ext_reg_async_slv_ack_o    ( ext_reg_async_slv_ack_src_out  ),
+    .ext_reg_async_slv_data_i   ( ext_reg_async_slv_data_src_in  ),
     // Debug Signals
-    .debug_signals_o            (                                                   )
+    .debug_signals_o            (                                )
   );
 
   //////////////
@@ -545,14 +522,14 @@ module astral_wrap
       .async_data_o( ext_reg_async_slv_data_src_in[1]  )
   );
 
-  astral_padframe #(
+  top_padframe_wrapper #(
     .req_t  ( carfield_reg_req_t ),
     .resp_t ( carfield_reg_rsp_t )
-  ) i_astral_padframe (
-    .clk_i  ( ref_clk              ),
-    .rst_ni ( ref_clk_pwr_on_rst_n ),
-    .static_connection_signals_pad2soc ( st_pad2soc_signals ),
-    .static_connection_signals_soc2pad ( st_soc2pad_signals ),
+  ) i_top_padframe_wrapper (
+    .clk_i           ( ref_clk              ),
+    .rst_ni          ( ref_clk_pwr_on_rst_n ),
+    .signals_pad2soc ( st_pad2soc_signals   ),
+    .signals_soc2pad ( st_soc2pad_signals   ),
     // Landing Pads
     .pad_botl_config_tc_pad_internal_signals_0 (pad_config_tc_pad_internal_signals_0),
     .pad_botl_config_tc_pad_internal_signals_1 (pad_config_tc_pad_internal_signals_1),

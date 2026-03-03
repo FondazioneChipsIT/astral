@@ -1,3 +1,9 @@
+# Copyright 2026 Fondazione Chips-IT.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Author: Riccardo Fiorani Gallotta <riccardo.fiorani3@unibo.it>
+
 #####################################################
 #                                                   #
 #  ****** BOTTOM/LEFT: south and west sides ******  #
@@ -5,16 +11,201 @@
 #####################################################
 
 - name: config_tc_pad
-  description: "Config and internal signals instantation"
+  description: "Config and internal signals instantiation"
   pad_type: CONFIG_TC_PAD_DEF
   is_static: true
 
 - name: corner_{i}
-  multiple: 2
+  multiple: 3
   description: "Corner pad"
   pad_type: PAD_CORNER
   is_static: true
 
+
+########################
+#                      #
+#  ****** WEST ******  #
+#                      #
+########################
+
+########################################
+# POWER MANAGEMENT PADS - West
+########################################
+
+- name: pwr_mng_west
+  description: "West power management horizontal pad cell"
+  pad_type: PAD_PWR_MNG_H
+  is_static: true
+
+########################################
+# I/O POWER - West
+########################################
+
+- name: vdd_io_{i}_h
+  multiple: 2
+  description: "I/O power domain horizontal VDD pad"
+  pad_type: PAD_VDD_IO_H
+  is_static: true
+
+- name: vss_io_{i}_h
+  multiple: 2
+  description: "I/O power domain horizontal VSS pad"
+  pad_type: PAD_VSS_IO_H
+  is_static: true
+
+########################################
+# CORE POWER - West
+########################################
+
+- name: vdd_core_{i}_h
+  multiple: 3
+  description: "Core power domain horizontal VDD pad"
+  pad_type: PAD_VDD_CORE_H
+  is_static: true
+
+- name: vss_core_{i}_h
+  multiple: 2
+  description: "Core power domain horizontal VSS pad"
+  pad_type: PAD_VSS_CORE_H
+  is_static: true
+
+########################################
+# SIGNALS - West
+########################################
+
+- name: fll_host
+  description: "FLL host clock"
+  pad_type: PAD_OUTPUT_H
+  is_static: true
+  connections:
+    chip2pad: fll_host_clk_o
+    output_en: 1'b1
+    drive_strength: drive_strength_grp_1
+    slew_en: slew_en_grp_1
+
+- name: fll_secd
+  description: "FLL secd clock"
+  pad_type: PAD_OUTPUT_H
+  is_static: true
+  connections:
+    chip2pad: fll_secd_clk_o
+    output_en: 1'b1
+    drive_strength: drive_strength_grp_1
+    slew_en: slew_en_grp_1
+
+- name: fll_bypass
+  description: "FLL bypass"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: fll_bypass_i
+    input_en: 1'b1
+
+- name: pwr_on_rst_n
+  description: "Power on reset, active-low"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: pwr_on_rst_ni
+    input_en: 1'b1
+
+- name: boot_mode_{i}
+  multiple: 2
+  description: "Boot mode"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: boot_mode_i_{i}
+    input_en: 1'b1
+
+- name: secure_boot
+  description: "Secure boot"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: secure_boot_i
+    input_en: 1'b1
+
+- name: ref_clk
+  description: "Reference clock"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: ref_clk_i
+    input_en: 1'b1
+
+- name: jtag_tclk
+  description: "JTAG tclk"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: jtag_tclk_i
+    input_en: 1'b1
+    
+- name: jtag_trst_n
+  description: "JTAG trst, active-low"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: jtag_trst_ni
+    input_en: 1'b1
+
+- name: jtag_tms
+  description: "JTAG tms"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: jtag_tms_i
+    input_en: 1'b1
+    
+- name: jtag_tdi
+  description: "JTAG tdi"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: jtag_tdi_i
+    input_en: 1'b1
+
+- name: jtag_tdo
+  description: "JTAG tdo"
+  pad_type: PAD_OUTPUT_H
+  is_static: true
+  connections:
+    chip2pad: jtag_tdo_o
+    output_en: 1'b1
+    drive_strength: drive_strength_grp_2
+    slew_en: slew_en_grp_2
+
+- name: uart_tx
+  description: "UART tx"
+  pad_type: PAD_OUTPUT_H
+  is_static: true
+  connections:
+    chip2pad: uart_tx_o
+    output_en: 1'b1
+    drive_strength: drive_strength_grp_3
+    slew_en: slew_en_grp_3
+
+- name: uart_rx
+  description: "UART rx"
+  pad_type: PAD_INPUT_H
+  is_static: true
+  connections:
+    pad2chip: uart_rx_i
+    input_en: 1'b1
+
+- name: gpio_{i}
+  multiple: 4
+  description: "gpio in/out"
+  pad_type: PAD_BIDIR_H
+  is_static: true
+  connections:
+    chip2pad: gpio_v_o_{i}
+    pad2chip: gpio_v_i_{i}
+    input_en: ~gpio_v_oen_i_{i}
+    output_en: gpio_v_oen_i_{i}
+    drive_strength: drive_strength_grp_{i+4}
+    slew_en: slew_en_grp_{i+4}
 
 
 #########################
@@ -53,7 +244,7 @@
 ########################################
 
 - name: vdd_core_{i}_v
-  multiple: 3
+  multiple: 2
   description: "Core power domain vertical VDD pad"
   pad_type: PAD_VDD_CORE_V
   is_static: true
@@ -115,6 +306,8 @@
   connections:
     chip2pad: jtag_ot_tdo_o
     output_en: 1'b1
+    drive_strength: drive_strength_grp_11
+    slew_en: slew_en_grp_11
 
 - name: ot_uart_tx
   description: "UART OT tx"
@@ -123,6 +316,8 @@
   connections:
     chip2pad: ot_uart_tx_o
     output_en: 1'b1
+    drive_strength: drive_strength_grp_10
+    slew_en: slew_en_grp_10
 
 - name: ot_uart_rx
   description: "UART OT rx"
@@ -139,6 +334,8 @@
   connections:
     chip2pad: spih_sck_o
     output_en: 1'b1
+    drive_strength: drive_strength_grp_9
+    slew_en: slew_en_grp_9
 
 - name: spih_csb
   description: "SPI csb"
@@ -147,6 +344,8 @@
   connections:
     chip2pad: spih_csb_o_1
     output_en: 1'b1
+    drive_strength: drive_strength_grp_9
+    slew_en: slew_en_grp_9
 
 - name: spih_sd_{i}
   multiple: 4
@@ -158,249 +357,38 @@
     pad2chip: spih_sd_i_{i}
     input_en: ~spih_sd_oen_i_{i}
     output_en: spih_sd_oen_i_{i}
-
-- name: gpio_{2+i}
-  multiple: 2
-  description: "gpio in/out"
-  pad_type: PAD_BIDIR_V
-  is_static: true
-  connections:
-    chip2pad: gpio_v_o_{2+i}
-    pad2chip: gpio_v_i_{2+i}
-    input_en: ~gpio_v_oen_i_{2+i}
-    output_en: gpio_v_oen_i_{2+i}
-
-- name: spih_ot_sd_{1+i}
-  multiple: 3
-  description: "SPI OT sd in/out"
-  pad_type: PAD_BIDIR_V
-  is_static: true
-  connections:
-    chip2pad: spih_ot_sd_o_{1+i}
-    pad2chip: spih_ot_sd_i_{1+i}
-    input_en: ~spih_ot_sd_oen_i_{1+i}
-    output_en: spih_ot_sd_oen_i_{1+i}
-
-
-
-########################
-#                      #
-#  ****** WEST ******  #
-#                      #
-########################
-
-########################################
-# POWER MANAGEMENT PADS - West
-########################################
-
-- name: pwr_mng_west
-  description: "Power management horizontal pad cell"
-  pad_type: PAD_PWR_MNG_H
-  is_static: true
-
-########################################
-# I/O POWER - West
-########################################
-
-- name: vdd_io_{i}_h
-  multiple: 2
-  description: "I/O power domain horizontal VDD pad"
-  pad_type: PAD_VDD_IO_H
-  is_static: true
-
-- name: vss_io_{i}_h
-  multiple: 2
-  description: "I/O power domain horizontal VSS pad"
-  pad_type: PAD_VSS_IO_H
-  is_static: true
-
-########################################
-# CORE POWER - West
-########################################
-
-- name: vdd_core_{i}_h
-  multiple: 2
-  description: "Core power domain horizontal VDD pad"
-  pad_type: PAD_VDD_CORE_H
-  is_static: true
-
-- name: vss_core_{i}_h
-  multiple: 2
-  description: "Core power domain horizontal VSS pad"
-  pad_type: PAD_VSS_CORE_H
-  is_static: true
-
-########################################
-# SIGNALS - West
-########################################
-
-- name: ref_clk
-  description: "Reference clock"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: ref_clk_i
-    input_en: 1'b1
-
-- name: fll_host
-  description: "FLL host clock"
-  pad_type: PAD_OUTPUT_H
-  is_static: true
-  connections:
-    chip2pad: fll_host_clk_o
-    output_en: 1'b1
-
-- name: fll_secd
-  description: "FLL secd clock"
-  pad_type: PAD_OUTPUT_H
-  is_static: true
-  connections:
-    chip2pad: fll_secd_clk_o
-    output_en: 1'b1
-
-- name: fll_bypass
-  description: "FLL bypass"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: fll_bypass_i
-    input_en: 1'b1
-
-- name: pwr_on_rst_n
-  description: "Power on reset, active-low"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: pwr_on_rst_ni
-    input_en: 1'b1
-
-- name: boot_mode_{i}
-  multiple: 2
-  description: "Boot mode"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: boot_mode_i_{i}
-    input_en: 1'b1
-
-- name: secure_boot
-  description: "Secure boot"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: secure_boot_i
-    input_en: 1'b1
-
-- name: jtag_tclk
-  description: "JTAG tclk"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: jtag_tclk_i
-    input_en: 1'b1
-    
-- name: jtag_trst_n
-  description: "JTAG trst, active-low"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: jtag_trst_ni
-    input_en: 1'b1
-
-- name: jtag_tms
-  description: "JTAG tms"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: jtag_tms_i
-    input_en: 1'b1
-    
-- name: jtag_tdi
-  description: "JTAG tdi"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: jtag_tdi_i
-    input_en: 1'b1
-
-- name: jtag_tdo
-  description: "JTAG tdo"
-  pad_type: PAD_OUTPUT_H
-  is_static: true
-  connections:
-    chip2pad: jtag_tdo_o
-    output_en: 1'b1
-
-- name: uart_tx
-  description: "UART tx"
-  pad_type: PAD_OUTPUT_H
-  is_static: true
-  connections:
-    chip2pad: uart_tx_o
-    output_en: 1'b1
-
-- name: uart_rx
-  description: "UART rx"
-  pad_type: PAD_INPUT_H
-  is_static: true
-  connections:
-    pad2chip: uart_rx_i
-    input_en: 1'b1
-
-- name: gpio_{i}
-  multiple: 2
-  description: "gpio in/out"
-  pad_type: PAD_BIDIR_H
-  is_static: true
-  connections:
-    chip2pad: gpio_v_o_{i}
-    pad2chip: gpio_v_i_{i}
-    input_en: ~gpio_v_oen_i_{i}
-    output_en: gpio_v_oen_i_{i}
+    drive_strength: drive_strength_grp_9
+    slew_en: slew_en_grp_9
 
 - name: spih_ot_sck
   description: "SPI OT sck"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_ot_sck_o
     output_en: 1'b1
+    drive_strength: drive_strength_grp_8
+    slew_en: slew_en_grp_8
 
 - name: spih_ot_csb
   description: "SPI OT csb"
-  pad_type: PAD_OUTPUT_H
+  pad_type: PAD_OUTPUT_V
   is_static: true
   connections:
     chip2pad: spih_ot_csb_o
     output_en: 1'b1
+    drive_strength: drive_strength_grp_8
+    slew_en: slew_en_grp_8
 
-- name: spih_ot_sd_0
+- name: spih_ot_sd_{i}
+  multiple: 4
   description: "SPI OT sd in/out"
-  pad_type: PAD_BIDIR_H
+  pad_type: PAD_BIDIR_V
   is_static: true
   connections:
-    chip2pad: spih_ot_sd_o_0
-    pad2chip: spih_ot_sd_i_0
-    input_en: ~spih_ot_sd_oen_i_0
-    output_en: spih_ot_sd_oen_i_0
-
-
-
-###################################################
-#                                                 #
-#  ****** TOP/RIGHT: north and east sides ******  #
-#                                                 #
-###################################################
-
-# - name: config_tc_pad
-#   description: "Config and internal signals instantation"
-#   pad_type: CONFIG_TC_PAD_DEF
-#   is_static: true
-#   # connections:
-#   #   retcin: retcin_i
-
-- name: corner_{2+i}
-  multiple: 2
-  description: "Corner pad"
-  pad_type: PAD_CORNER
-  is_static: true
+    chip2pad: spih_ot_sd_o_{i}
+    pad2chip: spih_ot_sd_i_{i}
+    input_en: ~spih_ot_sd_oen_i_{i}
+    output_en: spih_ot_sd_oen_i_{i}
+    drive_strength: drive_strength_grp_8
+    slew_en: slew_en_grp_8
