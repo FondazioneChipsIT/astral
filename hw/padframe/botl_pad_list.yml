@@ -16,7 +16,7 @@
   is_static: true
 
 - name: corner_{i}
-  multiple: 3
+  multiple: 4
   description: "Corner pad"
   pad_type: PAD_CORNER
   is_static: true
