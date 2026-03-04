@@ -80,6 +80,7 @@ module astral_padframe_botl_pads
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_0 ( .int_io ( `io_pad_internals ) );
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_1 ( .int_io ( `io_pad_internals ) );
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_2 ( .int_io ( `io_pad_internals ) );
+   tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_3 ( .int_io ( `io_pad_internals ) );
    tc_pad_pwr_mng #(
     .tc_pad_orientation ( tc_pad_pkg::H              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
