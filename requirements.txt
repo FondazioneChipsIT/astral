@@ -14,3 +14,4 @@ mkdocs-material
 mkdocs-glightbox
 pandas
 flatdict
+setuptools==53.0.0
