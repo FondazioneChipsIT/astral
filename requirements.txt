@@ -9,3 +9,4 @@ tabulate
 yapf
 pandas
 flatdict
+setuptools==53.0.0

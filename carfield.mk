@@ -145,7 +145,7 @@ AXIRT_NUM_SUBS := 2
 # Virtual environment for python scripts #
 ##########################################
 
-VENVDIR?=$(WORKDIR)/.venv
+VENVDIR?=$(CAR_ROOT)/.venv
 REQUIREMENTS_TXT?=$(wildcard requirements.txt)
 include $(CAR_ROOT)/utils/venv.mk
 
@@ -184,7 +184,8 @@ include $(CAR_SW_DIR)/sw.mk
 ## Build the host domain (Cheshire) SW libraries and generates an archive (`libcheshire.a`)
 ## available for Carfield as static library at link time.
 CHS_SW_FLAGS += -Wno-int-conversion -Wno-implicit-function-declaration -Wno-incompatible-pointer-types -Wno-implicit-int
-chs-sw-build: chs-sw-all
+chs-sw-build: | venv
+	. "$(VENV)/activate" && $(MAKE) chs-sw-all
 
 .PHONY: car-sw-build
 ## Builds carfield application SW and specific libraries. It links against `libcheshire.a`.
@@ -325,12 +326,12 @@ spatzd-hw-init:
 ## Generate Cheshire HW. This target has a prerequisite, i.e. the PLIC and serial link
 ## configurations must be chosen before generating the hardware.
 .PHONY: chs-hw-init
-chs-hw-init: update_plic update_serial_link
-	$(MAKE) -B chs-hw-all
+chs-hw-init: update_plic update_serial_link | venv
+	. "$(VENV)/activate" && $(MAKE) -B chs-hw-all
 
 .PHONY: idma-hw-init
-idma-hw-init:
-	$(MAKE) -C $(shell bender path idma) idma_hw_all
+idma-hw-init: | venv
+	. "$(VENV)/activate" && $(MAKE) -C $(shell bender path idma) idma_hw_all
 
 ##############
 # Simulation #
