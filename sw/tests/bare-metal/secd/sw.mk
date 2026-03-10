@@ -26,15 +26,21 @@ $(SECD_PULPD_SW_DIR)/%/build: $(SECD_ROOT)
 	cp $@/test/test $(CAR_SECD_SW)/$*.elf
 	@echo $(SECD_PULPD_SW_DIR)
 
-GENERIC_TEST = $(SECD_SW_DIR)/generic_test/generic_test.elf
+cluster_offload_int_irq = $(SECD_SW_DIR)/cluster_offload/int_mbox/cluster_offload_int_irq.elf
+cluster_offload_ext_irq = $(SECD_SW_DIR)/cluster_offload/ext_mbox/cluster_offload_ext_irq.elf
 
-$(SECD_SW_DIR)/generic_test/generic_test.elf:
+$(SECD_SW_DIR)/cluster_offload/int_mbox/cluster_offload_int_irq.elf:
 	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
-	cp $(patsubst %/,%,$(dir $@))/generic_test.elf $(CAR_SECD_SW)/
-	cp $(patsubst %/,%,$(dir $@))/generic_test.dis $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload_int_irq.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload_int_irq.dis $(CAR_SECD_SW)/
+
+$(SECD_SW_DIR)/cluster_offload/ext_mbox/cluster_offload_ext_irq.elf:
+	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload_ext_irq.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload_ext_irq.dis $(CAR_SECD_SW)/
 
 # Global targets
-secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(GENERIC_TEST)
+secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(cluster_offload_int_irq) $(cluster_offload_ext_irq)
 
 secd-sw-clean:
 	# Clean all the directories in 'tests'
