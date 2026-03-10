@@ -411,7 +411,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: 9d6a8b51da9d77621e807e06c23a3c77e74cd011
+    revision: abd4b7357e763cd3bc58395c6b25f308ec39b25b
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
@@ -421,6 +421,7 @@ packages:
     - cluster_interconnect
     - common_cells
     - idma
+    - mailbox_unit
     - pulp_cluster
     - register_interface
   opentitan_peripherals:

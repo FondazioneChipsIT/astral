@@ -18,7 +18,7 @@ dependencies:
   dyn_mem:            { git: https://github.com/pulp-platform/dyn_spm.git,              rev: 480590062742230dc9bd4050358a15b4747bdf34 } # branch: main
   safety_island:      { git: https://github.com/pulp-platform/safety_island.git,        rev: 584eb697195c44ef1b1cbd1f4b7accdf5192200a } # branch: main
   pulp_cluster:       { git: https://github.com/FondazioneChipsIT/pulp_cluster.git,     version: =0.0.0 }
-  opentitan:          { git: https://github.com/AlSaqr-platform/opentitan.git,          rev: 9d6a8b51da9d77621e807e06c23a3c77e74cd011 } # chips-it
+  opentitan:          { git: https://github.com/AlSaqr-platform/opentitan.git,          rev: abd4b7357e763cd3bc58395c6b25f308ec39b25b } # glodi/mbox_irq
   mailbox_unit:       { git: https://github.com/pulp-platform/mailbox_unit.git,         version: 1.1.0                                }
   apb:                { git: https://github.com/pulp-platform/apb.git,                  version: 0.2.3                                }
   timer_unit:         { git: https://github.com/pulp-platform/timer_unit.git,           version: =1.0.3                               }
