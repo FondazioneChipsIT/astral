@@ -16,3 +16,5 @@ qwave.db*
 *.ses
 *.vstf
 uart
+transcript
+compile.*
