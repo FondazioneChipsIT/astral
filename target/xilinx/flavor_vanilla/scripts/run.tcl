@@ -66,7 +66,7 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
   
   set_property XPM_LIBRARIES XPM_MEMORY [current_project]
   
-  set_property STEPS.SYNTH_DESIGN.ARGS.RETIMING true [get_runs synth_1]
+  set_property STEPS.SYNTH_DESIGN.ARGS.RETIMING false [get_runs synth_1]
   # Enable sfcu due to package conflicts
   set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-sfcu} -objects [get_runs synth_1]
   
