@@ -498,7 +498,7 @@ module carfield_top_xilinx
   // Carfield SoC //
   //////////////////
 
-  logic jtag_host_to_safety, jtag_safety_to_ot;
+  logic jtag_host_to_security, jtag_safety_to_ot;
 
   carfield #(
       .Cfg       (carfield_pkg::CarfieldCfgDefault),
@@ -525,22 +525,26 @@ module carfield_top_xilinx
       .jtag_trst_ni              (jtag_trst_ni),
       .jtag_tms_i                (jtag_tms_i),
       .jtag_tdi_i                (jtag_tdi_i),
+`ifdef USE_AUX_JTAG
       .jtag_tdo_o                (jtag_tdo_o),
       .jtag_tdo_oe_o             (),
       // Secure Subsystem JTAG Interface
-`ifdef USE_AUX_JTAG
+
       .jtag_ot_tck_i             (jtag_aux_tck_i),
       .jtag_ot_trst_ni           (jtag_aux_trst_ni),
       .jtag_ot_tms_i             (jtag_aux_tms_i),
       .jtag_ot_tdi_i             (jtag_aux_tdi_i),
       .jtag_ot_tdo_o             (jtag_aux_tdo_o),
       .jtag_ot_tdo_oe_o          (),
-`else
+`else //DAISY CHAIN
+      .jtag_tdo_o                (jtag_host_to_security),
+      .jtag_tdo_oe_o             (),
+      
       .jtag_ot_tck_i             (jtag_tck_i),
       .jtag_ot_trst_ni           (jtag_trst_ni),
       .jtag_ot_tms_i             (jtag_tms_i),
-      .jtag_ot_tdi_i             (jtag_tdi_i),
-      .jtag_ot_tdo_o             (),
+      .jtag_ot_tdi_i             (jtag_host_to_security),
+      .jtag_ot_tdo_o             (jtag_tdo_o),
 `endif
       .bootmode_ot_i             (boot_mode_security),
       // Safety Island JTAG Interface
