@@ -715,5 +715,159 @@
         { bits: "4:0" }
       ],
     }
+
+    { name: "HOST_DEBUG_CLK_EN",
+      desc: "Host domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "L2_DEBUG_CLK_EN",
+      desc: "L2 domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "SAFED_DEBUG_CLK_EN",
+      desc: "Safe domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "PULPD_DEBUG_CLK_EN",
+      desc: "PULP domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "SPATZD_DEBUG_CLK_EN",
+      desc: "Spatz domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "SECURED_DEBUG_CLK_EN",
+      desc: "Secure domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "PERIPH_DEBUG_CLK_EN",
+      desc: "Peripheral domain debug clock divider (default active)",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "1",
+      hwqe: "0",
+      fields: [
+        { bits: "0:0" }
+      ],
+    }
+
+    { name: "HOST_DEBUG_CLK_DIV_VALUE",
+      desc: "Host Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "L2_DEBUG_CLK_DIV_VALUE",
+      desc: "L2 domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "SAFED_DEBUG_CLK_DIV_VALUE",
+      desc: "Safe Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "PULPD_DEBUG_CLK_DIV_VALUE",
+      desc: "PULP Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "SPATZD_DEBUG_CLK_DIV_VALUE",
+      desc: "Spatz Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "SECURED_DEBUG_CLK_DIV_VALUE",
+      desc: "Secure Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
+
+    { name: "PERIPH_DEBUG_CLK_DIV_VALUE",
+      desc: "Peripheral Domain debug clk divider value",
+      swaccess: "rw",
+      hwaccess: "hro",
+      resval: "10",
+      hwqe: "1",
+      fields: [
+        { bits: "23:0" }
+      ],
+    }
   ],
 }

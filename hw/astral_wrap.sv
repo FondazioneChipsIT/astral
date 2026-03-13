@@ -108,6 +108,9 @@ module astral_wrap
   // secure boot mode signal
   logic secure_boot;
 
+  // Debug signals
+  carfield_pkg::carfield_debug_sigs_t debug_signals;
+
   //////////////
   // Padframe //
   //////////////
@@ -361,10 +364,9 @@ module astral_wrap
 
   // soc2pad
   // clocks
-  // FIXME: These pads should not connect to FLL out directly but to internal clock dividers
   // verilog_lint: waive-start line-length
-  assign st_soc2pad_signals.fll_host_clk_o   = clk_fll_out[carfield_pkg::HostClockIdx];
-  assign st_soc2pad_signals.fll_secd_clk_o   = clk_fll_out[carfield_pkg::CarfieldClockIdx.SecureClockIdx];
+  assign st_soc2pad_signals.fll_host_clk_o   = debug_signals.host_clk;
+  assign st_soc2pad_signals.fll_secd_clk_o   = debug_signals.domain_clk[CarfieldDomainIdx.secured];
   // verilog_lint: waive-stop line-length
 
   //////////////////
@@ -494,7 +496,7 @@ module astral_wrap
     .ext_reg_async_slv_ack_o    ( ext_reg_async_slv_ack_src_out  ),
     .ext_reg_async_slv_data_i   ( ext_reg_async_slv_data_src_in  ),
     // Debug Signals
-    .debug_signals_o            (                                )
+    .debug_signals_o            ( debug_signals                  )
   );
 
   //////////////

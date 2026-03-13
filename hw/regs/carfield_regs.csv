@@ -63,3 +63,17 @@ ETH_CLK_DIV_VALUE,20,rw,hro,1,10,Ethernet clock divider value
 HYPERBUS_CLK_DIV_EN,1,rw,hro,1,1,Hyperbus clock divider enable bit
 HYPERBUS_CLK_DIV_VALUE,20,rw,hro,1,1,Hyperbus clock divider value
 FLL_LOCK,5,ro,hrw,0,0,FLL lock status
+HOST_DEBUG_CLK_EN,1,rw,hro,0,1,Host domain debug clock divider (default active)
+L2_DEBUG_CLK_EN,1,rw,hro,0,1,L2 domain debug clock divider (default active)
+SAFED_DEBUG_CLK_EN,1,rw,hro,0,1,Safe domain debug clock divider (default active)
+PULPD_DEBUG_CLK_EN,1,rw,hro,0,1,PULP domain debug clock divider (default active)
+SPATZD_DEBUG_CLK_EN,1,rw,hro,0,1,Spatz domain debug clock divider (default active)
+SECURED_DEBUG_CLK_EN,1,rw,hro,0,1,Secure domain debug clock divider (default active)
+PERIPH_DEBUG_CLK_EN,1,rw,hro,0,1,Peripheral domain debug clock divider (default active)
+HOST_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,Host Domain debug clk divider value
+L2_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,L2 domain debug clk divider value
+SAFED_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,Safe Domain debug clk divider value
+PULPD_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,PULP Domain debug clk divider value
+SPATZD_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,Spatz Domain debug clk divider value
+SECURED_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,Secure Domain debug clk divider value
+PERIPH_DEBUG_CLK_DIV_VALUE,24,rw,hro,1,10,Peripheral Domain debug clk divider value

@@ -210,6 +210,7 @@ module carfield
 // Clocking and reset strategy
 logic    rt_clk;
 logic    host_clk;
+logic    host_clk_divided;
 logic    periph_rst_n;
 logic    safety_rst_n;
 logic    security_rst_n;
@@ -556,6 +557,10 @@ domain_clk_div_value_t [NumDomains-1:0] domain_clk_div_value_synced;
 logic [NumDomains-1:0] pwr_on_rsts_n;
 logic [NumDomains-1:0] rsts_n;
 
+// Debug clock buses
+logic [NumDomains:0] debug_clock_in, debug_clock_out;
+logic [NumDomains:0] debug_clock_enable, debug_clock_div_valid;
+domain_clk_div_value_t [NumDomains:0] debug_clock_div_value;
 
 // Each of the 6 clock gateable domains (periph, safety island, security island, l2, spatz and pulp
 // cluster) have the following clock distribution scheme:
@@ -636,6 +641,28 @@ for (genvar i = 0; i < NumDomains; i++) begin : gen_domain_clock_mux
   );
 end
 
+// We have as many clock dividers as the available clocks
+for (genvar i = 0; i < NumDomains + 1; i++) begin: gen_dbg_clk_div
+  if (i == NumDomains) assign debug_clock_in[i] = host_clk;
+  else assign debug_clock_in[i] = domain_clk_gated[i];
+
+  clk_int_div #(
+    .DIV_VALUE_WIDTH(DomainClkDivValueWidth),
+    .DEFAULT_DIV_VALUE(100),
+    .ENABLE_CLOCK_IN_RESET(1)
+  ) i_dbg_clk_div (
+    .clk_i          ( debug_clock_in[i]        ),
+    .rst_ni         ( host_pwr_on_rst_n        ),
+    .en_i           ( debug_clock_enable[i]    ),
+    .test_mode_en_i ( test_mode_i              ),
+    .div_i          ( debug_clock_div_value[i] ),
+    .div_valid_i    ( debug_clock_div_valid[i] ),
+    .div_ready_o    ( ),
+    .clk_o          ( debug_clock_out[i]       ),
+    .cycl_count_o   ( )
+  );
+end
+
 // Reset generation for power-on reset for host domain. For the other domain we
 // get this from carfield_rstgen
 rstgen i_host_rstgen (
@@ -682,7 +709,9 @@ assign domain_clk_div_changed[CarfieldDomainIdx.periph] = car_regs_reg2hw.periph
 assign domain_clk_en[CarfieldDomainIdx.periph] = car_regs_reg2hw.periph_clk_en.q;
 
 // Assign debug signals
-assign debug_signals_o.domain_clk    = domain_clk_gated;
+assign debug_signals_o.rt_clk        = rt_clk;
+assign debug_signals_o.host_clk      = debug_clock_out[NumDomains];
+assign debug_signals_o.domain_clk    = debug_clock_out[NumDomains-1:0];
 assign debug_signals_o.domain_rsts_n = rsts_n;
 assign debug_signals_o.host_pwr_on_rst_n = host_pwr_on_rst_n;
 // verilog_lint: waive-stop line-length
@@ -767,6 +796,10 @@ assign chs_ext_intrs  = {
   pulpcl_hostd_mbox_intr,  // 1
   pulpcl_eoc               // from integer cluster
 };
+
+assign debug_clock_enable[NumDomains] = car_regs_reg2hw.host_debug_clk_en.q;
+assign debug_clock_div_value[NumDomains] = car_regs_reg2hw.host_debug_clk_div_value.q;
+assign debug_clock_div_valid[NumDomains] = car_regs_reg2hw.host_debug_clk_div_value.qe;
 
 `ifndef CHS_NETLIST
 cheshire_wrap #(
@@ -1109,6 +1142,9 @@ if (CarfieldIslandsCfg.l2_port0.enable) begin: gen_l2
   assign car_regs_hw2reg.l2_isolate_status.d = slave_isolated[L2Port0SlvIdx] &
                                                slave_isolated[L2Port1SlvIdx];
   assign car_regs_hw2reg.l2_isolate_status.de = 1'b1;
+  assign debug_clock_enable[CarfieldDomainIdx.l2] = car_regs_reg2hw.l2_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.l2] = car_regs_reg2hw.l2_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.l2] = car_regs_reg2hw.l2_debug_clk_div_value.qe;
 
   `ifndef L2_WRAP_NETLIST
   l2_wrap #(
@@ -1249,6 +1285,12 @@ if (CarfieldIslandsCfg.safed.enable) begin : gen_safety_island
   end
   assign safed_secd_mbox_intr = snd_mbox_intrs[SafedMboxOffset + CheshireNumIntHarts + 0];
 
+  assign debug_clock_enable[CarfieldDomainIdx.safed]
+         = car_regs_reg2hw.safed_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.safed]
+         = car_regs_reg2hw.safed_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.safed]
+         = car_regs_reg2hw.safed_debug_clk_div_value.qe;
 
   `ifndef SAFED_NETLIST
     safety_island_synth_wrapper #(
@@ -1405,6 +1447,12 @@ if (CarfieldIslandsCfg.pulp.enable) begin : gen_pulp_cluster
 
   assign slave_isolated[IntClusterSlvIdx] = slave_isolated_rsp[IntClusterSlvIdx] &
                                             master_isolated_rsp[IntClusterMstIdx];
+  assign debug_clock_enable[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.pulp]
+         = car_regs_reg2hw.pulpd_debug_clk_div_value.qe;
 
 `ifndef INT_CLUSTER_NETLIST
   pulp_cluster #(
@@ -1542,6 +1590,12 @@ if (CarfieldIslandsCfg.spatz.enable) begin : gen_spatz_cluster
 
   assign slave_isolated[FPClusterSlvIdx] = slave_isolated_rsp[FPClusterSlvIdx] &
                                            master_isolated_rsp[FPClusterMstIdx];
+  assign debug_clock_enable[CarfieldDomainIdx.spatz]
+         = car_regs_reg2hw.spatzd_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.spatz]
+         = car_regs_reg2hw.spatzd_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.spatz]
+         = car_regs_reg2hw.spatzd_debug_clk_div_value.qe;
 
 `ifndef FP_CLUSTER_NETLIST
   spatz_cluster_wrapper #(
@@ -1732,6 +1786,13 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
   assign car_regs_hw2reg.security_island_isolate_status.d =
          master_isolated_rsp[SecurityIslandTlulMstIdx];
   assign car_regs_hw2reg.security_island_isolate_status.de = 1'b1;
+
+  assign debug_clock_enable[CarfieldDomainIdx.secured]
+         = car_regs_reg2hw.secured_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.secured]
+         = car_regs_reg2hw.secured_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.secured]
+         = car_regs_reg2hw.secured_debug_clk_div_value.qe;
 
   typedef logic [Cfg.AddrWidth-1:0]        narrow_axi_addr_t;
   typedef logic [AxiNarrowDataWidth-1:0]   narrow_axi_data_t;
@@ -2086,6 +2147,12 @@ if (CarfieldIslandsCfg.periph.enable) begin: gen_periph // Handle with care...
   assign car_regs_hw2reg.periph_isolate_status.d = slave_isolated[PeriphsSlvIdx] &
                                                    hyper_isolated_rsp & ethernet_isolated_rsp;
   assign car_regs_hw2reg.periph_isolate_status.de = 1'b1;
+  assign debug_clock_enable[CarfieldDomainIdx.periph]
+         = car_regs_reg2hw.periph_debug_clk_en.q;
+  assign debug_clock_div_value[CarfieldDomainIdx.periph]
+         = car_regs_reg2hw.periph_debug_clk_div_value.q;
+  assign debug_clock_div_valid[CarfieldDomainIdx.periph]
+         = car_regs_reg2hw.periph_debug_clk_div_value.qe;
 
   carfield_axi_slv_req_t axi_d64_a48_peripherals_req;
   carfield_axi_slv_rsp_t axi_d64_a48_peripherals_rsp;

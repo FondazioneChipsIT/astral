@@ -944,6 +944,8 @@ localparam carfield_addr_map_rule_t [NumApbMst-1:0] PeriphApbAddrMapRule = '{
 localparam int unsigned NumDomains = CarfieldNumDomains;
 
 typedef struct packed {
+  logic                  rt_clk;
+  logic                  host_clk;
   logic [NumDomains-1:0] domain_clk;
   logic [NumDomains-1:0] domain_rsts_n;
   logic                  host_pwr_on_rst_n;
