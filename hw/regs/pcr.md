@@ -66,6 +66,20 @@
 | carfield.[`HYPERBUS_CLK_DIV_EN`](#hyperbus_clk_div_en)                       | 0xf4     |        4 | Hyperbus clock divider enable bit                                                     |
 | carfield.[`HYPERBUS_CLK_DIV_VALUE`](#hyperbus_clk_div_value)                 | 0xf8     |        4 | Hyperbus clock divider value                                                          |
 | carfield.[`FLL_LOCK`](#fll_lock)                                             | 0xfc     |        4 | FLL lock status                                                                       |
+| carfield.[`HOST_DEBUG_CLK_EN`](#host_debug_clk_en)                           | 0x100    |        4 | Host domain debug clock divider (default active)                                      |
+| carfield.[`L2_DEBUG_CLK_EN`](#l2_debug_clk_en)                               | 0x104    |        4 | L2 domain debug clock divider (default active)                                        |
+| carfield.[`SAFED_DEBUG_CLK_EN`](#safed_debug_clk_en)                         | 0x108    |        4 | Safe domain debug clock divider (default active)                                      |
+| carfield.[`PULPD_DEBUG_CLK_EN`](#pulpd_debug_clk_en)                         | 0x10c    |        4 | PULP domain debug clock divider (default active)                                      |
+| carfield.[`SPATZD_DEBUG_CLK_EN`](#spatzd_debug_clk_en)                       | 0x110    |        4 | Spatz domain debug clock divider (default active)                                     |
+| carfield.[`SECURED_DEBUG_CLK_EN`](#secured_debug_clk_en)                     | 0x114    |        4 | Secure domain debug clock divider (default active)                                    |
+| carfield.[`PERIPH_DEBUG_CLK_EN`](#periph_debug_clk_en)                       | 0x118    |        4 | Peripheral domain debug clock divider (default active)                                |
+| carfield.[`HOST_DEBUG_CLK_DIV_VALUE`](#host_debug_clk_div_value)             | 0x11c    |        4 | Host Domain debug clk divider value                                                   |
+| carfield.[`L2_DEBUG_CLK_DIV_VALUE`](#l2_debug_clk_div_value)                 | 0x120    |        4 | L2 domain debug clk divider value                                                     |
+| carfield.[`SAFED_DEBUG_CLK_DIV_VALUE`](#safed_debug_clk_div_value)           | 0x124    |        4 | Safe Domain debug clk divider value                                                   |
+| carfield.[`PULPD_DEBUG_CLK_DIV_VALUE`](#pulpd_debug_clk_div_value)           | 0x128    |        4 | PULP Domain debug clk divider value                                                   |
+| carfield.[`SPATZD_DEBUG_CLK_DIV_VALUE`](#spatzd_debug_clk_div_value)         | 0x12c    |        4 | Spatz Domain debug clk divider value                                                  |
+| carfield.[`SECURED_DEBUG_CLK_DIV_VALUE`](#secured_debug_clk_div_value)       | 0x130    |        4 | Secure Domain debug clk divider value                                                 |
+| carfield.[`PERIPH_DEBUG_CLK_DIV_VALUE`](#periph_debug_clk_div_value)         | 0x134    |        4 | Peripheral Domain debug clk divider value                                             |
 
 ## VERSION0
 Cheshire sha256 commit
@@ -1141,4 +1155,242 @@ FLL lock status
 |:------:|:------:|:-------:|:---------|:--------------|
 |  31:5  |        |         |          | Reserved      |
 |  4:0   |   ro   |   0x0   | FLL_LOCK |               |
+
+## HOST_DEBUG_CLK_EN
+Host domain debug clock divider (default active)
+- Offset: `0x100`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "HOST_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 190}}
+```
+
+|  Bits  |  Type  |  Reset  | Name              | Description   |
+|:------:|:------:|:-------:|:------------------|:--------------|
+|  31:1  |        |         |                   | Reserved      |
+|   0    |   rw   |   0x1   | HOST_DEBUG_CLK_EN |               |
+
+## L2_DEBUG_CLK_EN
+L2 domain debug clock divider (default active)
+- Offset: `0x104`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "L2_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 170}}
+```
+
+|  Bits  |  Type  |  Reset  | Name            | Description   |
+|:------:|:------:|:-------:|:----------------|:--------------|
+|  31:1  |        |         |                 | Reserved      |
+|   0    |   rw   |   0x1   | L2_DEBUG_CLK_EN |               |
+
+## SAFED_DEBUG_CLK_EN
+Safe domain debug clock divider (default active)
+- Offset: `0x108`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SAFED_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 200}}
+```
+
+|  Bits  |  Type  |  Reset  | Name               | Description   |
+|:------:|:------:|:-------:|:-------------------|:--------------|
+|  31:1  |        |         |                    | Reserved      |
+|   0    |   rw   |   0x1   | SAFED_DEBUG_CLK_EN |               |
+
+## PULPD_DEBUG_CLK_EN
+PULP domain debug clock divider (default active)
+- Offset: `0x10c`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "PULPD_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 200}}
+```
+
+|  Bits  |  Type  |  Reset  | Name               | Description   |
+|:------:|:------:|:-------:|:-------------------|:--------------|
+|  31:1  |        |         |                    | Reserved      |
+|   0    |   rw   |   0x1   | PULPD_DEBUG_CLK_EN |               |
+
+## SPATZD_DEBUG_CLK_EN
+Spatz domain debug clock divider (default active)
+- Offset: `0x110`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SPATZD_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 210}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                | Description   |
+|:------:|:------:|:-------:|:--------------------|:--------------|
+|  31:1  |        |         |                     | Reserved      |
+|   0    |   rw   |   0x1   | SPATZD_DEBUG_CLK_EN |               |
+
+## SECURED_DEBUG_CLK_EN
+Secure domain debug clock divider (default active)
+- Offset: `0x114`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SECURED_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 220}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                 | Description   |
+|:------:|:------:|:-------:|:---------------------|:--------------|
+|  31:1  |        |         |                      | Reserved      |
+|   0    |   rw   |   0x1   | SECURED_DEBUG_CLK_EN |               |
+
+## PERIPH_DEBUG_CLK_EN
+Peripheral domain debug clock divider (default active)
+- Offset: `0x118`
+- Reset default: `0x1`
+- Reset mask: `0x1`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "PERIPH_DEBUG_CLK_EN", "bits": 1, "attr": ["rw"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 210}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                | Description   |
+|:------:|:------:|:-------:|:--------------------|:--------------|
+|  31:1  |        |         |                     | Reserved      |
+|   0    |   rw   |   0x1   | PERIPH_DEBUG_CLK_EN |               |
+
+## HOST_DEBUG_CLK_DIV_VALUE
+Host Domain debug clk divider value
+- Offset: `0x11c`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "HOST_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                     | Description   |
+|:------:|:------:|:-------:|:-------------------------|:--------------|
+| 31:24  |        |         |                          | Reserved      |
+|  23:0  |   rw   |   0xa   | HOST_DEBUG_CLK_DIV_VALUE |               |
+
+## L2_DEBUG_CLK_DIV_VALUE
+L2 domain debug clk divider value
+- Offset: `0x120`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "L2_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                   | Description   |
+|:------:|:------:|:-------:|:-----------------------|:--------------|
+| 31:24  |        |         |                        | Reserved      |
+|  23:0  |   rw   |   0xa   | L2_DEBUG_CLK_DIV_VALUE |               |
+
+## SAFED_DEBUG_CLK_DIV_VALUE
+Safe Domain debug clk divider value
+- Offset: `0x124`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SAFED_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                      | Description   |
+|:------:|:------:|:-------:|:--------------------------|:--------------|
+| 31:24  |        |         |                           | Reserved      |
+|  23:0  |   rw   |   0xa   | SAFED_DEBUG_CLK_DIV_VALUE |               |
+
+## PULPD_DEBUG_CLK_DIV_VALUE
+PULP Domain debug clk divider value
+- Offset: `0x128`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "PULPD_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                      | Description   |
+|:------:|:------:|:-------:|:--------------------------|:--------------|
+| 31:24  |        |         |                           | Reserved      |
+|  23:0  |   rw   |   0xa   | PULPD_DEBUG_CLK_DIV_VALUE |               |
+
+## SPATZD_DEBUG_CLK_DIV_VALUE
+Spatz Domain debug clk divider value
+- Offset: `0x12c`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SPATZD_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                       | Description   |
+|:------:|:------:|:-------:|:---------------------------|:--------------|
+| 31:24  |        |         |                            | Reserved      |
+|  23:0  |   rw   |   0xa   | SPATZD_DEBUG_CLK_DIV_VALUE |               |
+
+## SECURED_DEBUG_CLK_DIV_VALUE
+Secure Domain debug clk divider value
+- Offset: `0x130`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "SECURED_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                        | Description   |
+|:------:|:------:|:-------:|:----------------------------|:--------------|
+| 31:24  |        |         |                             | Reserved      |
+|  23:0  |   rw   |   0xa   | SECURED_DEBUG_CLK_DIV_VALUE |               |
+
+## PERIPH_DEBUG_CLK_DIV_VALUE
+Peripheral Domain debug clk divider value
+- Offset: `0x134`
+- Reset default: `0xa`
+- Reset mask: `0xffffff`
+
+### Fields
+
+```wavejson
+{"reg": [{"name": "PERIPH_DEBUG_CLK_DIV_VALUE", "bits": 24, "attr": ["rw"], "rotate": 0}, {"bits": 8}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
+```
+
+|  Bits  |  Type  |  Reset  | Name                       | Description   |
+|:------:|:------:|:-------:|:---------------------------|:--------------|
+| 31:24  |        |         |                            | Reserved      |
+|  23:0  |   rw   |   0xa   | PERIPH_DEBUG_CLK_DIV_VALUE |               |
 

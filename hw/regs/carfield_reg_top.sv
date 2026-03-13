@@ -10,7 +10,7 @@
 module carfield_reg_top #(
   parameter type reg_req_t = logic,
   parameter type reg_rsp_t = logic,
-  parameter int AW = 8
+  parameter int AW = 9
 ) (
   input logic clk_i,
   input logic rst_ni,
@@ -238,6 +238,48 @@ module carfield_reg_top #(
   logic [19:0] hyperbus_clk_div_value_wd;
   logic hyperbus_clk_div_value_we;
   logic [4:0] fll_lock_qs;
+  logic host_debug_clk_en_qs;
+  logic host_debug_clk_en_wd;
+  logic host_debug_clk_en_we;
+  logic l2_debug_clk_en_qs;
+  logic l2_debug_clk_en_wd;
+  logic l2_debug_clk_en_we;
+  logic safed_debug_clk_en_qs;
+  logic safed_debug_clk_en_wd;
+  logic safed_debug_clk_en_we;
+  logic pulpd_debug_clk_en_qs;
+  logic pulpd_debug_clk_en_wd;
+  logic pulpd_debug_clk_en_we;
+  logic spatzd_debug_clk_en_qs;
+  logic spatzd_debug_clk_en_wd;
+  logic spatzd_debug_clk_en_we;
+  logic secured_debug_clk_en_qs;
+  logic secured_debug_clk_en_wd;
+  logic secured_debug_clk_en_we;
+  logic periph_debug_clk_en_qs;
+  logic periph_debug_clk_en_wd;
+  logic periph_debug_clk_en_we;
+  logic [23:0] host_debug_clk_div_value_qs;
+  logic [23:0] host_debug_clk_div_value_wd;
+  logic host_debug_clk_div_value_we;
+  logic [23:0] l2_debug_clk_div_value_qs;
+  logic [23:0] l2_debug_clk_div_value_wd;
+  logic l2_debug_clk_div_value_we;
+  logic [23:0] safed_debug_clk_div_value_qs;
+  logic [23:0] safed_debug_clk_div_value_wd;
+  logic safed_debug_clk_div_value_we;
+  logic [23:0] pulpd_debug_clk_div_value_qs;
+  logic [23:0] pulpd_debug_clk_div_value_wd;
+  logic pulpd_debug_clk_div_value_we;
+  logic [23:0] spatzd_debug_clk_div_value_qs;
+  logic [23:0] spatzd_debug_clk_div_value_wd;
+  logic spatzd_debug_clk_div_value_we;
+  logic [23:0] secured_debug_clk_div_value_qs;
+  logic [23:0] secured_debug_clk_div_value_wd;
+  logic secured_debug_clk_div_value_we;
+  logic [23:0] periph_debug_clk_div_value_qs;
+  logic [23:0] periph_debug_clk_div_value_wd;
+  logic periph_debug_clk_div_value_we;
 
   // Register instances
   // R[version0]: V(False)
@@ -1857,9 +1899,387 @@ module carfield_reg_top #(
   );
 
 
+  // R[host_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_host_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (host_debug_clk_en_we),
+    .wd     (host_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.host_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (host_debug_clk_en_qs)
+  );
 
 
-  logic [63:0] addr_hit;
+  // R[l2_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_l2_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (l2_debug_clk_en_we),
+    .wd     (l2_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.l2_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (l2_debug_clk_en_qs)
+  );
+
+
+  // R[safed_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_safed_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (safed_debug_clk_en_we),
+    .wd     (safed_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.safed_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (safed_debug_clk_en_qs)
+  );
+
+
+  // R[pulpd_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_pulpd_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (pulpd_debug_clk_en_we),
+    .wd     (pulpd_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.pulpd_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (pulpd_debug_clk_en_qs)
+  );
+
+
+  // R[spatzd_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_spatzd_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (spatzd_debug_clk_en_we),
+    .wd     (spatzd_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.spatzd_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (spatzd_debug_clk_en_qs)
+  );
+
+
+  // R[secured_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_secured_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (secured_debug_clk_en_we),
+    .wd     (secured_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.secured_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (secured_debug_clk_en_qs)
+  );
+
+
+  // R[periph_debug_clk_en]: V(False)
+
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("RW"),
+    .RESVAL  (1'h1)
+  ) u_periph_debug_clk_en (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (periph_debug_clk_en_we),
+    .wd     (periph_debug_clk_en_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.periph_debug_clk_en.q ),
+
+    // to register interface (read)
+    .qs     (periph_debug_clk_en_qs)
+  );
+
+
+  // R[host_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_host_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (host_debug_clk_div_value_we),
+    .wd     (host_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.host_debug_clk_div_value.qe),
+    .q      (reg2hw.host_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (host_debug_clk_div_value_qs)
+  );
+
+
+  // R[l2_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_l2_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (l2_debug_clk_div_value_we),
+    .wd     (l2_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.l2_debug_clk_div_value.qe),
+    .q      (reg2hw.l2_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (l2_debug_clk_div_value_qs)
+  );
+
+
+  // R[safed_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_safed_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (safed_debug_clk_div_value_we),
+    .wd     (safed_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.safed_debug_clk_div_value.qe),
+    .q      (reg2hw.safed_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (safed_debug_clk_div_value_qs)
+  );
+
+
+  // R[pulpd_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_pulpd_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (pulpd_debug_clk_div_value_we),
+    .wd     (pulpd_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.pulpd_debug_clk_div_value.qe),
+    .q      (reg2hw.pulpd_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (pulpd_debug_clk_div_value_qs)
+  );
+
+
+  // R[spatzd_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_spatzd_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (spatzd_debug_clk_div_value_we),
+    .wd     (spatzd_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.spatzd_debug_clk_div_value.qe),
+    .q      (reg2hw.spatzd_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (spatzd_debug_clk_div_value_qs)
+  );
+
+
+  // R[secured_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_secured_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (secured_debug_clk_div_value_we),
+    .wd     (secured_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.secured_debug_clk_div_value.qe),
+    .q      (reg2hw.secured_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (secured_debug_clk_div_value_qs)
+  );
+
+
+  // R[periph_debug_clk_div_value]: V(False)
+
+  prim_subreg #(
+    .DW      (24),
+    .SWACCESS("RW"),
+    .RESVAL  (24'ha)
+  ) u_periph_debug_clk_div_value (
+    .clk_i   (clk_i    ),
+    .rst_ni  (rst_ni  ),
+
+    // from register interface
+    .we     (periph_debug_clk_div_value_we),
+    .wd     (periph_debug_clk_div_value_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0  ),
+
+    // to internal hardware
+    .qe     (reg2hw.periph_debug_clk_div_value.qe),
+    .q      (reg2hw.periph_debug_clk_div_value.q ),
+
+    // to register interface (read)
+    .qs     (periph_debug_clk_div_value_qs)
+  );
+
+
+
+
+  logic [77:0] addr_hit;
   always_comb begin
     addr_hit = '0;
     addr_hit[ 0] = (reg_addr == CARFIELD_VERSION0_OFFSET);
@@ -1926,6 +2346,20 @@ module carfield_reg_top #(
     addr_hit[61] = (reg_addr == CARFIELD_HYPERBUS_CLK_DIV_EN_OFFSET);
     addr_hit[62] = (reg_addr == CARFIELD_HYPERBUS_CLK_DIV_VALUE_OFFSET);
     addr_hit[63] = (reg_addr == CARFIELD_FLL_LOCK_OFFSET);
+    addr_hit[64] = (reg_addr == CARFIELD_HOST_DEBUG_CLK_EN_OFFSET);
+    addr_hit[65] = (reg_addr == CARFIELD_L2_DEBUG_CLK_EN_OFFSET);
+    addr_hit[66] = (reg_addr == CARFIELD_SAFED_DEBUG_CLK_EN_OFFSET);
+    addr_hit[67] = (reg_addr == CARFIELD_PULPD_DEBUG_CLK_EN_OFFSET);
+    addr_hit[68] = (reg_addr == CARFIELD_SPATZD_DEBUG_CLK_EN_OFFSET);
+    addr_hit[69] = (reg_addr == CARFIELD_SECURED_DEBUG_CLK_EN_OFFSET);
+    addr_hit[70] = (reg_addr == CARFIELD_PERIPH_DEBUG_CLK_EN_OFFSET);
+    addr_hit[71] = (reg_addr == CARFIELD_HOST_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[72] = (reg_addr == CARFIELD_L2_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[73] = (reg_addr == CARFIELD_SAFED_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[74] = (reg_addr == CARFIELD_PULPD_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[75] = (reg_addr == CARFIELD_SPATZD_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[76] = (reg_addr == CARFIELD_SECURED_DEBUG_CLK_DIV_VALUE_OFFSET);
+    addr_hit[77] = (reg_addr == CARFIELD_PERIPH_DEBUG_CLK_DIV_VALUE_OFFSET);
   end
 
   assign addrmiss = (reg_re || reg_we) ? ~|addr_hit : 1'b0 ;
@@ -1996,7 +2430,21 @@ module carfield_reg_top #(
                (addr_hit[60] & (|(CARFIELD_PERMIT[60] & ~reg_be))) |
                (addr_hit[61] & (|(CARFIELD_PERMIT[61] & ~reg_be))) |
                (addr_hit[62] & (|(CARFIELD_PERMIT[62] & ~reg_be))) |
-               (addr_hit[63] & (|(CARFIELD_PERMIT[63] & ~reg_be)))));
+               (addr_hit[63] & (|(CARFIELD_PERMIT[63] & ~reg_be))) |
+               (addr_hit[64] & (|(CARFIELD_PERMIT[64] & ~reg_be))) |
+               (addr_hit[65] & (|(CARFIELD_PERMIT[65] & ~reg_be))) |
+               (addr_hit[66] & (|(CARFIELD_PERMIT[66] & ~reg_be))) |
+               (addr_hit[67] & (|(CARFIELD_PERMIT[67] & ~reg_be))) |
+               (addr_hit[68] & (|(CARFIELD_PERMIT[68] & ~reg_be))) |
+               (addr_hit[69] & (|(CARFIELD_PERMIT[69] & ~reg_be))) |
+               (addr_hit[70] & (|(CARFIELD_PERMIT[70] & ~reg_be))) |
+               (addr_hit[71] & (|(CARFIELD_PERMIT[71] & ~reg_be))) |
+               (addr_hit[72] & (|(CARFIELD_PERMIT[72] & ~reg_be))) |
+               (addr_hit[73] & (|(CARFIELD_PERMIT[73] & ~reg_be))) |
+               (addr_hit[74] & (|(CARFIELD_PERMIT[74] & ~reg_be))) |
+               (addr_hit[75] & (|(CARFIELD_PERMIT[75] & ~reg_be))) |
+               (addr_hit[76] & (|(CARFIELD_PERMIT[76] & ~reg_be))) |
+               (addr_hit[77] & (|(CARFIELD_PERMIT[77] & ~reg_be)))));
   end
 
   assign jedec_idcode_we = addr_hit[5] & reg_we & !reg_error;
@@ -2157,6 +2605,48 @@ module carfield_reg_top #(
 
   assign hyperbus_clk_div_value_we = addr_hit[62] & reg_we & !reg_error;
   assign hyperbus_clk_div_value_wd = reg_wdata[19:0];
+
+  assign host_debug_clk_en_we = addr_hit[64] & reg_we & !reg_error;
+  assign host_debug_clk_en_wd = reg_wdata[0];
+
+  assign l2_debug_clk_en_we = addr_hit[65] & reg_we & !reg_error;
+  assign l2_debug_clk_en_wd = reg_wdata[0];
+
+  assign safed_debug_clk_en_we = addr_hit[66] & reg_we & !reg_error;
+  assign safed_debug_clk_en_wd = reg_wdata[0];
+
+  assign pulpd_debug_clk_en_we = addr_hit[67] & reg_we & !reg_error;
+  assign pulpd_debug_clk_en_wd = reg_wdata[0];
+
+  assign spatzd_debug_clk_en_we = addr_hit[68] & reg_we & !reg_error;
+  assign spatzd_debug_clk_en_wd = reg_wdata[0];
+
+  assign secured_debug_clk_en_we = addr_hit[69] & reg_we & !reg_error;
+  assign secured_debug_clk_en_wd = reg_wdata[0];
+
+  assign periph_debug_clk_en_we = addr_hit[70] & reg_we & !reg_error;
+  assign periph_debug_clk_en_wd = reg_wdata[0];
+
+  assign host_debug_clk_div_value_we = addr_hit[71] & reg_we & !reg_error;
+  assign host_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign l2_debug_clk_div_value_we = addr_hit[72] & reg_we & !reg_error;
+  assign l2_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign safed_debug_clk_div_value_we = addr_hit[73] & reg_we & !reg_error;
+  assign safed_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign pulpd_debug_clk_div_value_we = addr_hit[74] & reg_we & !reg_error;
+  assign pulpd_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign spatzd_debug_clk_div_value_we = addr_hit[75] & reg_we & !reg_error;
+  assign spatzd_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign secured_debug_clk_div_value_we = addr_hit[76] & reg_we & !reg_error;
+  assign secured_debug_clk_div_value_wd = reg_wdata[23:0];
+
+  assign periph_debug_clk_div_value_we = addr_hit[77] & reg_we & !reg_error;
+  assign periph_debug_clk_div_value_wd = reg_wdata[23:0];
 
   // Read data return
   always_comb begin
@@ -2418,6 +2908,62 @@ module carfield_reg_top #(
         reg_rdata_next[4:0] = fll_lock_qs;
       end
 
+      addr_hit[64]: begin
+        reg_rdata_next[0] = host_debug_clk_en_qs;
+      end
+
+      addr_hit[65]: begin
+        reg_rdata_next[0] = l2_debug_clk_en_qs;
+      end
+
+      addr_hit[66]: begin
+        reg_rdata_next[0] = safed_debug_clk_en_qs;
+      end
+
+      addr_hit[67]: begin
+        reg_rdata_next[0] = pulpd_debug_clk_en_qs;
+      end
+
+      addr_hit[68]: begin
+        reg_rdata_next[0] = spatzd_debug_clk_en_qs;
+      end
+
+      addr_hit[69]: begin
+        reg_rdata_next[0] = secured_debug_clk_en_qs;
+      end
+
+      addr_hit[70]: begin
+        reg_rdata_next[0] = periph_debug_clk_en_qs;
+      end
+
+      addr_hit[71]: begin
+        reg_rdata_next[23:0] = host_debug_clk_div_value_qs;
+      end
+
+      addr_hit[72]: begin
+        reg_rdata_next[23:0] = l2_debug_clk_div_value_qs;
+      end
+
+      addr_hit[73]: begin
+        reg_rdata_next[23:0] = safed_debug_clk_div_value_qs;
+      end
+
+      addr_hit[74]: begin
+        reg_rdata_next[23:0] = pulpd_debug_clk_div_value_qs;
+      end
+
+      addr_hit[75]: begin
+        reg_rdata_next[23:0] = spatzd_debug_clk_div_value_qs;
+      end
+
+      addr_hit[76]: begin
+        reg_rdata_next[23:0] = secured_debug_clk_div_value_qs;
+      end
+
+      addr_hit[77]: begin
+        reg_rdata_next[23:0] = periph_debug_clk_div_value_qs;
+      end
+
       default: begin
         reg_rdata_next = '1;
       end
@@ -2440,7 +2986,7 @@ endmodule
 
 module carfield_reg_top_intf
 #(
-  parameter int AW = 8,
+  parameter int AW = 9,
   localparam int DW = 32
 ) (
   input logic clk_i,
