@@ -118,7 +118,7 @@ ifneq ($(SPATZD_BINARY),)
 	$(eval SPATZD_BINARY_ABS := $(realpath $(SPATZD_BINARY)))
 endif
 	cd $(CAR_QSIM_DIR); \
-  qsim $(pargs) +designfile +permissive $(QSIM_FLAGS) +notimingchecks +nospecify +init_mem_data=0 -t 1ps $(TBENCH)_opt -do "$(RUN_AND_EXIT)"; \
+  $(QUESTA) qsim $(pargs) +designfile +permissive $(QSIM_FLAGS) +notimingchecks +nospecify +init_mem_data=0 -t 1ps $(TBENCH)_opt -do "$(RUN_AND_EXIT)"; \
 	$(POST_SIM)
 
 ## Generate all required VIPs and compilation scripts for all supported simulators

@@ -112,7 +112,7 @@ ifneq ($(SPATZD_BINARY),)
 	$(eval SPATZD_BINARY_ABS := $(realpath $(SPATZD_BINARY)))
 endif
 	cd $(CAR_VSIM_DIR); \
-	vsim ${pargs} ${VSIM_FLAGS} +init_mem_data=0 -t 1ps ${TBENCH}_opt -do "${RUN_AND_EXIT}";
+	$(QUESTA) vsim ${pargs} ${VSIM_FLAGS} +init_mem_data=0 -t 1ps ${TBENCH}_opt -do "${RUN_AND_EXIT}";
 
 ## @section Global targets
 .PHONY: car-sim-init
