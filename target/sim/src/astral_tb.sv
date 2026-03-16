@@ -105,6 +105,10 @@ module tb_astral;
 
     if (chs_preload_elf != "" || chs_boot_hex != "") begin
 
+      // Understand if we are using a DRAM-mapped binary
+      // to configure the HyperBus
+      is_dram = uvm_re_match("dram",chs_preload_elf);
+
       // Wait for reset
       fix.chs_vip.wait_for_reset();
 
@@ -135,20 +139,6 @@ module tb_astral;
 `endif
       end
 
-      // Writing max burst length in Hyperbus configuration registers to
-      // prevent the Verification IPs from triggering timing checks.
-      if (preload_mode == 1) begin: gen_slink_hyperbus_cfg
-        // Configure Serial link padframe
-        // fix.configure_sl_pad(jtag_check_write);
-        $fatal(1, "[TB] ERROR: Preload mode 1 not supported.");
-        // -> pad_configured;
-        // $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        // fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
-      end else begin: gen_jtag_hyperbus_cfg
-        $display("[TB] INFO: Configuring Hyperbus through JTAG.");
-        fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
-      end
-
       // When Cheshire is offloading to safety island, the latter should be set in passive preloaded
       // bootmode
 `ifdef SAFED_PRESENT
@@ -160,8 +150,9 @@ module tb_astral;
         case (preload_mode)
           0: begin  // Standalone JTAG passive preload
             // Cheshire
-            is_dram = uvm_re_match("dram",chs_preload_elf);
             if(~is_dram) begin
+              $display("[TB] INFO: Configuring Hyperbus through JTAG.");
+              fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
               $display("[TB] %t - Wait for HyperRAM", $realtime);
               repeat(HyperRstCycles)
 `ifndef ASTRAL_TOP_NETLIST
@@ -174,9 +165,22 @@ module tb_astral;
             fix.chs_vip.jtag_elf_run(chs_preload_elf);
             fix.chs_vip.jtag_wait_for_eoc(exit_code);
           end 1: begin  // Standalone Serial Link passive preload
-            $display("[TB] %t - Loading '%s' through SLINK", $realtime, chs_preload_elf);
-            fix.chs_vip.slink_elf_run(chs_preload_elf);
-            fix.chs_vip.slink_wait_for_eoc(exit_code);
+            if (~fix.DutCfg.SerialLink)
+              $fatal(1, "[TB] ERROR: Preload mode 1 not supported.");
+            else begin
+              if(~is_dram) begin
+                $display("[TB] INFO: Configuring Hyperbus through serial link.");
+                fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+                $display("[TB] %t - Wait for HyperRAM", $realtime);
+                repeat(HyperRstCycles)
+                #10ns;
+              end
+              // fix.configure_sl_pad(jtag_check_write);
+              //   -> pad_configured;
+              $display("[TB] %t - Loading '%s' through SLINK", $realtime, chs_preload_elf);
+              fix.chs_vip.slink_elf_run(chs_preload_elf);
+              fix.chs_vip.slink_wait_for_eoc(exit_code);
+            end
           end 2: begin  // Standalone UART passive preload
             fix.chs_vip.uart_debug_elf_run_and_wait(chs_preload_elf, exit_code);
           end 3: begin  // Secure boot: Opentitan booting CVA6
@@ -259,8 +263,13 @@ module tb_astral;
 
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.gen_safed_vip.safed_vip.axi_write_32(HyperbusTburstMax, 32'd128);
+        if (fix.DutCfg.SerialLink) begin
+          $display("[TB] INFO: Configuring Hyperbus through serial link.");
+          fix.gen_safed_vip.safed_vip.axi_write_32(HyperbusTburstMax, 32'd128);
+        end else begin
+          $display("[TB] INFO: Configuring Hyperbus through JTAG.");
+          fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
+        end
 
         $display("[TB] %t - Enabling safety island clock for stand-alone tests ", $realtime);
         // Clock island after PoR
@@ -320,8 +329,15 @@ module tb_astral;
 
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+        if (fix.DutCfg.SerialLink) begin
+          $display("[TB] INFO: Configuring Hyperbus through serial link.");
+`ifdef SAFED_PRESENT
+          fix.gen_safed_vip.safed_vip.axi_write_32(HyperbusTburstMax, 32'd128);
+`endif
+        end else begin
+          $display("[TB] INFO: Configuring Hyperbus through JTAG.");
+          fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
+        end
 
         case(secd_boot_mode)
           0: begin
@@ -438,28 +454,32 @@ module tb_astral;
           end
 
           1: begin // -> Serial Link
-            // preload
-            $display("[SLINK PULPD] Preload the binary to L2 ");
-            fix.chs_vip.slink_elf_preload(pulpd_preload_elf, pulpd_binary_entry);
+            if (~fix.DutCfg.SerialLink)
+              $fatal(1, "[TB] ERROR: Preload mode 1 not supported.");
+            else begin
+              // preload
+              $display("[SLINK PULPD] Preload the binary to L2 ");
+              fix.chs_vip.slink_elf_preload(pulpd_preload_elf, pulpd_binary_entry);
 
-            // boot
-            // Write bootaddress to each core
-            $display("[SLINK PULPD] Write PULP cluster boot address for each core");
-            for (int c = 0; c < carfield_pkg::IntClusterNumCores; c++) begin
-              fix.chs_vip.slink_write_32(PulpdBootAddr + c*32'h4, PulpdBootAddrL2);
+              // boot
+              // Write bootaddress to each core
+              $display("[SLINK PULPD] Write PULP cluster boot address for each core");
+              for (int c = 0; c < carfield_pkg::IntClusterNumCores; c++) begin
+                fix.chs_vip.slink_write_32(PulpdBootAddr + c*32'h4, PulpdBootAddrL2);
+              end
+              // Write boot enable
+              $display("[SLINK PULPD] Write PULP cluster boot enable");
+              fix.chs_vip.slink_write_32(CarSocCtrlPulpdBootEnAddr, 32'h1);
+              // Write fetch enable
+              $display("[SLINK PULPD] Write PULP cluster fetch enable");
+              fix.chs_vip.slink_write_32(CarSocCtrlPulpdFetchEnAddr, 32'h1);
+
+              // Poll memory address for PULP EOC
+              fix.chs_vip.slink_poll_bit0(CarSocCtrlPulpdEocAddr, pulpd_exit_code, 20);
+              fix.slink_read_reg(PulpdRetAddr, pulpd_ret_val, 20);
+              if (pulpd_ret_val[30:0] != 'h0) $error("[SLINK PULP] FAILED: return code %x", pulpd_ret_val);
+              else $display("[SLINK PULP] SUCCESS");
             end
-            // Write boot enable
-            $display("[SLINK PULPD] Write PULP cluster boot enable");
-            fix.chs_vip.slink_write_32(CarSocCtrlPulpdBootEnAddr, 32'h1);
-            // Write fetch enable
-            $display("[SLINK PULPD] Write PULP cluster fetch enable");
-            fix.chs_vip.slink_write_32(CarSocCtrlPulpdFetchEnAddr, 32'h1);
-
-            // Poll memory address for PULP EOC
-            fix.chs_vip.slink_poll_bit0(CarSocCtrlPulpdEocAddr, pulpd_exit_code, 20);
-            fix.slink_read_reg(PulpdRetAddr, pulpd_ret_val, 20);
-            if (pulpd_ret_val[30:0] != 'h0) $error("[SLINK PULP] FAILED: return code %x", pulpd_ret_val);
-            else $display("[SLINK PULP] SUCCESS");
           end
           default: begin
             $fatal(1, "Unsupported boot mode %d (reserved)!", pulpd_boot_mode);
@@ -558,11 +578,6 @@ module tb_astral;
 
         wait (pad_configured.triggered);
 
-        // Writing max burst length in Hyperbus configuration registers to
-        // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
-
         $display("[TB] %t - Enabling spatz clock for stand-alone tests ", $realtime);
         // Clock island after PoR
         fix.chs_vip.slink_write_32(SpatzdClkEnRegAddr, 32'h1);
@@ -573,6 +588,8 @@ module tb_astral;
         case (spatzd_boot_mode)
           0: begin
             // JTAG
+            $display("[TB] INFO: Configuring Hyperbus through JTAG.");
+            fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
             $display("[JTAG SPATZD] Init ");
             fix.chs_vip.jtag_init();
             $display("[JTAG SPATZD] Halt the core and load the binary to L2 ");
@@ -606,33 +623,40 @@ module tb_astral;
 
           1: begin
             // SERIAL LINK
-            $display("[SLINK SPATZD] Preload the binary to L2 ");
-            fix.chs_vip.slink_elf_preload(spatzd_preload_elf, spatzd_binary_entry);
+            if (~fix.DutCfg.SerialLink)
+              $fatal(1, "[TB] ERROR: Preload mode 1 not supported.");
+            else begin
+              $display("[TB] INFO: Configuring Hyperbus through serial link.");
+              fix.gen_safed_vip.safed_vip.axi_write_32(HyperbusTburstMax, 32'd128);
 
-            // write start address into the csr
-            $display("[SLINK SPATZD] Write the CSR %x of spatz with the entry point %x", SpatzClusterPeriphStartAddr + SpatzClusterPeripheralBootControlOffset, spatzd_binary_entry);
-            fix.chs_vip.slink_write_32(SpatzClusterPeriphStartAddr + SpatzClusterPeripheralBootControlOffset, spatzd_binary_entry);
+              $display("[SLINK SPATZD] Preload the binary to L2 ");
+              fix.chs_vip.slink_elf_preload(spatzd_preload_elf, spatzd_binary_entry);
 
-            // Set interrupt on mailbox ids MBOX_SPATZ_CORE0_ID and MBOX_SPATZ_CORE1_ID
-            spatzd_reg_value = 64'h1;
-            $display("[SLINK SPATZD] Set mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100));
-            fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) , spatzd_reg_value);
+              // write start address into the csr
+              $display("[SLINK SPATZD] Write the CSR %x of spatz with the entry point %x", SpatzClusterPeriphStartAddr + SpatzClusterPeripheralBootControlOffset, spatzd_binary_entry);
+              fix.chs_vip.slink_write_32(SpatzClusterPeriphStartAddr + SpatzClusterPeripheralBootControlOffset, spatzd_binary_entry);
 
-            $display("[SLINK SPATZD] Set mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100));
-            fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) , spatzd_reg_value);
+              // Set interrupt on mailbox ids MBOX_SPATZ_CORE0_ID and MBOX_SPATZ_CORE1_ID
+              spatzd_reg_value = 64'h1;
+              $display("[SLINK SPATZD] Set mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100));
+              fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) , spatzd_reg_value);
 
-            // Enable interrupt on mailbox ids MBOX_SPATZ_CORE0_ID and MBOX_SPATZ_CORE1_ID
-            $display("[SLINK SPATZD] Enable mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) ,spatzd_reg_value);
-            fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) , spatzd_reg_value);
+              $display("[SLINK SPATZD] Set mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100));
+              fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_SET_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) , spatzd_reg_value);
 
-            $display("[SLINK SPATZD] Enable mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) ,spatzd_reg_value);
-            fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) , spatzd_reg_value);
+              // Enable interrupt on mailbox ids MBOX_SPATZ_CORE0_ID and MBOX_SPATZ_CORE1_ID
+              $display("[SLINK SPATZD] Enable mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) ,spatzd_reg_value);
+              fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE0_ID*32'h100) , spatzd_reg_value);
 
-            // Poll memory address for Spatz EOC
-            fix.chs_vip.slink_poll_bit0(SpatzClusterPeriphStartAddr + SpatzClusterPeripheralsEocOffset, spatzd_exit_code, 20);
-            spatzd_exit_code >>= 1;
-            if (spatzd_exit_code) $error("[SLINK SPATZ] FAILED: return code %0d", spatzd_exit_code);
-            else $display("[SLINK SPATZ] SUCCESS");
+              $display("[SLINK SPATZD] Enable mailbox interrupt ID  %x at %x ",MBOX_SPATZ_CORE0_ID, CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) ,spatzd_reg_value);
+              fix.chs_vip.slink_write_32(CAR_MBOX_BASE +  MBOX_INT_SND_EN_OFFSET + (MBOX_SPATZ_CORE1_ID*32'h100) , spatzd_reg_value);
+
+              // Poll memory address for Spatz EOC
+              fix.chs_vip.slink_poll_bit0(SpatzClusterPeriphStartAddr + SpatzClusterPeripheralsEocOffset, spatzd_exit_code, 20);
+              spatzd_exit_code >>= 1;
+              if (spatzd_exit_code) $error("[SLINK SPATZ] FAILED: return code %0d", spatzd_exit_code);
+              else $display("[SLINK SPATZ] SUCCESS");
+            end
           end
 
           default: begin
