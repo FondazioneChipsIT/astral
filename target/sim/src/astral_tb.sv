@@ -109,7 +109,7 @@ module tb_astral;
       fix.chs_vip.wait_for_reset();
 
       // Wait for FLL lock
-      fix.wait_fll_lock();
+      fix.wait_fll_lock(bypass_pll);
 
       // Initialize JTAG at first
       fix.chs_vip.jtag_init();
@@ -134,6 +134,7 @@ module tb_astral;
         $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
 `endif
       end
+
 
       // Writing max burst length in Hyperbus configuration registers to
       // prevent the Verification IPs from triggering timing checks.
@@ -239,9 +240,6 @@ module tb_astral;
       if (!$value$plusargs("SAFED_BOOTMODE=%d", safed_boot_mode))   safed_boot_mode   = 0;
       if (!$value$plusargs("SAFED_BINARY=%s",   safed_preload_elf)) safed_preload_elf = "";
 
-      // PLL bypass
-      fix.set_bypass_pll(bypass_pll);
-
       // set secure boot mode
       fix.set_secure_boot(secure_boot);
 
@@ -253,9 +251,10 @@ module tb_astral;
         fix.gen_safed_vip.safed_vip.safed_wait_for_reset();
 
         // Wait for FLL lock
-        fix.wait_fll_lock();
+        fix.wait_fll_lock(bypass_pll);
 
         wait (pad_configured.triggered);
+
 
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
@@ -302,9 +301,6 @@ module tb_astral;
       if (!$value$plusargs("SECD_BINARY=%s",   secd_preload_elf)) secd_preload_elf = "";
       if (!$value$plusargs("SECD_BOOTMODE=%d", secd_boot_mode))   secd_boot_mode   = 0;
 
-      // PLL bypass
-      fix.set_bypass_pll(bypass_pll);
-
       // set secure boot mode
       fix.set_secure_boot(secure_boot);
 
@@ -316,7 +312,7 @@ module tb_astral;
         fix.chs_vip.wait_for_reset();
 
         // Wait for FLL lock
-        fix.wait_fll_lock();
+        fix.wait_fll_lock(bypass_pll);
 
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
@@ -382,11 +378,8 @@ module tb_astral;
         // Wait for system reset from Cheshire VIP
         fix.chs_vip.wait_for_reset();
 
-        // PLL bypass
-        fix.set_bypass_pll(bypass_pll);
-
         // Wait for FLL lock
-        fix.wait_fll_lock();
+        fix.wait_fll_lock(bypass_pll);
 
         // Configure padframe for Serial Link usage depending
         // on the selected preload-mode
@@ -492,6 +485,7 @@ module tb_astral;
 
         wait (pad_configured.triggered);
 
+
         $display("[TB] %t - Enabling PULP cluster clock for stand-alone tests ", $realtime);
         // Clock island after PoR
         fix.chs_vip.slink_write_32(CarSocCtrlPulpdClkEnRegAddr, 32'h1);
@@ -542,9 +536,6 @@ module tb_astral;
       if (!$value$plusargs("SPATZD_BOOTMODE=%d", spatzd_boot_mode))   spatzd_boot_mode   = 0;
       if (!$value$plusargs("SPATZD_BINARY=%s",   spatzd_preload_elf)) spatzd_preload_elf = "";
 
-      // PLL bypass
-      fix.set_bypass_pll(bypass_pll);
-
       // set secure boot mode
       fix.set_secure_boot(secure_boot);
 
@@ -554,7 +545,7 @@ module tb_astral;
         fix.chs_vip.wait_for_reset();
 
         // Wait for FLL lock
-        fix.wait_fll_lock();
+        fix.wait_fll_lock(bypass_pll);
 
         wait (pad_configured.triggered);
 

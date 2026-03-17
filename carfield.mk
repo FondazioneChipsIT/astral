@@ -17,13 +17,15 @@
 # Generic variable initialization #
 ###################################
 
+TECHNOLOGY := gf22
+
 CAR_ROOT    ?= $(shell $(BENDER) path carfield)
 CAR_HW_DIR  := $(CAR_ROOT)/hw
 CAR_SW_DIR  := $(CAR_ROOT)/sw
 CAR_TGT_DIR := $(CAR_ROOT)/target
 CAR_XIL_DIR := $(CAR_TGT_DIR)/xilinx
 CAR_SIM_DIR := $(CAR_TGT_DIR)/sim
-CAR_TECH_DIR := $(CAR_TGT_DIR)/gf22
+CAR_TECH_DIR := $(CAR_TGT_DIR)/$(TECHNOLOGY)
 SECD_ROOT ?= $(shell $(BENDER) path opentitan)
 
 # Questasim
@@ -50,7 +52,7 @@ include $(CAR_ROOT)/bender-safed.mk
 ######################
 
 CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
-CAR_NONFREE_COMMIT ?= 62f0ab78fa0105a938282931afc9ebd61f56a153 # main
+CAR_NONFREE_COMMIT ?= d9deefd7a755412555804de898d2f8d937386025 # main
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC
@@ -409,9 +411,9 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 # Technology #
 ##############
-tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/gf22.git
+tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/$(TECHNOLOGY).git
 # no commit by default, change during development
-tech-commit := 9b9b70aed9877369eab68bb64c45fcceb62488ed # branch: main
+tech-commit := 0bdf92dc47b72c64ea8bbd15a21e24089c48ef32 # branch: main
 
 tech-clone:
 	git clone $(tech-repo) $(CAR_TECH_DIR)

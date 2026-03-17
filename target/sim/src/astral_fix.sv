@@ -988,9 +988,13 @@ module astral_fixture;
     data = beats[0];
   endtask
 
-  task wait_fll_lock();
-    @(posedge i_dut.fll_lock);
-    @(posedge i_dut.clk_fll_out);
+  task wait_fll_lock(input logic bypass_pll);
+    set_bypass_pll(1);
+    if (~bypass_pll) begin
+      @(posedge i_dut.fll_lock);
+      @(posedge i_dut.clk_fll_out);
+      set_bypass_pll(0);
+    end
   endtask: wait_fll_lock
   /*
   task automatic configure_sl_pad(ref bit jtag_check_write);

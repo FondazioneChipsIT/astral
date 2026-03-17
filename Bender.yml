@@ -144,36 +144,35 @@ sources:
     files:
       - utils/lint/spyglass/src/carfield_wrap.sv
 
-  - target: all(synthesis, not(fpga))
-    files:
-      - target/gf22/sourcecode/tc_clk.sv
-      - target/gf22/sourcecode/tc_sram.sv
-      - target/gf22/sourcecode/fll_wrap.sv
-      - target/gf22/sourcecode/configurable_delay.sv
-      - target/gf22/sourcecode/tc_pad.sv
-
   - target: tech_sim
     files:
-      # TODO: add technology dependent memory cells
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_128x40m2b1w0.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x32m2b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x39m4b1w0.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x44m2b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x46m2b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x64m2b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_256x128m2b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_512x39m4b1w0.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_1024x64m4b1w1.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_128x264m1b1w0.v
-      # - tech/sourcecode/macros/rf_sp_uhse_rvt_mvt_1024x39m4b1w0.v
-      # - tech/sourcecode/macros/sram_dp_hse_rvt_mvt_16384x8m16b8w1.v
-      # - tech/sourcecode/macros/sram_sp_hse_rvt_mvt_2560x76m4b4w0.v
-      # - tech/sourcecode/macros/sram_sp_hse_rvt_mvt_4096x76m4b4w0.v
-      # - tech/sourcecode/macros/sram_sp_hse_rvt_mvt_16384x39m8b8w0.v
-      # - tech/sourcecode/tc_sram.sv
-      - target/gf22/sourcecode/verilog/IN22FDX_GPIO18_10M3S40PI.v
-      - target/gf22/sourcecode/tc_pad.sv
-      # FLL Model
+      # Standard cells
+      - target/gf22/sourcecode/verilog/rtl_primitives.v
+      - target/gf22/sourcecode/verilog/gf22nspvlogl20udl116f.v
+      - target/gf22/sourcecode/tc_clk.sv
+      - target/gf22/sourcecode/sync.sv
+      - target/gf22/sourcecode/configurable_delay.sv
+      # SRAM libraries
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p64x28m4b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p64x78m4b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p128x40m2b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p128x48m2b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p128x64m2b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x32m2b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x36m2b1w1c0p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x48m2b1w1c0p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x64m2b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x128m2b2w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p256x136m2b2w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p1024x32m4b1w1c0p0d0l0rm3sdrw01.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p1024x39m4b1w1c0p0d0l0rm3sdrw01.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p1024x64m4b1w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/saduvssd8ULTRALOW1p2048x64m4b2w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/sasduvssd8ULTRALOW1p2560x76m16b4w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/sasduvssd8ULTRALOW1p4096x76m16b4w1c1p0d0l0rm3sdrw11.v
+      - target/gf22/sourcecode/verilog/sasduvssd8ULTRALOW1p8192x32m16b2w1c0p0d0l0rm3sdrw01.v
+      - target/gf22/sourcecode/verilog/sasduvssd8ULTRALOW1p8192x39m16b2w1c0p0d0l0rm3sdrw01.v
+      - target/gf22/sourcecode/tc_sram.sv
       - target/gf22/sourcecode/fll/FLL_digital/FLLPkg.vhd
       - target/gf22/sourcecode/fll/FLL_digital/FLL_clk_divider.vhd
       - target/gf22/sourcecode/fll/FLL_digital/FLL_clk_period_quantizer.vhd
@@ -194,7 +193,17 @@ sources:
       - target/gf22/sourcecode/fll/behavioral/gf22_FLL_model.vhd
       - target/gf22/sourcecode/fll_wrap.sv
       # PAD Model
-      # - tech/sourcecode/ptme_ram.sv
+      - target/gf22/sourcecode/verilog/IN22FDX_GPIO18_10M3S40PI.v
+      - target/gf22/sourcecode/tc_pad.sv
+
+  - target: all(synthesis, not(fpga))
+    files:
+      - target/gf22/sourcecode/tc_clk.sv
+      - target/gf22/sourcecode/tc_sram.sv
+      - target/gf22/sourcecode/fll_wrap.sv
+      - target/gf22/sourcecode/configurable_delay.sv
+      - target/gf22/sourcecode/tc_pad.sv
+      - target/gf22/sourcecode/sync.sv
 
   - target: all(xilinx, fpga, xilinx_vanilla)
     files:
@@ -209,21 +218,6 @@ sources:
       - target/xilinx/xilinx_ips/carfield_ip/src/carfield_xilinx.sv
       - target/xilinx/xilinx_ips/carfield_ip/src/carfield_xilinx_ip.v
       - target/xilinx/src/overrides/tc_clk_xilinx.sv
-
-  - target: intel16_elab_only
-    files:
-      # - tech/sourcecode/macros/sram_256x32.v
-      # - tech/sourcecode/macros/sram_128x40.v
-      # - tech/sourcecode/macros/sram_256x128.v
-      # - tech/sourcecode/macros/sram_256x44.v
-      # - tech/sourcecode/macros/sram_256x46.v
-      # - tech/sourcecode/tc_clk.sv
-      # - tech/sourcecode/tc_sram.sv
-      - nonfree/intel16/sourcecode/tc_clk.sv
-      - nonfree/intel16/sourcecode/tc_sram.sv
-      - nonfree/intel16/sourcecode/configurable_delay.sv
-      - nonfree/intel16/sourcecode/tc_sram_impl.sv
-      - nonfree/intel16/sourcecode/sync.sv
 
 vendor_package:
   - name: reggen
