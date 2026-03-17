@@ -9,7 +9,10 @@ xilinx_bit_bd = $(CAR_XIL_DIR)/flavor_bd/out/design_1_wrapper.bit
 
 # This flavor requires pre-compiled Xilinx IPs
 xilinx_ips_names_bd := carfield_ip
+xilinx_ips_names_carfield := xilinx_rom_bank_1024x22 xilinx_rom_bank_8192x40
+
 # Path to compiled ips
+xilinx_ips_paths_carfield := $(foreach ip-name,$(xilinx_ips_names_carfield),$(xilinx_ip_dir)/$(ip-name)/$(ip-name).srcs/sources_1/ip/$(ip-name)/$(ip-name).xci)
 xilinx_ips_paths_bd := $(foreach ip-name,$(xilinx_ips_names_bd),$(xilinx_ip_dir)/$(ip-name)/$(ip-name).srcs/sources_1/ip/$(ip-name)/$(ip-name).xci)
 
 # Vivado variables
@@ -22,6 +25,8 @@ vivado_env_bd := \
     XILINX_HOST=$(XILINX_HOST) \
     XILINX_FPGA_PATH=$(XILINX_FPGA_PATH) \
     XILINX_BIT=$(xilinx_bit) \
+    XILINX_IP_PATHS="$(xilinx_ips_paths_bd)" \
+    XILINX_IP_PATHS_CARFIELD="$(xilinx_ips_paths_carfield)" \
     GEN_NO_HYPERBUS=$(GEN_NO_HYPERBUS) \
     GEN_EXT_JTAG=$(GEN_EXT_JTAG) \
     XILINX_ROUTED_DCP=$(XILINX_ROUTED_DCP) \
@@ -42,7 +47,7 @@ $(CAR_XIL_DIR)/flavor_bd/scripts/add_includes.tcl:
 	echo "" >> $@
 
 # Build block design bitstream
-$(CAR_XIL_DIR)/flavor_bd/out/%.bit: $(xilinx_ips_paths_bd) $(CAR_XIL_DIR)/flavor_bd/scripts/add_includes.tcl
+$(CAR_XIL_DIR)/flavor_bd/out/%.bit: $(xilinx_ips_paths_carfield) $(xilinx_ips_paths_bd) $(CAR_XIL_DIR)/flavor_bd/scripts/add_includes.tcl
 	mkdir -p $(CAR_XIL_DIR)/flavor_bd/out
 	cd $(CAR_XIL_DIR)/flavor_bd && $(vivado_env_bd) $(VIVADO) $(VIVADO_FLAGS) -source scripts/run.tcl
 	find $(CAR_XIL_DIR)/flavor_bd -name "*.ltx" -o -name "*.bit" -o -name "*routed.rpt" | xargs -I {} cp {} $(CAR_XIL_DIR)/flavor_bd/out
@@ -52,3 +57,4 @@ car-xil-clean-bd:
 	cd $(CAR_XIL_DIR)/flavor_bd && rm -rf scripts/add_includes.tcl* *.log *.jou *.str *.mif carfield_$(XILINX_BOARD) .Xil/
 
 .PHONY: car-xil-clean-bd
+

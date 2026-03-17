@@ -87,8 +87,9 @@ launch_runs synth_1
 wait_on_run synth_1
 open_run synth_1 -name synth_1
 
+
 # Instantiate ILA
-set DEBUG [llength [get_nets -hier -filter {MARK_DEBUG == 1}]]
+set DEBUG [llength [get_nets -hier -filter {MARK_DEBUG == 1 && NAME !~ *vio*}]]
 if ($DEBUG) {
   # Create core
   puts "Creating debug core..."
@@ -97,7 +98,7 @@ if ($DEBUG) {
    C_EN_STRG_QUAL true C_INPUT_PIPE_STAGES 0 C_TRIGIN_EN false C_TRIGOUT_EN false" [get_debug_cores u_ila_0]
   ## Clock
   set_property port_width 1 [get_debug_ports u_ila_0/clk]
-  connect_debug_port u_ila_0/clk [get_nets design_1_i/clk_wiz_0_clk_50]
+  connect_debug_port u_ila_0/clk [get_nets design_1_i/clk_wiz_0_clk_out2]
   # Get nets to debug
   set debugNets [lsort -dictionary [get_nets -hier -filter {MARK_DEBUG == 1}]]
   set netNameLast ""
@@ -131,6 +132,7 @@ if ($DEBUG) {
   implement_debug_core
   write_debug_probes -force probes.ltx
 }
+
 
 # Incremental implementation
 if {[info exists ::env(ROUTED_DCP)] && [file exists $::env(ROUTED_DCP)]} {
