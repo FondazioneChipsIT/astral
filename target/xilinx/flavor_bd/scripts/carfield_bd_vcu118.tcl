@@ -1,4 +1,9 @@
-
+# Copyright 2026 ETH Zurich, University of Bologna and Fondazione Chips-IT.
+# Solderpad Hardware License, Version 0.51, see LICENSE for details.
+# SPDX-License-Identifier: SHL-0.51
+#
+# This file was generated for vivado 2020.2
+#
 ################################################################
 # This is a generated script based on design: design_1
 #
