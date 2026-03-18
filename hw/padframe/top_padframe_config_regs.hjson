@@ -28,158 +28,762 @@
                 },
                 {
                     bits:"31:16"
-                    name: PADGROUP_COUNT
-                    desc: "The number of configurable pad groups."
-                    resval: 11
+                    name: PAD_COUNT
+                    desc: "The number of configurable pads."
+                    resval: 22
                 }
             ]
         }
         {
-            name: DRV_STR_CFG
-            desc: "Pad groups drive strength configuration register"
+            name: PAD_FLL_HOST
+            desc: "Configuration register for PAD_FLL_HOST"
             swaccess: "rw"
             hwaccess: "hro"
             fields: [
                 {
-                    bits: "1:0"
-                    name: DRV_STR_PG_1
-                    desc: "Drive strength for pad group 1"
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
                     resval: 0
                 },
                 {
                     bits: "3:2"
-                    name: DRV_STR_PG_2
-                    desc: "Drive strength for pad group 2"
-                    resval: 0
-                },
-                {
-                    bits: "5:4"
-                    name: DRV_STR_PG_3
-                    desc: "Drive strength for pad group 3"
-                    resval: 0
-                },
-                {
-                    bits: "7:6"
-                    name: DRV_STR_PG_4
-                    desc: "Drive strength for pad group 4"
-                    resval: 0
-                },
-                {
-                    bits: "9:8"
-                    name: DRV_STR_PG_5
-                    desc: "Drive strength for pad group 5"
-                    resval: 0
-                },
-                {
-                    bits: "11:10"
-                    name: DRV_STR_PG_6
-                    desc: "Drive strength for pad group 6"
-                    resval: 0
-                },
-                {
-                    bits: "13:12"
-                    name: DRV_STR_PG_7
-                    desc: "Drive strength for pad group 7"
-                    resval: 0
-                },
-                {
-                    bits: "15:14"
-                    name: DRV_STR_PG_8
-                    desc: "Drive strength for pad group 8"
-                    resval: 0
-                },
-                {
-                    bits: "17:16"
-                    name: DRV_STR_PG_9
-                    desc: "Drive strength for pad group 9"
-                    resval: 0
-                },
-                {
-                    bits: "19:18"
-                    name: DRV_STR_PG_10
-                    desc: "Drive strength for pad group 10"
-                    resval: 0
-                },
-                {
-                    bits: "21:20"
-                    name: DRV_STR_PG_11
-                    desc: "Drive strength for pad group 11"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
             ]
         }
         {
-            name: SLW_CFG
-            desc: "Pad groups slew enable configuration register. 0 for VDDIO=1.8V, 1 for VDDIO=1.6V or 1.2V"
+            name: PAD_FLL_SECD
+            desc: "Configuration register for PAD_FLL_SECD"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_JTAG_TDO
+            desc: "Configuration register for PAD_JTAG_TDO"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_UART_TX
+            desc: "Configuration register for PAD_UART_TX"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_GPIO_0
+            desc: "Configuration register for PAD_GPIO_0"
             swaccess: "rw"
             hwaccess: "hro"
             fields: [
                 {
                     bits: "0:0"
-                    name: SLW_PG_1
-                    desc: "Slew enable for pad group 1"
+                    name: PAD_EN
+                    desc: "Pad enable"
                     resval: 0
-                }
+                },
                 {
                     bits: "1:1"
-                    name: SLW_PG_2
-                    desc: "Slew enable for pad group 2"
+                    name: SLEW_EN
+                    desc: "Slew enable"
                     resval: 0
-                }
+                },
                 {
-                    bits: "2:2"
-                    name: SLW_PG_3
-                    desc: "Slew enable for pad group 3"
-                    resval: 0
-                }
-                {
-                    bits: "3:3"
-                    name: SLW_PG_4
-                    desc: "Slew enable for pad group 4"
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
                 {
                     bits: "4:4"
-                    name: SLW_PG_5
-                    desc: "Slew enable for pad group 5"
+                    name: PD_EN
+                    desc: "Pull down enable"
                     resval: 0
-                }
+                },
                 {
                     bits: "5:5"
-                    name: SLW_PG_6
-                    desc: "Slew enable for pad group 6"
+                    name: PU_EN
+                    desc: "Pull up enable"
                     resval: 0
-                }
+                },
                 {
                     bits: "6:6"
-                    name: SLW_PG_7
-                    desc: "Slew enable for pad group 7"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 0
+                },
+            ]
+        }
+        {
+            name: PAD_GPIO_1
+            desc: "Configuration register for PAD_GPIO_1"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 0
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
                 {
-                    bits: "7:7"
-                    name: SLW_PG_8
-                    desc: "Slew enable for pad group 8"
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 0
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 0
+                },
+            ]
+        }
+        {
+            name: PAD_GPIO_2
+            desc: "Configuration register for PAD_GPIO_2"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 0
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
                 {
-                    bits: "8:8"
-                    name: SLW_PG_9
-                    desc: "Slew enable for pad group 9"
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 0
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 0
+                },
+            ]
+        }
+        {
+            name: PAD_GPIO_3
+            desc: "Configuration register for PAD_GPIO_3"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 0
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
                 {
-                    bits: "9:9"
-                    name: SLW_PG_10
-                    desc: "Slew enable for pad group 10"
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 0
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 0
+                },
+            ]
+        }
+        {
+            name: PAD_JTAG_OT_TDO
+            desc: "Configuration register for PAD_JTAG_OT_TDO"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_OT_UART_TX
+            desc: "Configuration register for PAD_OT_UART_TX"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_SPIH_SCK
+            desc: "Configuration register for PAD_SPIH_SCK"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_SPIH_CSB
+            desc: "Configuration register for PAD_SPIH_CSB"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_SPIH_SD_0
+            desc: "Configuration register for PAD_SPIH_SD_0"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
                 {
-                    bits: "10:10"
-                    name: SLW_PG_11
-                    desc: "Slew enable for pad group 11"
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_SD_1
+            desc: "Configuration register for PAD_SPIH_SD_1"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
                     resval: 0
                 }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_SD_2
+            desc: "Configuration register for PAD_SPIH_SD_2"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_SD_3
+            desc: "Configuration register for PAD_SPIH_SD_3"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_SCK
+            desc: "Configuration register for PAD_SPIH_OT_SCK"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_CSB
+            desc: "Configuration register for PAD_SPIH_OT_CSB"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_SD_0
+            desc: "Configuration register for PAD_SPIH_OT_SD_0"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_SD_1
+            desc: "Configuration register for PAD_SPIH_OT_SD_1"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_SD_2
+            desc: "Configuration register for PAD_SPIH_OT_SD_2"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
+            ]
+        }
+        {
+            name: PAD_SPIH_OT_SD_3
+            desc: "Configuration register for PAD_SPIH_OT_SD_3"
+            swaccess: "rw"
+            hwaccess: "hro"
+            fields: [
+                {
+                    bits: "0:0"
+                    name: PAD_EN
+                    desc: "Pad enable"
+                    resval: 1
+                },
+                {
+                    bits: "1:1"
+                    name: SLEW_EN
+                    desc: "Slew enable"
+                    resval: 0
+                },
+                {
+                    bits: "3:2"
+                    name: DRV_STR
+                    desc: "Drive strength"
+                    resval: 0
+                }
+                {
+                    bits: "4:4"
+                    name: PD_EN
+                    desc: "Pull down enable"
+                    resval: 0
+                },
+                {
+                    bits: "5:5"
+                    name: PU_EN
+                    desc: "Pull up enable"
+                    resval: 1
+                },
+                {
+                    bits: "6:6"
+                    name: SMT_EN
+                    desc: "Schmitt trigger enable"
+                    resval: 1
+                },
             ]
         }
     ]
