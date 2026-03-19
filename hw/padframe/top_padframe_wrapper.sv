@@ -75,7 +75,7 @@ module top_padframe_wrapper
   resp_t error_slave_rsp;
 
   localparam int unsigned NUM_PAD_DOMAINS = 1;
-  localparam int unsigned REG_ADDR_WIDTH  = 4;
+  localparam int unsigned REG_ADDR_WIDTH  = 7;
   typedef struct packed {
     int unsigned idx;
     logic [REG_ADDR_WIDTH-1:0] start_addr;
@@ -83,7 +83,7 @@ module top_padframe_wrapper
   } addr_rule_t;
 
   localparam addr_rule_t[NUM_PAD_DOMAINS-1:0] ADDR_DEMUX_RULES = '{
-    '{ idx: 0, start_addr: 4'd0,  end_addr: 4'd12}
+    '{ idx: 0, start_addr: 7'd0,  end_addr: 7'd92}
   };
 
   logic[$clog2(NUM_PAD_DOMAINS+1)-1:0] pad_domain_sel; // +1 since there is an additional error slave
@@ -197,95 +197,265 @@ module top_padframe_wrapper
     .config_rsp_o (    )
   );
 
-assign static_connection_signals_soc2pad.botl = '{
-    drive_strength_grp_1:  reg2hw.drv_str_cfg.drv_str_pg_1,
-    drive_strength_grp_2:  reg2hw.drv_str_cfg.drv_str_pg_2,
-    drive_strength_grp_3:  reg2hw.drv_str_cfg.drv_str_pg_3,
-    drive_strength_grp_4:  reg2hw.drv_str_cfg.drv_str_pg_4,
-    drive_strength_grp_5:  reg2hw.drv_str_cfg.drv_str_pg_5,
-    drive_strength_grp_6:  reg2hw.drv_str_cfg.drv_str_pg_6,
-    drive_strength_grp_7:  reg2hw.drv_str_cfg.drv_str_pg_7,
-    drive_strength_grp_8:  reg2hw.drv_str_cfg.drv_str_pg_8,
-    drive_strength_grp_9:  reg2hw.drv_str_cfg.drv_str_pg_9,
-    drive_strength_grp_10: reg2hw.drv_str_cfg.drv_str_pg_10,
-    drive_strength_grp_11: reg2hw.drv_str_cfg.drv_str_pg_11,
-    slew_en_grp_1:         reg2hw.slw_cfg.slw_pg_1,
-    slew_en_grp_2:         reg2hw.slw_cfg.slw_pg_2,
-    slew_en_grp_3:         reg2hw.slw_cfg.slw_pg_3,
-    slew_en_grp_4:         reg2hw.slw_cfg.slw_pg_4,
-    slew_en_grp_5:         reg2hw.slw_cfg.slw_pg_5,
-    slew_en_grp_6:         reg2hw.slw_cfg.slw_pg_6,
-    slew_en_grp_7:         reg2hw.slw_cfg.slw_pg_7,
-    slew_en_grp_8:         reg2hw.slw_cfg.slw_pg_8,
-    slew_en_grp_9:         reg2hw.slw_cfg.slw_pg_9,
-    slew_en_grp_10:        reg2hw.slw_cfg.slw_pg_10,
-    slew_en_grp_11:        reg2hw.slw_cfg.slw_pg_11,
-    fll_host_clk_o:        signals_soc2pad.fll_host_clk_o,
-    fll_secd_clk_o:        signals_soc2pad.fll_secd_clk_o,
-    gpio_v_o_0:            signals_soc2pad.gpio_v_o_0,
-    gpio_v_o_1:            signals_soc2pad.gpio_v_o_1,
-    gpio_v_o_2:            signals_soc2pad.gpio_v_o_2,
-    gpio_v_o_3:            signals_soc2pad.gpio_v_o_3,
-    gpio_v_oen_i_0:        signals_soc2pad.gpio_v_oen_i_0,
-    gpio_v_oen_i_1:        signals_soc2pad.gpio_v_oen_i_1,
-    gpio_v_oen_i_2:        signals_soc2pad.gpio_v_oen_i_2,
-    gpio_v_oen_i_3:        signals_soc2pad.gpio_v_oen_i_3,
-    jtag_ot_tdo_o:         signals_soc2pad.jtag_ot_tdo_o,
-    jtag_tdo_o:            signals_soc2pad.jtag_tdo_o,
-    ot_uart_tx_o:          signals_soc2pad.ot_uart_tx_o,
-    spih_csb_o_1:          signals_soc2pad.spih_csb_o_1,
-    spih_ot_csb_o:         signals_soc2pad.spih_ot_csb_o,
-    spih_ot_sck_o:         signals_soc2pad.spih_ot_sck_o,
-    spih_ot_sd_o_0:        signals_soc2pad.spih_ot_sd_o_0,
-    spih_ot_sd_o_1:        signals_soc2pad.spih_ot_sd_o_1,
-    spih_ot_sd_o_2:        signals_soc2pad.spih_ot_sd_o_2,
-    spih_ot_sd_o_3:        signals_soc2pad.spih_ot_sd_o_3,
-    spih_ot_sd_oen_i_0:    signals_soc2pad.spih_ot_sd_oen_i_0,
-    spih_ot_sd_oen_i_1:    signals_soc2pad.spih_ot_sd_oen_i_1,
-    spih_ot_sd_oen_i_2:    signals_soc2pad.spih_ot_sd_oen_i_2,
-    spih_ot_sd_oen_i_3:    signals_soc2pad.spih_ot_sd_oen_i_3,
-    spih_sck_o:            signals_soc2pad.spih_sck_o,
-    spih_sd_o_0:           signals_soc2pad.spih_sd_o_0,
-    spih_sd_o_1:           signals_soc2pad.spih_sd_o_1,
-    spih_sd_o_2:           signals_soc2pad.spih_sd_o_2,
-    spih_sd_o_3:           signals_soc2pad.spih_sd_o_3,
-    spih_sd_oen_i_0:       signals_soc2pad.spih_sd_oen_i_0,
-    spih_sd_oen_i_1:       signals_soc2pad.spih_sd_oen_i_1,
-    spih_sd_oen_i_2:       signals_soc2pad.spih_sd_oen_i_2,
-    spih_sd_oen_i_3:       signals_soc2pad.spih_sd_oen_i_3,
-    uart_tx_o:             signals_soc2pad.uart_tx_o
-  };
+  // pad_fll_host
+  assign static_connection_signals_soc2pad.botl.fll_host_clk_o   = signals_soc2pad.fll_host_clk_o;
+  assign static_connection_signals_soc2pad.botl.fll_host_drv_str = reg2hw.pad_fll_host.drv_str;
+  assign static_connection_signals_soc2pad.botl.fll_host_slew_en = reg2hw.pad_fll_host.slew_en;
 
-  assign signals_pad2soc = '{
-    boot_mode_i_0:   static_connection_signals_pad2soc.botl.boot_mode_i_0,
-    boot_mode_i_1:   static_connection_signals_pad2soc.botl.boot_mode_i_1,
-    fll_bypass_i:    static_connection_signals_pad2soc.botl.fll_bypass_i,
-    gpio_v_i_0:      static_connection_signals_pad2soc.botl.gpio_v_i_0,
-    gpio_v_i_1:      static_connection_signals_pad2soc.botl.gpio_v_i_1,
-    gpio_v_i_2:      static_connection_signals_pad2soc.botl.gpio_v_i_2,
-    gpio_v_i_3:      static_connection_signals_pad2soc.botl.gpio_v_i_3,
-    jtag_ot_tclk_i:  static_connection_signals_pad2soc.botl.jtag_ot_tclk_i,
-    jtag_ot_tdi_i:   static_connection_signals_pad2soc.botl.jtag_ot_tdi_i,
-    jtag_ot_tms_i:   static_connection_signals_pad2soc.botl.jtag_ot_tms_i,
-    jtag_ot_trst_ni: static_connection_signals_pad2soc.botl.jtag_ot_trst_ni,
-    jtag_tclk_i:     static_connection_signals_pad2soc.botl.jtag_tclk_i,
-    jtag_tdi_i:      static_connection_signals_pad2soc.botl.jtag_tdi_i,
-    jtag_tms_i:      static_connection_signals_pad2soc.botl.jtag_tms_i,
-    jtag_trst_ni:    static_connection_signals_pad2soc.botl.jtag_trst_ni,
-    ot_boot_mode_i:  static_connection_signals_pad2soc.botl.ot_boot_mode_i,
-    ot_uart_rx_i:    static_connection_signals_pad2soc.botl.ot_uart_rx_i,
-    pwr_on_rst_ni:   static_connection_signals_pad2soc.botl.pwr_on_rst_ni,
-    ref_clk_i:       static_connection_signals_pad2soc.botl.ref_clk_i,
-    secure_boot_i:   static_connection_signals_pad2soc.botl.secure_boot_i,
-    spih_ot_sd_i_0:  static_connection_signals_pad2soc.botl.spih_ot_sd_i_0,
-    spih_ot_sd_i_1:  static_connection_signals_pad2soc.botl.spih_ot_sd_i_1,
-    spih_ot_sd_i_2:  static_connection_signals_pad2soc.botl.spih_ot_sd_i_2,
-    spih_ot_sd_i_3:  static_connection_signals_pad2soc.botl.spih_ot_sd_i_3,
-    spih_sd_i_0:     static_connection_signals_pad2soc.botl.spih_sd_i_0,
-    spih_sd_i_1:     static_connection_signals_pad2soc.botl.spih_sd_i_1,
-    spih_sd_i_2:     static_connection_signals_pad2soc.botl.spih_sd_i_2,
-    spih_sd_i_3:     static_connection_signals_pad2soc.botl.spih_sd_i_3,
-    uart_rx_i:       static_connection_signals_pad2soc.botl.uart_rx_i
-  };
+  // pad_fll_secd
+  assign static_connection_signals_soc2pad.botl.fll_secd_clk_o   = signals_soc2pad.fll_secd_clk_o;
+  assign static_connection_signals_soc2pad.botl.fll_secd_drv_str = reg2hw.pad_fll_secd.drv_str;
+  assign static_connection_signals_soc2pad.botl.fll_secd_slew_en = reg2hw.pad_fll_secd.slew_en;
+
+  // pad_fll_bypass
+  assign signals_pad2soc.fll_bypass_i = static_connection_signals_pad2soc.botl.fll_bypass_i;
+
+  // pad_pwr_on_rst_n
+  assign signals_pad2soc.pwr_on_rst_ni = static_connection_signals_pad2soc.botl.pwr_on_rst_ni;
+
+  // pad_boot_mode_0
+  assign signals_pad2soc.boot_mode_i_0 = static_connection_signals_pad2soc.botl.boot_mode_i_0;
+
+  // pad_boot_mode_1
+  assign signals_pad2soc.boot_mode_i_1 = static_connection_signals_pad2soc.botl.boot_mode_i_1;
+
+  // pad_secure_boot
+  assign signals_pad2soc.secure_boot_i = static_connection_signals_pad2soc.botl.secure_boot_i;
+
+  // pad_ref_clk
+  assign signals_pad2soc.ref_clk_i = static_connection_signals_pad2soc.botl.ref_clk_i;
+
+  // pad_jtag_tclk
+  assign signals_pad2soc.jtag_tclk_i = static_connection_signals_pad2soc.botl.jtag_tclk_i;
+
+  // pad_jtag_trst_n
+  assign signals_pad2soc.jtag_trst_ni = static_connection_signals_pad2soc.botl.jtag_trst_ni;
+
+  // pad_jtag_tms
+  assign signals_pad2soc.jtag_tms_i = static_connection_signals_pad2soc.botl.jtag_tms_i;
+
+  // pad_jtag_tdi
+  assign signals_pad2soc.jtag_tdi_i = static_connection_signals_pad2soc.botl.jtag_tdi_i;
+
+  // pad_jtag_tdo
+  assign static_connection_signals_soc2pad.botl.jtag_tdo_o       = signals_soc2pad.jtag_tdo_o;
+  assign static_connection_signals_soc2pad.botl.jtag_tdo_drv_str = reg2hw.pad_jtag_tdo.drv_str;
+  assign static_connection_signals_soc2pad.botl.jtag_tdo_slew_en = reg2hw.pad_jtag_tdo.slew_en;
+
+  // pad_uart_tx
+  assign static_connection_signals_soc2pad.botl.uart_tx_o       = signals_soc2pad.uart_tx_o;
+  assign static_connection_signals_soc2pad.botl.uart_tx_drv_str = reg2hw.pad_uart_tx.drv_str;
+  assign static_connection_signals_soc2pad.botl.uart_tx_slew_en = reg2hw.pad_uart_tx.slew_en;
+
+  // pad_uart_rx
+  assign signals_pad2soc.uart_rx_i = static_connection_signals_pad2soc.botl.uart_rx_i;
+
+  // pad_gpio_0 - in
+  assign signals_pad2soc.gpio_v_i_0 = static_connection_signals_pad2soc.botl.gpio_v_i_0 & reg2hw.pad_gpio_0.pad_en;
+
+  // pad_gpio_0 - out
+  assign static_connection_signals_soc2pad.botl.gpio_v_o_0     =  signals_soc2pad.gpio_v_o_0     & reg2hw.pad_gpio_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_in_en   = ~signals_soc2pad.gpio_v_oen_i_0 & reg2hw.pad_gpio_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_out_en  =  signals_soc2pad.gpio_v_oen_i_0 & reg2hw.pad_gpio_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_pd_en   =  reg2hw.pad_gpio_0.pd_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_pu_en   =  reg2hw.pad_gpio_0.pu_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_slew_en =  reg2hw.pad_gpio_0.slew_en      & reg2hw.pad_gpio_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_smt_en  =  reg2hw.pad_gpio_0.smt_en       & reg2hw.pad_gpio_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_0_drv_str =  reg2hw.pad_gpio_0.drv_str      & {2{reg2hw.pad_gpio_0.pad_en}};
+
+  // pad_gpio_1 - in
+  assign signals_pad2soc.gpio_v_i_1 = static_connection_signals_pad2soc.botl.gpio_v_i_1 & reg2hw.pad_gpio_1.pad_en;
+
+  // pad_gpio_1 - out
+  assign static_connection_signals_soc2pad.botl.gpio_v_o_1     =  signals_soc2pad.gpio_v_o_1     & reg2hw.pad_gpio_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_in_en   = ~signals_soc2pad.gpio_v_oen_i_1 & reg2hw.pad_gpio_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_out_en  =  signals_soc2pad.gpio_v_oen_i_1 & reg2hw.pad_gpio_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_pd_en   =  reg2hw.pad_gpio_1.pd_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_pu_en   =  reg2hw.pad_gpio_1.pu_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_slew_en =  reg2hw.pad_gpio_1.slew_en      & reg2hw.pad_gpio_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_smt_en  =  reg2hw.pad_gpio_1.smt_en       & reg2hw.pad_gpio_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_1_drv_str =  reg2hw.pad_gpio_1.drv_str      & {2{reg2hw.pad_gpio_1.pad_en}};
+
+  // pad_gpio_2 - in
+  assign signals_pad2soc.gpio_v_i_2 = static_connection_signals_pad2soc.botl.gpio_v_i_2 & reg2hw.pad_gpio_2.pad_en;
+
+  // pad_gpio_2 - out
+  assign static_connection_signals_soc2pad.botl.gpio_v_o_2     =  signals_soc2pad.gpio_v_o_2     & reg2hw.pad_gpio_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_in_en   = ~signals_soc2pad.gpio_v_oen_i_2 & reg2hw.pad_gpio_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_out_en  =  signals_soc2pad.gpio_v_oen_i_2 & reg2hw.pad_gpio_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_pd_en   =  reg2hw.pad_gpio_2.pd_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_pu_en   =  reg2hw.pad_gpio_2.pu_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_slew_en =  reg2hw.pad_gpio_2.slew_en      & reg2hw.pad_gpio_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_smt_en  =  reg2hw.pad_gpio_2.smt_en       & reg2hw.pad_gpio_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_2_drv_str =  reg2hw.pad_gpio_2.drv_str      & {2{reg2hw.pad_gpio_2.pad_en}};
+
+  // pad_gpio_3 - in
+  assign signals_pad2soc.gpio_v_i_3 = static_connection_signals_pad2soc.botl.gpio_v_i_3 & reg2hw.pad_gpio_3.pad_en;
+
+  // pad_gpio_3 - out
+  assign static_connection_signals_soc2pad.botl.gpio_v_o_3     =  signals_soc2pad.gpio_v_o_3     & reg2hw.pad_gpio_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_in_en   = ~signals_soc2pad.gpio_v_oen_i_3 & reg2hw.pad_gpio_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_out_en  =  signals_soc2pad.gpio_v_oen_i_3 & reg2hw.pad_gpio_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_pd_en   =  reg2hw.pad_gpio_3.pd_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_pu_en   =  reg2hw.pad_gpio_3.pu_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_slew_en =  reg2hw.pad_gpio_3.slew_en      & reg2hw.pad_gpio_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_smt_en  =  reg2hw.pad_gpio_3.smt_en       & reg2hw.pad_gpio_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.gpio_3_drv_str =  reg2hw.pad_gpio_3.drv_str      & {2{reg2hw.pad_gpio_3.pad_en}};
+
+  // pad_ot_boot_mode
+  assign signals_pad2soc.ot_boot_mode_i = static_connection_signals_pad2soc.botl.ot_boot_mode_i;
+
+  // pad_jtag_ot_tclk
+  assign signals_pad2soc.jtag_ot_tclk_i = static_connection_signals_pad2soc.botl.jtag_ot_tclk_i;
+
+  // pad_jtag_ot_trst_n
+  assign signals_pad2soc.jtag_ot_trst_ni = static_connection_signals_pad2soc.botl.jtag_ot_trst_ni;
+
+  // pad_jtag_ot_tms
+  assign signals_pad2soc.jtag_ot_tms_i = static_connection_signals_pad2soc.botl.jtag_ot_tms_i;
+
+  // pad_jtag_ot_tdi
+  assign signals_pad2soc.jtag_ot_tdi_i = static_connection_signals_pad2soc.botl.jtag_ot_tdi_i;
+
+  // pad_jtag_ot_tdo
+  assign static_connection_signals_soc2pad.botl.jtag_ot_tdo_o       = signals_soc2pad.jtag_ot_tdo_o;
+  assign static_connection_signals_soc2pad.botl.jtag_ot_tdo_drv_str = reg2hw.pad_jtag_ot_tdo.drv_str;
+  assign static_connection_signals_soc2pad.botl.jtag_ot_tdo_slew_en = reg2hw.pad_jtag_ot_tdo.slew_en;
+
+  // pad_ot_uart_tx
+  assign static_connection_signals_soc2pad.botl.ot_uart_tx_o       = signals_soc2pad.ot_uart_tx_o;
+  assign static_connection_signals_soc2pad.botl.ot_uart_tx_drv_str = reg2hw.pad_ot_uart_tx.drv_str;
+  assign static_connection_signals_soc2pad.botl.ot_uart_tx_slew_en = reg2hw.pad_ot_uart_tx.slew_en;
+
+  // pad_ot_uart_rx
+  assign signals_pad2soc.ot_uart_rx_i = static_connection_signals_pad2soc.botl.ot_uart_rx_i;
+
+  // pad_spih_sck
+  assign static_connection_signals_soc2pad.botl.spih_sck_out_en  = reg2hw.pad_spih_sck.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sck_o       = signals_soc2pad.spih_sck_o  & reg2hw.pad_spih_sck.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sck_drv_str = reg2hw.pad_spih_sck.drv_str & {2{reg2hw.pad_spih_sck.pad_en}};
+  assign static_connection_signals_soc2pad.botl.spih_sck_slew_en = reg2hw.pad_spih_sck.slew_en & reg2hw.pad_spih_sck.pad_en;
+
+  // pad_spih_csb
+  assign static_connection_signals_soc2pad.botl.spih_csb_out_en  = reg2hw.pad_spih_csb.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_csb_o_1     = signals_soc2pad.spih_csb_o_1 & reg2hw.pad_spih_csb.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_csb_drv_str = reg2hw.pad_spih_csb.drv_str  & {2{reg2hw.pad_spih_csb.pad_en}};
+  assign static_connection_signals_soc2pad.botl.spih_csb_slew_en = reg2hw.pad_spih_csb.slew_en  & reg2hw.pad_spih_csb.pad_en;
+
+  // pad_spih_sd_0 - in
+  assign signals_pad2soc.spih_sd_i_0 = static_connection_signals_pad2soc.botl.spih_sd_i_0 | ~reg2hw.pad_spih_sd_0.pad_en;
+
+  // pad_spih_sd_0 - out
+  assign static_connection_signals_soc2pad.botl.spih_sd_o_0       =  signals_soc2pad.spih_sd_o_0     & reg2hw.pad_spih_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_in_en   = ~signals_soc2pad.spih_sd_oen_i_0 & reg2hw.pad_spih_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_out_en  =  signals_soc2pad.spih_sd_oen_i_0 & reg2hw.pad_spih_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_pd_en   =  reg2hw.pad_spih_sd_0.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_pu_en   =  reg2hw.pad_spih_sd_0.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_slew_en =  reg2hw.pad_spih_sd_0.slew_en    & reg2hw.pad_spih_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_smt_en  =  reg2hw.pad_spih_sd_0.smt_en     & reg2hw.pad_spih_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_0_drv_str =  reg2hw.pad_spih_sd_0.drv_str    & {2{reg2hw.pad_spih_sd_0.pad_en}};
+
+  // pad_spih_sd_1 - in
+  assign signals_pad2soc.spih_sd_i_1 = static_connection_signals_pad2soc.botl.spih_sd_i_1 | ~reg2hw.pad_spih_sd_1.pad_en;
+
+  // pad_spih_sd_1 - out
+  assign static_connection_signals_soc2pad.botl.spih_sd_o_1       =  signals_soc2pad.spih_sd_o_1     & reg2hw.pad_spih_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_in_en   = ~signals_soc2pad.spih_sd_oen_i_1 & reg2hw.pad_spih_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_out_en  =  signals_soc2pad.spih_sd_oen_i_1 & reg2hw.pad_spih_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_pd_en   =  reg2hw.pad_spih_sd_1.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_pu_en   =  reg2hw.pad_spih_sd_1.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_slew_en =  reg2hw.pad_spih_sd_1.slew_en    & reg2hw.pad_spih_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_smt_en  =  reg2hw.pad_spih_sd_1.smt_en     & reg2hw.pad_spih_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_1_drv_str =  reg2hw.pad_spih_sd_1.drv_str    & {2{reg2hw.pad_spih_sd_1.pad_en}};
+
+  // pad_spih_sd_2 - in
+  assign signals_pad2soc.spih_sd_i_2 = static_connection_signals_pad2soc.botl.spih_sd_i_2 | ~reg2hw.pad_spih_sd_2.pad_en;
+
+  // pad_spih_sd_2 - out
+  assign static_connection_signals_soc2pad.botl.spih_sd_o_2       =  signals_soc2pad.spih_sd_o_2     & reg2hw.pad_spih_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_in_en   = ~signals_soc2pad.spih_sd_oen_i_2 & reg2hw.pad_spih_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_out_en  =  signals_soc2pad.spih_sd_oen_i_2 & reg2hw.pad_spih_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_pd_en   =  reg2hw.pad_spih_sd_2.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_pu_en   =  reg2hw.pad_spih_sd_2.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_slew_en =  reg2hw.pad_spih_sd_2.slew_en    & reg2hw.pad_spih_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_smt_en  =  reg2hw.pad_spih_sd_2.smt_en     & reg2hw.pad_spih_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_2_drv_str =  reg2hw.pad_spih_sd_2.drv_str    & {2{reg2hw.pad_spih_sd_2.pad_en}};
+
+  // pad_spih_sd_3 - in
+  assign signals_pad2soc.spih_sd_i_3 = static_connection_signals_pad2soc.botl.spih_sd_i_3 | ~reg2hw.pad_spih_sd_3.pad_en;
+
+  // pad_spih_sd_3 - out
+  assign static_connection_signals_soc2pad.botl.spih_sd_o_3       =  signals_soc2pad.spih_sd_o_3     & reg2hw.pad_spih_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_in_en   = ~signals_soc2pad.spih_sd_oen_i_3 & reg2hw.pad_spih_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_out_en  =  signals_soc2pad.spih_sd_oen_i_3 & reg2hw.pad_spih_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_pd_en   =  reg2hw.pad_spih_sd_3.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_pu_en   =  reg2hw.pad_spih_sd_3.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_slew_en =  reg2hw.pad_spih_sd_3.slew_en    & reg2hw.pad_spih_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_smt_en  =  reg2hw.pad_spih_sd_3.smt_en     & reg2hw.pad_spih_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_sd_3_drv_str =  reg2hw.pad_spih_sd_3.drv_str    & {2{reg2hw.pad_spih_sd_3.pad_en}};
+
+  // pad_spih_ot_sck
+  assign static_connection_signals_soc2pad.botl.spih_ot_sck_out_en  = reg2hw.pad_spih_ot_sck.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sck_o       = signals_soc2pad.spih_ot_sck_o  & reg2hw.pad_spih_ot_sck.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sck_drv_str = reg2hw.pad_spih_ot_sck.drv_str & {2{reg2hw.pad_spih_ot_sck.pad_en}};
+  assign static_connection_signals_soc2pad.botl.spih_ot_sck_slew_en = reg2hw.pad_spih_ot_sck.slew_en & reg2hw.pad_spih_ot_sck.pad_en;
+
+  // pad_spih_ot_csb
+  assign static_connection_signals_soc2pad.botl.spih_ot_csb_out_en  = reg2hw.pad_spih_ot_csb.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_csb_o       = signals_soc2pad.spih_ot_csb_o   & reg2hw.pad_spih_ot_csb.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_csb_drv_str = reg2hw.pad_spih_ot_csb.drv_str  & {2{reg2hw.pad_spih_ot_csb.pad_en}};
+  assign static_connection_signals_soc2pad.botl.spih_ot_csb_slew_en = reg2hw.pad_spih_ot_csb.slew_en  & reg2hw.pad_spih_ot_csb.pad_en;
+
+  // pad_spih_ot_sd_0 - in
+  assign signals_pad2soc.spih_ot_sd_i_0 = static_connection_signals_pad2soc.botl.spih_ot_sd_i_0 | ~reg2hw.pad_spih_ot_sd_0.pad_en;
+
+  // pad_spih_ot_sd_0 - out
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_o_0       =  signals_soc2pad.spih_ot_sd_o_0     & reg2hw.pad_spih_ot_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_in_en   = ~signals_soc2pad.spih_ot_sd_oen_i_0 & reg2hw.pad_spih_ot_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_out_en  =  signals_soc2pad.spih_ot_sd_oen_i_0 & reg2hw.pad_spih_ot_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_pd_en   =  reg2hw.pad_spih_ot_sd_0.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_pu_en   =  reg2hw.pad_spih_ot_sd_0.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_slew_en =  reg2hw.pad_spih_ot_sd_0.slew_en    & reg2hw.pad_spih_ot_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_smt_en  =  reg2hw.pad_spih_ot_sd_0.smt_en     & reg2hw.pad_spih_ot_sd_0.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_0_drv_str =  reg2hw.pad_spih_ot_sd_0.drv_str    & {2{reg2hw.pad_spih_ot_sd_0.pad_en}};
+
+  // pad_spih_ot_sd_1 - in
+  assign signals_pad2soc.spih_ot_sd_i_1 = static_connection_signals_pad2soc.botl.spih_ot_sd_i_1 | ~reg2hw.pad_spih_ot_sd_1.pad_en;
+
+  // pad_spih_ot_sd_1 - out
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_o_1       =  signals_soc2pad.spih_ot_sd_o_1     & reg2hw.pad_spih_ot_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_in_en   = ~signals_soc2pad.spih_ot_sd_oen_i_1 & reg2hw.pad_spih_ot_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_out_en  =  signals_soc2pad.spih_ot_sd_oen_i_1 & reg2hw.pad_spih_ot_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_pd_en   =  reg2hw.pad_spih_ot_sd_1.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_pu_en   =  reg2hw.pad_spih_ot_sd_1.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_slew_en =  reg2hw.pad_spih_ot_sd_1.slew_en    & reg2hw.pad_spih_ot_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_smt_en  =  reg2hw.pad_spih_ot_sd_1.smt_en     & reg2hw.pad_spih_ot_sd_1.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_1_drv_str =  reg2hw.pad_spih_ot_sd_1.drv_str    & {2{reg2hw.pad_spih_ot_sd_1.pad_en}};
+
+  // pad_spih_ot_sd_2 - in
+  assign signals_pad2soc.spih_ot_sd_i_2 = static_connection_signals_pad2soc.botl.spih_ot_sd_i_2 | ~reg2hw.pad_spih_ot_sd_2.pad_en;
+
+  // pad_spih_ot_sd_2 - out
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_o_2       =  signals_soc2pad.spih_ot_sd_o_2     & reg2hw.pad_spih_ot_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_in_en   = ~signals_soc2pad.spih_ot_sd_oen_i_2 & reg2hw.pad_spih_ot_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_out_en  =  signals_soc2pad.spih_ot_sd_oen_i_2 & reg2hw.pad_spih_ot_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_pd_en   =  reg2hw.pad_spih_ot_sd_2.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_pu_en   =  reg2hw.pad_spih_ot_sd_2.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_slew_en =  reg2hw.pad_spih_ot_sd_2.slew_en    & reg2hw.pad_spih_ot_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_smt_en  =  reg2hw.pad_spih_ot_sd_2.smt_en     & reg2hw.pad_spih_ot_sd_2.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_2_drv_str =  reg2hw.pad_spih_ot_sd_2.drv_str    & {2{reg2hw.pad_spih_ot_sd_2.pad_en}};
+
+  // pad_spih_ot_sd_3 - in
+  assign signals_pad2soc.spih_ot_sd_i_3 = static_connection_signals_pad2soc.botl.spih_ot_sd_i_3 | ~reg2hw.pad_spih_ot_sd_3.pad_en;
+
+  // pad_spih_ot_sd_3 - out
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_o_3       =  signals_soc2pad.spih_ot_sd_o_3     & reg2hw.pad_spih_ot_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_in_en   = ~signals_soc2pad.spih_ot_sd_oen_i_3 & reg2hw.pad_spih_ot_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_out_en  =  signals_soc2pad.spih_ot_sd_oen_i_3 & reg2hw.pad_spih_ot_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_pd_en   =  reg2hw.pad_spih_ot_sd_3.pd_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_pu_en   =  reg2hw.pad_spih_ot_sd_3.pu_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_slew_en =  reg2hw.pad_spih_ot_sd_3.slew_en    & reg2hw.pad_spih_ot_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_smt_en  =  reg2hw.pad_spih_ot_sd_3.smt_en     & reg2hw.pad_spih_ot_sd_3.pad_en;
+  assign static_connection_signals_soc2pad.botl.spih_ot_sd_3_drv_str =  reg2hw.pad_spih_ot_sd_3.drv_str    & {2{reg2hw.pad_spih_ot_sd_3.pad_en}};
 
 endmodule

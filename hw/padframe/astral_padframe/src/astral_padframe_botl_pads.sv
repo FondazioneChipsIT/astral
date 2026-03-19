@@ -80,6 +80,7 @@ module astral_padframe_botl_pads
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_0 ( .int_io ( `io_pad_internals ) );
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_1 ( .int_io ( `io_pad_internals ) );
    tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_2 ( .int_io ( `io_pad_internals ) );
+   tc_pad_corner #( .tc_pad_config ( gf22_invecas_tc_pad_config ) ) i_corner_3 ( .int_io ( `io_pad_internals ) );
    tc_pad_pwr_mng #(
     .tc_pad_orientation ( tc_pad_pkg::H              ),
     .tc_pad_config      ( gf22_invecas_tc_pad_config )
@@ -155,8 +156,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.fll_host_clk_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_1        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_1 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.fll_host_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.fll_host_drv_str ),
     .int_io           ( `io_pad_internals         )
   );    
    tc_pad_bidir #(
@@ -173,8 +174,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.fll_secd_clk_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_1        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_1 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.fll_secd_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.fll_secd_drv_str ),
     .int_io           ( `io_pad_internals         )
   );    
    tc_pad_bidir #(
@@ -185,8 +186,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.fll_bypass_i   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -202,9 +203,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_pwr_on_rst_n_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.pwr_on_rst_ni   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -221,8 +222,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.boot_mode_i_0   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -239,8 +240,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.boot_mode_i_1   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -257,8 +258,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.secure_boot_i   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -276,7 +277,7 @@ module astral_padframe_botl_pads
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -293,8 +294,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_tclk_i   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -310,9 +311,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_trst_n_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_trst_ni   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -328,9 +329,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_tms_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_tms_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -346,9 +347,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_tdi_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_tdi_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -371,8 +372,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.jtag_tdo_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_2        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_2 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.jtag_tdo_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.jtag_tdo_drv_str ),
     .int_io           ( `io_pad_internals         )
   );    
    tc_pad_bidir #(
@@ -389,8 +390,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.uart_tx_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_3        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_3 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.uart_tx_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.uart_tx_drv_str ),
     .int_io           ( `io_pad_internals         )
   );    
    tc_pad_bidir #(
@@ -400,9 +401,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_uart_rx_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.uart_rx_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -417,16 +418,16 @@ module astral_padframe_botl_pads
   ) i_gpio_0 (
     .pad_io           ( pad_gpio_0_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.gpio_v_i_0       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.gpio_v_oen_i_0       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.gpio_0_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.gpio_0_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.gpio_0_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.gpio_0_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.gpio_v_o_0       ),
-    .output_en_i      ( static_connection_signals_soc2pad.gpio_v_oen_i_0      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_4        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_4 ),
+    .output_en_i      ( static_connection_signals_soc2pad.gpio_0_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.gpio_0_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.gpio_0_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -435,16 +436,16 @@ module astral_padframe_botl_pads
   ) i_gpio_1 (
     .pad_io           ( pad_gpio_1_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.gpio_v_i_1       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.gpio_v_oen_i_1       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.gpio_1_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.gpio_1_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.gpio_1_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.gpio_1_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.gpio_v_o_1       ),
-    .output_en_i      ( static_connection_signals_soc2pad.gpio_v_oen_i_1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_5        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_5 ),
+    .output_en_i      ( static_connection_signals_soc2pad.gpio_1_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.gpio_1_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.gpio_1_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -453,16 +454,16 @@ module astral_padframe_botl_pads
   ) i_gpio_2 (
     .pad_io           ( pad_gpio_2_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.gpio_v_i_2       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.gpio_v_oen_i_2       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.gpio_2_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.gpio_2_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.gpio_2_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.gpio_2_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.gpio_v_o_2       ),
-    .output_en_i      ( static_connection_signals_soc2pad.gpio_v_oen_i_2      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_6        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_6 ),
+    .output_en_i      ( static_connection_signals_soc2pad.gpio_2_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.gpio_2_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.gpio_2_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -471,16 +472,16 @@ module astral_padframe_botl_pads
   ) i_gpio_3 (
     .pad_io           ( pad_gpio_3_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.gpio_v_i_3       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.gpio_v_oen_i_3       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.gpio_3_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.gpio_3_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.gpio_3_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.gpio_3_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.gpio_v_o_3       ),
-    .output_en_i      ( static_connection_signals_soc2pad.gpio_v_oen_i_3      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_7        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_7 ),
+    .output_en_i      ( static_connection_signals_soc2pad.gpio_3_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.gpio_3_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.gpio_3_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_pwr_mng #(
@@ -546,8 +547,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.ot_boot_mode_i   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -564,8 +565,8 @@ module astral_padframe_botl_pads
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_ot_tclk_i   ),
     .input_en_i       ( 1'b1   ),
     .pu_en_i          ( 1'b0      ),
-    .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .pd_en_i          ( 1'b1      ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -581,9 +582,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_ot_trst_n_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_ot_trst_ni   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -599,9 +600,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_ot_tms_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_ot_tms_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -617,9 +618,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_jtag_ot_tdi_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.jtag_ot_tdi_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -642,8 +643,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.jtag_ot_tdo_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_11        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_11 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.jtag_ot_tdo_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.jtag_ot_tdo_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -660,8 +661,8 @@ module astral_padframe_botl_pads
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.ot_uart_tx_o       ),
     .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_10        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_10 ),
+    .slew_en_i        ( static_connection_signals_soc2pad.ot_uart_tx_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.ot_uart_tx_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -671,9 +672,9 @@ module astral_padframe_botl_pads
     .pad_io           ( pad_ot_uart_rx_pad        ),
     .pad2chip_o       ( static_connection_signals_pad2soc.ot_uart_rx_i   ),
     .input_en_i       ( 1'b1   ),
-    .pu_en_i          ( 1'b0      ),
+    .pu_en_i          ( 1'b1      ),
     .pd_en_i          ( 1'b0      ),
-    .schmitt_en_i     ( 1'b0 ),
+    .schmitt_en_i     ( 1'b1 ),
     .nand_in_i        ( 1'b0    ),
     .nand_out_o       (    ),
     .chip2pad_i       ( 1'b0                  ),
@@ -695,9 +696,9 @@ module astral_padframe_botl_pads
     .nand_in_i        ( 1'b0                      ),
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_sck_o       ),
-    .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_sck_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_sck_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_sck_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -713,9 +714,9 @@ module astral_padframe_botl_pads
     .nand_in_i        ( 1'b0                      ),
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_csb_o_1       ),
-    .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_csb_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_csb_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_csb_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -724,16 +725,16 @@ module astral_padframe_botl_pads
   ) i_spih_sd_0 (
     .pad_io           ( pad_spih_sd_0_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_sd_i_0       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_sd_oen_i_0       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_sd_0_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_sd_0_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_sd_0_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_sd_0_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_sd_o_0       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_oen_i_0      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_0_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_sd_0_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_sd_0_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -742,16 +743,16 @@ module astral_padframe_botl_pads
   ) i_spih_sd_1 (
     .pad_io           ( pad_spih_sd_1_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_sd_i_1       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_sd_oen_i_1       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_sd_1_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_sd_1_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_sd_1_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_sd_1_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_sd_o_1       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_oen_i_1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_1_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_sd_1_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_sd_1_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -760,16 +761,16 @@ module astral_padframe_botl_pads
   ) i_spih_sd_2 (
     .pad_io           ( pad_spih_sd_2_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_sd_i_2       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_sd_oen_i_2       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_sd_2_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_sd_2_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_sd_2_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_sd_2_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_sd_o_2       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_oen_i_2      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_2_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_sd_2_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_sd_2_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -778,16 +779,16 @@ module astral_padframe_botl_pads
   ) i_spih_sd_3 (
     .pad_io           ( pad_spih_sd_3_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_sd_i_3       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_sd_oen_i_3       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_sd_3_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_sd_3_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_sd_3_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_sd_3_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_sd_o_3       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_oen_i_3      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_9        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_9 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_sd_3_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_sd_3_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_sd_3_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -803,9 +804,9 @@ module astral_padframe_botl_pads
     .nand_in_i        ( 1'b0                      ),
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_sck_o       ),
-    .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sck_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_sck_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_sck_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -821,9 +822,9 @@ module astral_padframe_botl_pads
     .nand_in_i        ( 1'b0                      ),
     .nand_out_o       (                           ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_csb_o       ),
-    .output_en_i      ( 1'b1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_csb_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_csb_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_csb_drv_str ),
     .int_io           ( `io_pad_internals         )
   );   
    tc_pad_bidir #(
@@ -832,16 +833,16 @@ module astral_padframe_botl_pads
   ) i_spih_ot_sd_0 (
     .pad_io           ( pad_spih_ot_sd_0_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_ot_sd_i_0       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_ot_sd_oen_i_0       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_ot_sd_0_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_0_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_0_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_ot_sd_0_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_sd_o_0       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_oen_i_0      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_0_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_sd_0_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_sd_0_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -850,16 +851,16 @@ module astral_padframe_botl_pads
   ) i_spih_ot_sd_1 (
     .pad_io           ( pad_spih_ot_sd_1_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_ot_sd_i_1       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_ot_sd_oen_i_1       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_ot_sd_1_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_1_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_1_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_ot_sd_1_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_sd_o_1       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_oen_i_1      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_1_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_sd_1_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_sd_1_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -868,16 +869,16 @@ module astral_padframe_botl_pads
   ) i_spih_ot_sd_2 (
     .pad_io           ( pad_spih_ot_sd_2_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_ot_sd_i_2       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_ot_sd_oen_i_2       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_ot_sd_2_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_2_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_2_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_ot_sd_2_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_sd_o_2       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_oen_i_2      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_2_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_sd_2_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_sd_2_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
    tc_pad_bidir #(
@@ -886,16 +887,16 @@ module astral_padframe_botl_pads
   ) i_spih_ot_sd_3 (
     .pad_io           ( pad_spih_ot_sd_3_pad            ),
     .pad2chip_o       ( static_connection_signals_pad2soc.spih_ot_sd_i_3       ),
-    .input_en_i       ( ~static_connection_signals_soc2pad.spih_ot_sd_oen_i_3       ),
-    .pu_en_i          ( 1'b0          ),
-    .pd_en_i          ( 1'b0          ),
-    .schmitt_en_i     ( 1'b0     ),
+    .input_en_i       ( static_connection_signals_soc2pad.spih_ot_sd_3_in_en       ),
+    .pu_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_3_pu_en          ),
+    .pd_en_i          ( static_connection_signals_soc2pad.spih_ot_sd_3_pd_en          ),
+    .schmitt_en_i     ( static_connection_signals_soc2pad.spih_ot_sd_3_smt_en     ),
     .nand_in_i        ( 1'b0        ),
     .nand_out_o       (        ),
     .chip2pad_i       ( static_connection_signals_soc2pad.spih_ot_sd_o_3       ),
-    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_oen_i_3      ),
-    .slew_en_i        ( static_connection_signals_soc2pad.slew_en_grp_8        ),
-    .drive_strength_i ( static_connection_signals_soc2pad.drive_strength_grp_8 ),
+    .output_en_i      ( static_connection_signals_soc2pad.spih_ot_sd_3_out_en      ),
+    .slew_en_i        ( static_connection_signals_soc2pad.spih_ot_sd_3_slew_en        ),
+    .drive_strength_i ( static_connection_signals_soc2pad.spih_ot_sd_3_drv_str ),
     .int_io           ( `io_pad_internals         )
   );
 

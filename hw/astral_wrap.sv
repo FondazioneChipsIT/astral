@@ -150,9 +150,6 @@ module astral_wrap
   assign serial_link_data_in_s[0][6] = '0;
   assign serial_link_data_in_s[0][7] = '0;
 
-  // serial link
-  logic [SlinkNumChan-1:0][SlinkNumLanes-1:0] serial_link_data_out_s;
-
   // pad2soc
   // spih
   logic [ 3:0] spih_sd_i_s;
@@ -230,8 +227,6 @@ module astral_wrap
   assign st_soc2pad_signals.spih_ot_sd_oen_i_2 = spih_ot_sd_en_o_s[2];
   assign st_soc2pad_signals.spih_ot_sd_oen_i_3 = spih_ot_sd_en_o_s[3];
   // can0 -- carfield itf
-  // ethernet
-  logic [3:0] eth_txd_o_s;
 
   // External async register interface
   logic[1:0]              ext_reg_async_slv_req_src_out;
@@ -439,7 +434,7 @@ module astral_wrap
     .eth_md_i                   ( '0                                   ),
     .eth_txck_o                 (                                      ),
     .eth_txctl_o                (                                      ),
-    .eth_txd_o                  ( eth_txd_o_s                          ),
+    .eth_txd_o                  (                                      ),
     .eth_md_o                   (                                      ),
     .eth_md_oe                  (                                      ),
     .eth_mdc_o                  (                                      ),
@@ -455,7 +450,7 @@ module astral_wrap
     .slink_rcv_clk_i            ( '0                                   ),
     .slink_rcv_clk_o            (                                      ),
     .slink_i                    ( serial_link_data_in_s                ),
-    .slink_o                    ( serial_link_data_out_s               ),
+    .slink_o                    (                                      ),
     // hyperbus
     .pad_config_tc_pad_internal_signals_0(pad_config_tc_pad_internal_signals_0),
     .pad_config_tc_pad_internal_signals_1(pad_config_tc_pad_internal_signals_1),

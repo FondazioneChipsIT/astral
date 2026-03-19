@@ -7,7 +7,7 @@
 package top_padframe_config_reg_pkg;
 
   // Address widths within the block
-  parameter int BlockAw = 4;
+  parameter int BlockAw = 7;
 
   ////////////////////////////
   // Typedefs for registers //
@@ -19,105 +19,467 @@ package top_padframe_config_reg_pkg;
     } hw_version;
     struct packed {
       logic [15:0] q;
-    } padgroup_count;
+    } pad_count;
   } top_padframe_config_reg2hw_info_reg_t;
 
   typedef struct packed {
     struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_1;
+      logic        q;
+    } slew_en;
     struct packed {
       logic [1:0]  q;
-    } drv_str_pg_2;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_3;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_4;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_5;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_6;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_7;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_8;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_9;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_10;
-    struct packed {
-      logic [1:0]  q;
-    } drv_str_pg_11;
-  } top_padframe_config_reg2hw_drv_str_cfg_reg_t;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_fll_host_reg_t;
 
   typedef struct packed {
     struct packed {
       logic        q;
-    } slw_pg_1;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_fll_secd_reg_t;
+
+  typedef struct packed {
     struct packed {
       logic        q;
-    } slw_pg_2;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_jtag_tdo_reg_t;
+
+  typedef struct packed {
     struct packed {
       logic        q;
-    } slw_pg_3;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_uart_tx_reg_t;
+
+  typedef struct packed {
     struct packed {
       logic        q;
-    } slw_pg_4;
+    } pad_en;
     struct packed {
       logic        q;
-    } slw_pg_5;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
     struct packed {
       logic        q;
-    } slw_pg_6;
+    } pd_en;
     struct packed {
       logic        q;
-    } slw_pg_7;
+    } pu_en;
     struct packed {
       logic        q;
-    } slw_pg_8;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_gpio_0_reg_t;
+
+  typedef struct packed {
     struct packed {
       logic        q;
-    } slw_pg_9;
+    } pad_en;
     struct packed {
       logic        q;
-    } slw_pg_10;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
     struct packed {
       logic        q;
-    } slw_pg_11;
-  } top_padframe_config_reg2hw_slw_cfg_reg_t;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_gpio_1_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_gpio_2_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_gpio_3_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_jtag_ot_tdo_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_ot_uart_tx_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_spih_sck_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_spih_csb_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_sd_0_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_sd_1_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_sd_2_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_sd_3_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_spih_ot_sck_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+  } top_padframe_config_reg2hw_pad_spih_ot_csb_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_ot_sd_0_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_ot_sd_1_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_ot_sd_2_reg_t;
+
+  typedef struct packed {
+    struct packed {
+      logic        q;
+    } pad_en;
+    struct packed {
+      logic        q;
+    } slew_en;
+    struct packed {
+      logic [1:0]  q;
+    } drv_str;
+    struct packed {
+      logic        q;
+    } pd_en;
+    struct packed {
+      logic        q;
+    } pu_en;
+    struct packed {
+      logic        q;
+    } smt_en;
+  } top_padframe_config_reg2hw_pad_spih_ot_sd_3_reg_t;
 
   // Register -> HW type
   typedef struct packed {
-    top_padframe_config_reg2hw_info_reg_t info; // [64:33]
-    top_padframe_config_reg2hw_drv_str_cfg_reg_t drv_str_cfg; // [32:11]
-    top_padframe_config_reg2hw_slw_cfg_reg_t slw_cfg; // [10:0]
+    top_padframe_config_reg2hw_info_reg_t info; // [149:118]
+    top_padframe_config_reg2hw_pad_fll_host_reg_t pad_fll_host; // [117:115]
+    top_padframe_config_reg2hw_pad_fll_secd_reg_t pad_fll_secd; // [114:112]
+    top_padframe_config_reg2hw_pad_jtag_tdo_reg_t pad_jtag_tdo; // [111:109]
+    top_padframe_config_reg2hw_pad_uart_tx_reg_t pad_uart_tx; // [108:106]
+    top_padframe_config_reg2hw_pad_gpio_0_reg_t pad_gpio_0; // [105:99]
+    top_padframe_config_reg2hw_pad_gpio_1_reg_t pad_gpio_1; // [98:92]
+    top_padframe_config_reg2hw_pad_gpio_2_reg_t pad_gpio_2; // [91:85]
+    top_padframe_config_reg2hw_pad_gpio_3_reg_t pad_gpio_3; // [84:78]
+    top_padframe_config_reg2hw_pad_jtag_ot_tdo_reg_t pad_jtag_ot_tdo; // [77:75]
+    top_padframe_config_reg2hw_pad_ot_uart_tx_reg_t pad_ot_uart_tx; // [74:72]
+    top_padframe_config_reg2hw_pad_spih_sck_reg_t pad_spih_sck; // [71:68]
+    top_padframe_config_reg2hw_pad_spih_csb_reg_t pad_spih_csb; // [67:64]
+    top_padframe_config_reg2hw_pad_spih_sd_0_reg_t pad_spih_sd_0; // [63:57]
+    top_padframe_config_reg2hw_pad_spih_sd_1_reg_t pad_spih_sd_1; // [56:50]
+    top_padframe_config_reg2hw_pad_spih_sd_2_reg_t pad_spih_sd_2; // [49:43]
+    top_padframe_config_reg2hw_pad_spih_sd_3_reg_t pad_spih_sd_3; // [42:36]
+    top_padframe_config_reg2hw_pad_spih_ot_sck_reg_t pad_spih_ot_sck; // [35:32]
+    top_padframe_config_reg2hw_pad_spih_ot_csb_reg_t pad_spih_ot_csb; // [31:28]
+    top_padframe_config_reg2hw_pad_spih_ot_sd_0_reg_t pad_spih_ot_sd_0; // [27:21]
+    top_padframe_config_reg2hw_pad_spih_ot_sd_1_reg_t pad_spih_ot_sd_1; // [20:14]
+    top_padframe_config_reg2hw_pad_spih_ot_sd_2_reg_t pad_spih_ot_sd_2; // [13:7]
+    top_padframe_config_reg2hw_pad_spih_ot_sd_3_reg_t pad_spih_ot_sd_3; // [6:0]
   } top_padframe_config_reg2hw_t;
 
   // Register offsets
-  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_INFO_OFFSET = 4'h 0;
-  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_DRV_STR_CFG_OFFSET = 4'h 4;
-  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_SLW_CFG_OFFSET = 4'h 8;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_INFO_OFFSET = 7'h 0;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_FLL_HOST_OFFSET = 7'h 4;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_FLL_SECD_OFFSET = 7'h 8;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_JTAG_TDO_OFFSET = 7'h c;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_UART_TX_OFFSET = 7'h 10;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_GPIO_0_OFFSET = 7'h 14;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_GPIO_1_OFFSET = 7'h 18;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_GPIO_2_OFFSET = 7'h 1c;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_GPIO_3_OFFSET = 7'h 20;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_JTAG_OT_TDO_OFFSET = 7'h 24;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_OT_UART_TX_OFFSET = 7'h 28;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_SCK_OFFSET = 7'h 2c;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_CSB_OFFSET = 7'h 30;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_0_OFFSET = 7'h 34;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_1_OFFSET = 7'h 38;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_2_OFFSET = 7'h 3c;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_3_OFFSET = 7'h 40;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SCK_OFFSET = 7'h 44;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_CSB_OFFSET = 7'h 48;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_0_OFFSET = 7'h 4c;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_1_OFFSET = 7'h 50;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_2_OFFSET = 7'h 54;
+  parameter logic [BlockAw-1:0] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_3_OFFSET = 7'h 58;
 
   // Register index
   typedef enum int {
     TOP_PADFRAME_CONFIG_INFO,
-    TOP_PADFRAME_CONFIG_DRV_STR_CFG,
-    TOP_PADFRAME_CONFIG_SLW_CFG
+    TOP_PADFRAME_CONFIG_PAD_FLL_HOST,
+    TOP_PADFRAME_CONFIG_PAD_FLL_SECD,
+    TOP_PADFRAME_CONFIG_PAD_JTAG_TDO,
+    TOP_PADFRAME_CONFIG_PAD_UART_TX,
+    TOP_PADFRAME_CONFIG_PAD_GPIO_0,
+    TOP_PADFRAME_CONFIG_PAD_GPIO_1,
+    TOP_PADFRAME_CONFIG_PAD_GPIO_2,
+    TOP_PADFRAME_CONFIG_PAD_GPIO_3,
+    TOP_PADFRAME_CONFIG_PAD_JTAG_OT_TDO,
+    TOP_PADFRAME_CONFIG_PAD_OT_UART_TX,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_SCK,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_CSB,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_SD_0,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_SD_1,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_SD_2,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_SD_3,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SCK,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_CSB,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_0,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_1,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_2,
+    TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_3
   } top_padframe_config_id_e;
 
   // Register width information to check illegal writes
-  parameter logic [3:0] TOP_PADFRAME_CONFIG_PERMIT [3] = '{
-    4'b 1111, // index[0] TOP_PADFRAME_CONFIG_INFO
-    4'b 0111, // index[1] TOP_PADFRAME_CONFIG_DRV_STR_CFG
-    4'b 0011  // index[2] TOP_PADFRAME_CONFIG_SLW_CFG
+  parameter logic [3:0] TOP_PADFRAME_CONFIG_PERMIT [23] = '{
+    4'b 1111, // index[ 0] TOP_PADFRAME_CONFIG_INFO
+    4'b 0001, // index[ 1] TOP_PADFRAME_CONFIG_PAD_FLL_HOST
+    4'b 0001, // index[ 2] TOP_PADFRAME_CONFIG_PAD_FLL_SECD
+    4'b 0001, // index[ 3] TOP_PADFRAME_CONFIG_PAD_JTAG_TDO
+    4'b 0001, // index[ 4] TOP_PADFRAME_CONFIG_PAD_UART_TX
+    4'b 0001, // index[ 5] TOP_PADFRAME_CONFIG_PAD_GPIO_0
+    4'b 0001, // index[ 6] TOP_PADFRAME_CONFIG_PAD_GPIO_1
+    4'b 0001, // index[ 7] TOP_PADFRAME_CONFIG_PAD_GPIO_2
+    4'b 0001, // index[ 8] TOP_PADFRAME_CONFIG_PAD_GPIO_3
+    4'b 0001, // index[ 9] TOP_PADFRAME_CONFIG_PAD_JTAG_OT_TDO
+    4'b 0001, // index[10] TOP_PADFRAME_CONFIG_PAD_OT_UART_TX
+    4'b 0001, // index[11] TOP_PADFRAME_CONFIG_PAD_SPIH_SCK
+    4'b 0001, // index[12] TOP_PADFRAME_CONFIG_PAD_SPIH_CSB
+    4'b 0001, // index[13] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_0
+    4'b 0001, // index[14] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_1
+    4'b 0001, // index[15] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_2
+    4'b 0001, // index[16] TOP_PADFRAME_CONFIG_PAD_SPIH_SD_3
+    4'b 0001, // index[17] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SCK
+    4'b 0001, // index[18] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_CSB
+    4'b 0001, // index[19] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_0
+    4'b 0001, // index[20] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_1
+    4'b 0001, // index[21] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_2
+    4'b 0001  // index[22] TOP_PADFRAME_CONFIG_PAD_SPIH_OT_SD_3
   };
 
 endpackage
