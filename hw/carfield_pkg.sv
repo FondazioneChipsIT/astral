@@ -686,6 +686,7 @@ function automatic cheshire_pkg::cheshire_cfg_t gen_carfield_cfg();
   // IOMMU             : 1,
   ret.SerialLink        = CheshireSerialLinkEnable;
   ret.Vga               = 0;
+  ret.Usb               = 0;
   ret.AxiRt             = 0;
   ret.Clic              = 0;
   ret.IrqRouter         = 1;
