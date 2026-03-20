@@ -757,10 +757,6 @@ carfield_reg_top #(
 assign car_regs_hw2reg.fll_lock.de = 1'b1;
 assign car_regs_hw2reg.fll_lock.d = fll_lock_i;
 
-// wdt reg req/rsp
-carfield_a32_d32_reg_req_t reg_wdt_req;
-carfield_a32_d32_reg_rsp_t reg_wdt_rsp;
-
 // mailbox
 carfield_axi_slv_req_t axi_mbox_req, axi_amo_mbox_req,
   axi_pre_amo_cut_mbox_req, axi_post_amo_cut_mbox_req;
@@ -2357,6 +2353,7 @@ if (CarfieldIslandsCfg.periph.enable) begin: gen_periph // Handle with care...
   );
 
   // System timer
+  if (carfield_configuration::SystemTimerEnable) begin: gen_timer
   apb_timer_unit #(
     .APB_ADDR_WIDTH ( AxiNarrowAddrWidth )
   ) i_system_timer (
@@ -2377,102 +2374,128 @@ if (CarfieldIslandsCfg.periph.enable) begin: gen_periph // Handle with care...
     .irq_hi_o   ( car_sys_timer_hi_intr ),
     .busy_o     ( /* TODO connect me */ )
   );
+end else begin: gen_no_timer
+    assign car_sys_timer_lo_intr = '0;
+    assign car_sys_timer_hi_intr = '0;
+    assign apb_mst_rsp[SystemTimerIdx].prdata = 'hCACA7010;
+    assign apb_mst_rsp[SystemTimerIdx].pready = 'h1;
+    assign apb_mst_rsp[SystemTimerIdx].pslverr = '0;
+end
 
   // Advanced Timer
-  apb_adv_timer #(
-    .APB_ADDR_WIDTH  ( AxiNarrowAddrWidth ),
-    .EXTSIG_NUM      ( 64                 )
-  ) i_advanced_timer (
-    .HCLK            ( periph_clk             ),
-    .HRESETn         ( periph_pwr_on_rst_n    ),
-    .dft_cg_enable_i ( 1'b0                   ),
-    .PADDR           ( apb_mst_req[AdvancedTimerIdx].paddr   ),
-    .PWDATA          ( apb_mst_req[AdvancedTimerIdx].pwdata  ),
-    .PWRITE          ( apb_mst_req[AdvancedTimerIdx].pwrite  ),
-    .PSEL            ( apb_mst_req[AdvancedTimerIdx].psel    ),
-    .PENABLE         ( apb_mst_req[AdvancedTimerIdx].penable ),
-    .PRDATA          ( apb_mst_rsp[AdvancedTimerIdx].prdata  ),
-    .PREADY          ( apb_mst_rsp[AdvancedTimerIdx].pready  ),
-    .PSLVERR         ( apb_mst_rsp[AdvancedTimerIdx].pslverr ),
-    .low_speed_clk_i ( rt_clk                   ),
-    .ext_sig_i       ( '0 /* TODO connect me */ ),
-    .events_o        ( car_adv_timer_events  ),
-    .ch_0_o          ( car_adv_timer_intrs   ),
-    .ch_1_o          ( ),
-    .ch_2_o          ( ),
-    .ch_3_o          ( )
-  );
+  if (carfield_configuration::SystemAdvancedTimerEnable) begin: gen_adv_timer
+    apb_adv_timer #(
+      .APB_ADDR_WIDTH  ( AxiNarrowAddrWidth ),
+      .EXTSIG_NUM      ( 64                 )
+    ) i_advanced_timer (
+      .HCLK            ( periph_clk             ),
+      .HRESETn         ( periph_pwr_on_rst_n    ),
+      .dft_cg_enable_i ( 1'b0                   ),
+      .PADDR           ( apb_mst_req[AdvancedTimerIdx].paddr   ),
+      .PWDATA          ( apb_mst_req[AdvancedTimerIdx].pwdata  ),
+      .PWRITE          ( apb_mst_req[AdvancedTimerIdx].pwrite  ),
+      .PSEL            ( apb_mst_req[AdvancedTimerIdx].psel    ),
+      .PENABLE         ( apb_mst_req[AdvancedTimerIdx].penable ),
+      .PRDATA          ( apb_mst_rsp[AdvancedTimerIdx].prdata  ),
+      .PREADY          ( apb_mst_rsp[AdvancedTimerIdx].pready  ),
+      .PSLVERR         ( apb_mst_rsp[AdvancedTimerIdx].pslverr ),
+      .low_speed_clk_i ( rt_clk                   ),
+      .ext_sig_i       ( '0 /* TODO connect me */ ),
+      .events_o        ( car_adv_timer_events  ),
+      .ch_0_o          ( car_adv_timer_intrs   ),
+      .ch_1_o          ( ),
+      .ch_2_o          ( ),
+      .ch_3_o          ( )
+    );
+  end else begin: gen_no_adv_timer
+    assign car_adv_timer_events = '0;
+    assign car_adv_timer_intrs = '0;
+    assign apb_mst_rsp[AdvancedTimerIdx].prdata = 'hCACABABE;
+    assign apb_mst_rsp[AdvancedTimerIdx].pready = 'h1;
+    assign apb_mst_rsp[AdvancedTimerIdx].pslverr = '0;
+  end
 
   // Watchdog timer
-  REG_BUS #(
-    .ADDR_WIDTH ( AxiNarrowAddrWidth ),
-    .DATA_WIDTH ( AxiNarrowDataWidth )
-  ) reg_bus_wdt (periph_clk);
+  if (carfield_configuration::SystemWatchdogEnable) begin: gen_watchdog
+    // wdt reg req/rsp
+    carfield_a32_d32_reg_req_t reg_wdt_req;
+    carfield_a32_d32_reg_rsp_t reg_wdt_rsp;
 
-  apb_to_reg i_apb_to_reg_wdt (
-    .clk_i     ( periph_clk                        ),
-    .rst_ni    ( periph_pwr_on_rst_n               ),
-    .penable_i ( apb_mst_req[SystemWdtIdx].penable ),
-    .pwrite_i  ( apb_mst_req[SystemWdtIdx].pwrite  ),
-    .paddr_i   ( apb_mst_req[SystemWdtIdx].paddr   ),
-    .psel_i    ( apb_mst_req[SystemWdtIdx].psel    ),
-    .pwdata_i  ( apb_mst_req[SystemWdtIdx].pwdata  ),
-    .prdata_o  ( apb_mst_rsp[SystemWdtIdx].prdata  ),
-    .pready_o  ( apb_mst_rsp[SystemWdtIdx].pready  ),
-    .pslverr_o ( apb_mst_rsp[SystemWdtIdx].pslverr ),
-    .reg_o     ( reg_bus_wdt                 )
-  );
+    // reg to tilelink
+    tlul_ot_pkg::tl_h2d_t tl_wdt_req;
+    tlul_ot_pkg::tl_d2h_t tl_wdt_rsp;
 
-  // crop the address to 32-bit
-  assign reg_wdt_req.addr  = reg_bus_wdt.addr;
-  assign reg_wdt_req.write = reg_bus_wdt.write;
-  assign reg_wdt_req.wdata = reg_bus_wdt.wdata;
-  assign reg_wdt_req.wstrb = reg_bus_wdt.wstrb;
-  assign reg_wdt_req.valid = reg_bus_wdt.valid;
+    REG_BUS #(
+      .ADDR_WIDTH ( AxiNarrowAddrWidth ),
+      .DATA_WIDTH ( AxiNarrowDataWidth )
+    ) reg_bus_wdt (periph_clk);
 
-  assign reg_bus_wdt.rdata = reg_wdt_rsp.rdata;
-  assign reg_bus_wdt.error = reg_wdt_rsp.error;
-  assign reg_bus_wdt.ready = reg_wdt_rsp.ready;
+    apb_to_reg i_apb_to_reg_wdt (
+      .clk_i     ( periph_clk                        ),
+      .rst_ni    ( periph_pwr_on_rst_n               ),
+      .penable_i ( apb_mst_req[SystemWdtIdx].penable ),
+      .pwrite_i  ( apb_mst_req[SystemWdtIdx].pwrite  ),
+      .paddr_i   ( apb_mst_req[SystemWdtIdx].paddr   ),
+      .psel_i    ( apb_mst_req[SystemWdtIdx].psel    ),
+      .pwdata_i  ( apb_mst_req[SystemWdtIdx].pwdata  ),
+      .prdata_o  ( apb_mst_rsp[SystemWdtIdx].prdata  ),
+      .pready_o  ( apb_mst_rsp[SystemWdtIdx].pready  ),
+      .pslverr_o ( apb_mst_rsp[SystemWdtIdx].pslverr ),
+      .reg_o     ( reg_bus_wdt                 )
+    );
 
-  // reg to tilelink
-  tlul_ot_pkg::tl_h2d_t tl_wdt_req;
-  tlul_ot_pkg::tl_d2h_t tl_wdt_rsp;
+    // crop the address to 32-bit
+    assign reg_wdt_req.addr  = reg_bus_wdt.addr;
+    assign reg_wdt_req.write = reg_bus_wdt.write;
+    assign reg_wdt_req.wdata = reg_bus_wdt.wdata;
+    assign reg_wdt_req.wstrb = reg_bus_wdt.wstrb;
+    assign reg_wdt_req.valid = reg_bus_wdt.valid;
 
-  reg_to_tlul #(
-    .req_t             ( carfield_a32_d32_reg_req_t     ),
-    .rsp_t             ( carfield_a32_d32_reg_rsp_t     ),
-    .tl_h2d_t          ( tlul_ot_pkg::tl_h2d_t          ),
-    .tl_d2h_t          ( tlul_ot_pkg::tl_d2h_t          ),
-    .tl_a_user_t       ( tlul_ot_pkg::tl_a_user_t       ),
-    .tl_a_op_e         ( tlul_ot_pkg::tl_a_op_e         ),
-    .TL_A_USER_DEFAULT ( tlul_ot_pkg::TL_A_USER_DEFAULT ),
-    .PutFullData       ( tlul_ot_pkg::PutFullData       ),
-    .Get               ( tlul_ot_pkg::Get               )
-  ) i_reg_to_tlul_wdt (
-    .tl_o      ( tl_wdt_req  ),
-    .tl_i      ( tl_wdt_rsp  ),
-    .reg_req_i ( reg_wdt_req ),
-    .reg_rsp_o ( reg_wdt_rsp )
-  );
+    assign reg_bus_wdt.rdata = reg_wdt_rsp.rdata;
+    assign reg_bus_wdt.error = reg_wdt_rsp.error;
+    assign reg_bus_wdt.ready = reg_wdt_rsp.ready;
 
-  // Wdt
-  aon_timer i_watchdog_timer (
-    .clk_i                     ( periph_clk            ),
-    .rst_ni                    ( periph_pwr_on_rst_n   ),
-    .clk_aon_i                 ( rt_clk                ),
-    .rst_aon_ni                ( periph_pwr_on_rst_n   ),
-    .tl_i                      ( tl_wdt_req            ),
-    .tl_o                      ( tl_wdt_rsp            ),
-    .alert_rx_i                ( '0                    ), // TODO: what are these for?
-    .alert_tx_o                ( /* TODO connect me */ ),
-    .lc_escalate_en_i          ( '0                    ),
-    .intr_wkup_timer_expired_o ( car_wdt_intrs[0] ),
-    .intr_wdog_timer_bark_o    ( car_wdt_intrs[1] ),
-    .nmi_wdog_timer_bark_o     ( car_wdt_intrs[2] ),
-    .wkup_req_o                ( car_wdt_intrs[3] ),
-    .aon_timer_rst_req_o       ( car_wdt_intrs[4] ),
-    .sleep_mode_i              ( '0                    )
-  );
+    reg_to_tlul #(
+      .req_t             ( carfield_a32_d32_reg_req_t     ),
+      .rsp_t             ( carfield_a32_d32_reg_rsp_t     ),
+      .tl_h2d_t          ( tlul_ot_pkg::tl_h2d_t          ),
+      .tl_d2h_t          ( tlul_ot_pkg::tl_d2h_t          ),
+      .tl_a_user_t       ( tlul_ot_pkg::tl_a_user_t       ),
+      .tl_a_op_e         ( tlul_ot_pkg::tl_a_op_e         ),
+      .TL_A_USER_DEFAULT ( tlul_ot_pkg::TL_A_USER_DEFAULT ),
+      .PutFullData       ( tlul_ot_pkg::PutFullData       ),
+      .Get               ( tlul_ot_pkg::Get               )
+    ) i_reg_to_tlul_wdt (
+      .tl_o      ( tl_wdt_req  ),
+      .tl_i      ( tl_wdt_rsp  ),
+      .reg_req_i ( reg_wdt_req ),
+      .reg_rsp_o ( reg_wdt_rsp )
+    );
+
+    // Wdt
+    aon_timer i_watchdog_timer (
+      .clk_i                     ( periph_clk            ),
+      .rst_ni                    ( periph_pwr_on_rst_n   ),
+      .clk_aon_i                 ( rt_clk                ),
+      .rst_aon_ni                ( periph_pwr_on_rst_n   ),
+      .tl_i                      ( tl_wdt_req            ),
+      .tl_o                      ( tl_wdt_rsp            ),
+      .alert_rx_i                ( '0                    ), // TODO: what are these for?
+      .alert_tx_o                ( /* TODO connect me */ ),
+      .lc_escalate_en_i          ( '0                    ),
+      .intr_wkup_timer_expired_o ( car_wdt_intrs[0] ),
+      .intr_wdog_timer_bark_o    ( car_wdt_intrs[1] ),
+      .nmi_wdog_timer_bark_o     ( car_wdt_intrs[2] ),
+      .wkup_req_o                ( car_wdt_intrs[3] ),
+      .aon_timer_rst_req_o       ( car_wdt_intrs[4] ),
+      .sleep_mode_i              ( '0                    )
+    );
+  end else begin: gen_no_watchdog
+    assign apb_mst_rsp[SystemWdtIdx].prdata  = 'hCACA704E;
+    assign apb_mst_rsp[SystemWdtIdx].pready  = '1;
+    assign apb_mst_rsp[SystemWdtIdx].pslverr = '0;
+    assign car_wdt_intrs = '0;
+  end
 
   // CAN bus
   logic [63:0] can_timestamp;
