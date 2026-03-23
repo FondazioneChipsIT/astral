@@ -54,12 +54,15 @@ localparam bit CanEnable = 0;
 localparam doub_bt CanBase = 'h20001000;
 localparam doub_bt CanSize = 'h00001000;
 // System Timer
+localparam bit SystemTimerEnable = 1;
 localparam doub_bt SystemTimerBase = 'h20004000;
 localparam doub_bt SystemTimerSize = 'h00001000;
 // System Advanced Timer
+localparam bit SystemAdvancedTimerEnable = 1;
 localparam doub_bt SystemAdvancedTimerBase = 'h20005000;
 localparam doub_bt SystemAdvancedTimerSize = 'h00001000;
 // System Watchdog
+localparam bit SystemWatchdogEnable = 0;
 localparam doub_bt SystemWatchdogBase = 'h20007000;
 localparam doub_bt SystemWatchdogSize = 'h00001000;
 /************************
