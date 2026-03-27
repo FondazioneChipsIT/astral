@@ -989,12 +989,22 @@ module astral_fixture;
   endtask
 
   task wait_fll_lock(input logic bypass_pll);
+    // tb_astral.fix.i_dut.i_top_padframe_wrapper.i_astral_padframe.i_botl.i_botl_pads.i_pwr_mng_west.int_io = 4'hF;
     set_bypass_pll(1);
+  `ifndef ASTRAL_TOP_NETLIST
     if (~bypass_pll) begin
       @(posedge i_dut.fll_lock);
       @(posedge i_dut.clk_fll_out);
       set_bypass_pll(0);
     end
+  `else
+    if (~bypass_pll) begin
+      // @(posedge i_dut.i_fll_wrap.fll_lock_o[0]);
+      wait (i_dut.i_fll_wrap.fll_lock_o[0]);
+      @(posedge i_dut.i_fll_wrap.clk_fll_out_o[0]);
+      set_bypass_pll(0);
+    end
+  `endif
   endtask: wait_fll_lock
   /*
   task automatic configure_sl_pad(ref bit jtag_check_write);

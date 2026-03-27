@@ -29,7 +29,9 @@ RUNTIME_DEFINES += -timescale \"1 ns / 1 ps\"
 
 include $(CAR_QSIM_DIR)/qsim.mk
 include $(CAR_VSIM_DIR)/vsim.mk
-
+-include $(CAR_TGT_DIR)/gf22/questasim/qsim/sim_common.mk
+-include $(CAR_TGT_DIR)/gf22/questasim/qsim/sim_post_syn.mk
+-include $(CAR_TGT_DIR)/gf22/questasim/qsim/sim_post_layout.mk
 ## @section Global targets
 .PHONY: car-sim-init
 

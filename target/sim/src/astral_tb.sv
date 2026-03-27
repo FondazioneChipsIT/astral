@@ -95,7 +95,7 @@ module tb_astral;
     end
 
     // PLL bypass
-    fix.set_bypass_pll(bypass_pll);
+    // fix.set_bypass_pll(bypass_pll);
 
     // Set boot mode and preload boot image if there is one
     fix.set_secure_boot(secure_boot);
@@ -110,29 +110,29 @@ module tb_astral;
 
       // Wait for FLL lock
       fix.wait_fll_lock(bypass_pll);
-
+    
       // Initialize JTAG at first
       fix.chs_vip.jtag_init();
 
       // We need to initialize memories after the reset due to limitations of the memory models.
       if (chs_mem_rand) begin
-`ifdef CHS_NETLIST
-`define CAR_XSTR(x) `"x`"
-        $display("[TB] INFO: Randomizing LLC memory contents of %s where NUM=0..7", `CAR_XSTR(`CHS_LLC_MACRO_HIER(>NUM<)));
-        for (int i = 0; i < 2048; i++) begin
-          // Deterministic randomization of memories. Use simulator arguments to set seed.
-          `CHS_LLC_MACRO_HIER(0)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(1)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(2)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(3)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(4)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(5)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(6)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(7)[i] = {$urandom(), $urandom()};
-        end
-`else // !`ifdef CHS_NETLIST
-        $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
-`endif
+// `ifdef CHS_NETLIST
+// `define CAR_XSTR(x) `"x`"
+//         $display("[TB] INFO: Randomizing LLC memory contents of %s where NUM=0..7", `CAR_XSTR(`CHS_LLC_MACRO_HIER(>NUM<)));
+//         for (int i = 0; i < 2048; i++) begin
+//           // Deterministic randomization of memories. Use simulator arguments to set seed.
+//           `CHS_LLC_MACRO_HIER(0)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(1)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(2)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(3)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(4)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(5)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(6)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(7)[i] = {$urandom(), $urandom()};
+//         end
+// `else // !`ifdef CHS_NETLIST
+//         $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
+// `endif
       end
 
 
@@ -168,7 +168,7 @@ module tb_astral;
 `ifndef ASTRAL_TOP_NETLIST
                 @(posedge fix.i_dut.clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx]);
 `else
-                #10ns;
+                #60ns;
 `endif
             end
             $display("[TB] %t - Loading '%s' through JTAG", $realtime, chs_preload_elf);

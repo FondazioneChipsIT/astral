@@ -127,7 +127,8 @@ sources:
 
   - target: all(not(synthesis), not(tech_sim))
     files:
-      - hw/padframe/tc_pad.sv
+      - target/gf22/sourcecode/tc_pad.sv #FIXME: This file is used instead of the one below, as the latter has some bugs
+      # - hw/padframe/tc_pad.sv
 
   - target: spatz
     files:
@@ -226,3 +227,4 @@ vendor_package:
     upstream: { git: "https://github.com/pulp-platform/register_interface.git", rev: "19163bb5191d2669a8cbc267cdd4ce8e60f20746"}
     mapping:
       - { from: 'vendor/lowrisc_opentitan/util', to: 'reggen'}
+      
