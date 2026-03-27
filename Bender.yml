@@ -127,7 +127,7 @@ sources:
 
   - target: all(not(synthesis), not(tech_sim))
     files:
-      - hw/padframe/tc_pad.sv
+      - target/gf22/sourcecode/tc_pad.sv  #FIXME: Changed to avoid having to include all the tech sim files
 
   - target: spatz
     files:

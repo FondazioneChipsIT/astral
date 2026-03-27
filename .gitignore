@@ -214,3 +214,15 @@ target/sim/vsim/*.db
 target/sim/qsim/*.bin
 target/sim/qsim/*.db
 target/sim/qsim/work
+
+
+
+target/gf22/
+target/sim/qsim/.qsim/
+target/sim/qsim/compile.carfield_soc.tcl
+target/sim/qsim/qsim.ses
+target/sim/qsim/qwave.db.lock
+target/sim/qsim/transcript
+target/sim/qsim/uart
+transcript
+
