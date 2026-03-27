@@ -116,23 +116,23 @@ module tb_astral;
 
       // We need to initialize memories after the reset due to limitations of the memory models.
       if (chs_mem_rand) begin
-`ifdef CHS_NETLIST
-`define CAR_XSTR(x) `"x`"
-        $display("[TB] INFO: Randomizing LLC memory contents of %s where NUM=0..7", `CAR_XSTR(`CHS_LLC_MACRO_HIER(>NUM<)));
-        for (int i = 0; i < 2048; i++) begin
-          // Deterministic randomization of memories. Use simulator arguments to set seed.
-          `CHS_LLC_MACRO_HIER(0)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(1)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(2)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(3)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(4)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(5)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(6)[i] = {$urandom(), $urandom()};
-          `CHS_LLC_MACRO_HIER(7)[i] = {$urandom(), $urandom()};
-        end
-`else // !`ifdef CHS_NETLIST
-        $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
-`endif
+// `ifdef CHS_NETLIST
+// `define CAR_XSTR(x) `"x`"
+//         $display("[TB] INFO: Randomizing LLC memory contents of %s where NUM=0..7", `CAR_XSTR(`CHS_LLC_MACRO_HIER(>NUM<)));
+//         for (int i = 0; i < 2048; i++) begin
+//           // Deterministic randomization of memories. Use simulator arguments to set seed.
+//           `CHS_LLC_MACRO_HIER(0)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(1)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(2)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(3)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(4)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(5)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(6)[i] = {$urandom(), $urandom()};
+//           `CHS_LLC_MACRO_HIER(7)[i] = {$urandom(), $urandom()};
+//         end
+// `else // !`ifdef CHS_NETLIST
+//         $display("[TB] INFO: Randomizing LLC memory not supported for RTL sim. Use +initmem");
+// `endif
       end
 
 
