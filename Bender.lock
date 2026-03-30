@@ -124,7 +124,7 @@ packages:
       Git: https://github.com/AlSaqr-platform/can_bus.git
     dependencies: []
   cheshire:
-    revision: 0b09b3661ec1640602e72304c71774c13eb6f82e
+    revision: 27942ed1e27887896312de72cfa095c9c074a995
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cheshire.git
@@ -564,7 +564,7 @@ packages:
     - common_cells
     - register_interface
   snooper:
-    revision: 4834337501410acc95aa572f61e65ab0dcbaa241
+    revision: 5b5c4cd2037ef6a34b4c3248ab3fcce698aa3936
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cfi-snooper.git
