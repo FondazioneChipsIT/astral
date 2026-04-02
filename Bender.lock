@@ -184,10 +184,10 @@ packages:
     dependencies:
     - common_cells
   cluster_peripherals:
-    revision: e464eb9ddcc39e5a50009819601c4f213b1d4ba3
-    version: 2.2.0
+    revision: 6e55d0a74ff33ce9aac9fcd44ad702f323ace644
+    version: null
     source:
-      Git: https://github.com/pulp-platform/cluster_peripherals.git
+      Git: https://github.com/FondazioneChipsIT/cluster_peripherals.git
     dependencies:
     - hci
   common_cells:
@@ -304,17 +304,17 @@ packages:
     - scm
     - tech_cells_generic
   hwpe-ctrl:
-    revision: 3690a3c648f120546d8de2bc583d5170c36d2f20
-    version: 2.0.0
+    revision: 3156cabafff3b4fb90c1c78fb02b912a931a037c
+    version: null
     source:
-      Git: https://github.com/pulp-platform/hwpe-ctrl.git
+      Git: https://github.com/LuigiGhionda/hwpe-ctrl.git
     dependencies:
     - tech_cells_generic
   hwpe-stream:
-    revision: b3d33afdd27e79bcda1348d0ab5f4afd52c03106
-    version: 1.9.0
+    revision: 4c676e44ccf70a0d8dc67a84c6e02372bfd22557
+    version: null
     source:
-      Git: https://github.com/pulp-platform/hwpe-stream.git
+      Git: https://github.com/LuigiGhionda/hwpe-stream.git
     dependencies:
     - tech_cells_generic
   hyperbus:
@@ -384,10 +384,10 @@ packages:
     dependencies:
     - common_cells
   neureka:
-    revision: f4e131c86205d37882cf02ea4dd3bd141ef32d86
+    revision: c4c2b5f0d7c431938f16acf0969208d8077f8e69
     version: null
     source:
-      Git: https://github.com/pulp-platform/neureka.git
+      Git: https://github.com/LuigiGhionda/neureka.git
     dependencies:
     - hci
     - hwpe-ctrl
@@ -411,7 +411,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: 9d6a8b51da9d77621e807e06c23a3c77e74cd011
+    revision: 212974d8a61c45de6f61354adc55cc08e100ed58
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
@@ -421,6 +421,7 @@ packages:
     - cluster_interconnect
     - common_cells
     - idma
+    - mailbox_unit
     - pulp_cluster
     - register_interface
   opentitan_peripherals:
@@ -452,7 +453,7 @@ packages:
     - idma
     - register_interface
   pulp_cluster:
-    revision: b7a87e042f91582789663164f962bcb19cad7653
+    revision: 3856719aee82c4c36430e6bf400fe101395f87cb
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/pulp_cluster.git

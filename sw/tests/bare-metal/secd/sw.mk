@@ -26,15 +26,15 @@ $(SECD_PULPD_SW_DIR)/%/build: $(SECD_ROOT)
 	cp $@/test/test $(CAR_SECD_SW)/$*.elf
 	@echo $(SECD_PULPD_SW_DIR)
 
-GENERIC_TEST = $(SECD_SW_DIR)/generic_test/generic_test.elf
+CLUSTER_OFFLOAD = $(SECD_SW_DIR)/cluster_offload/cluster_offload.elf
 
-$(SECD_SW_DIR)/generic_test/generic_test.elf:
+$(SECD_SW_DIR)/cluster_offload/cluster_offload.elf:
 	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
-	cp $(patsubst %/,%,$(dir $@))/generic_test.elf $(CAR_SECD_SW)/
-	cp $(patsubst %/,%,$(dir $@))/generic_test.dis $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/cluster_offload.dis $(CAR_SECD_SW)/
 
 # Global targets
-secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(GENERIC_TEST)
+secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(CLUSTER_OFFLOAD)
 
 secd-sw-clean:
 	# Clean all the directories in 'tests'
