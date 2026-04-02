@@ -28,6 +28,8 @@ $(SECD_PULPD_SW_DIR)/%/build: $(SECD_ROOT)
 
 cluster_offload_int_irq = $(SECD_SW_DIR)/cluster_offload/int_mbox/cluster_offload_int_irq.elf
 cluster_offload_ext_irq = $(SECD_SW_DIR)/cluster_offload/ext_mbox/cluster_offload_ext_irq.elf
+carfield_mmap_test      = $(SECD_SW_DIR)/carfield/carfield_mmap_test/carfield_mmap_test.elf
+ot_bazel_test           = $(SECD_SW_DIR)/carfield/carfield_mmap_test/carfield_mmap_test.elf
 
 $(SECD_SW_DIR)/cluster_offload/int_mbox/cluster_offload_int_irq.elf:
 	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
@@ -39,8 +41,23 @@ $(SECD_SW_DIR)/cluster_offload/ext_mbox/cluster_offload_ext_irq.elf:
 	cp $(patsubst %/,%,$(dir $@))/cluster_offload_ext_irq.elf $(CAR_SECD_SW)/
 	cp $(patsubst %/,%,$(dir $@))/cluster_offload_ext_irq.dis $(CAR_SECD_SW)/
 
+$(SECD_SW_DIR)/carfield/carfield_mmap_test/carfield_mmap_test.elf:
+	$(MAKE) -C $(patsubst %/,%,$(dir $@)) clean all
+	cp $(patsubst %/,%,$(dir $@))/carfield_mmap_test.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/carfield_mmap_test.dis $(CAR_SECD_SW)/
+
+$(SECD_SW_DIR)/opentitan/idma_test/bazel-out/idma_test.elf:
+	$(MAKE) -C $(patsubst %/,%,$(dir $@))/../../.. compile-bazel-sram test_name=idma_test target=opentitan
+	cp $(patsubst %/,%,$(dir $@))/idma_test.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/idma_test.dis $(CAR_SECD_SW)/
+
+$(SECD_SW_DIR)/opentitan/sram_hello_world/bazel-out/sram_hello_world.elf:
+	$(MAKE) -C $(patsubst %/,%,$(dir $@))/../../.. compile-bazel-sram test_name=sram_hello_world target=opentitan
+	cp $(patsubst %/,%,$(dir $@))/sram_hello_world.elf $(CAR_SECD_SW)/
+	cp $(patsubst %/,%,$(dir $@))/sram_hello_world.dis $(CAR_SECD_SW)/
+
 # Global targets
-secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(cluster_offload_int_irq) $(cluster_offload_ext_irq)
+secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(cluster_offload_int_irq) $(cluster_offload_ext_irq) $(carfield_mmap_test) $(ot_bazel_test)
 
 secd-sw-clean:
 	# Clean all the directories in 'tests'

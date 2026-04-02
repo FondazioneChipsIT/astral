@@ -46,11 +46,11 @@ int main(int argc, char const *argv[]) {
       t = dif_rv_plic_irq_set_priority(&plic0, IRQID+i*5, prio);
       t = dif_rv_plic_irq_set_enabled(&plic0, IRQID+i*5, 0, kDifToggleEnabled);
     }
-    writew(0xBAADC0DE, 0x40000280);
-    a = readw(0x40000280);
+    writew(0xBAADC0DE, MBOX_CAR_LETTER0(0x1));
+    a = readw(MBOX_CAR_LETTER0(1));
     if( a == 0xBAADC0DE )
-      writew(0x00000001, 0x40000204); // ring doorbell if mailbox is accessible
-      writew(0x00000001, 0x4000020C);
+      writew(0x00000001, MBOX_CAR_INT_SND_SET(0x1)); // ring doorbell if mailbox is accessible
+      writew(0x00000001, MBOX_CAR_INT_SND_EN(0x1));
     wfi();
     return 0;
 }
@@ -59,8 +59,8 @@ void trap_vector (void){
    int * claim_irq;
    dif_rv_plic_irq_claim(&plic0, 0, &claim_irq);
    dif_rv_plic_irq_complete(&plic0, 0, &claim_irq);
-   writew(0x0, 0x40000D04);
-   writew(0x0, 0x40000D0C);
-   writew(0x1, 0x40000D08);
+   writew(0x0, MBOX_CAR_INT_SND_SET(0xD));
+   writew(0x0, MBOX_CAR_INT_SND_EN(0xD));
+   writew(0x1, MBOX_CAR_INT_SND_CLR(0xD));
    return;
 }
