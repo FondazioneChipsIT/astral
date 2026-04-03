@@ -181,9 +181,9 @@ module tb_astral;
           end 2: begin  // Standalone UART passive preload
             fix.chs_vip.uart_debug_elf_run_and_wait(chs_preload_elf, exit_code);
           end 3: begin  // Secure boot: Opentitan booting CVA6
-            fix.chs_vip.slink_elf_preload(chs_preload_elf, unused);
+            // fix.chs_vip.slink_elf_preload(chs_preload_elf, unused);
             // We check the EOC with the JTAG
-            fix.chs_vip.jtag_init();
+            fix.chs_vip.jtag_elf_halt_load(chs_preload_elf, unused);
             fix.chs_vip.jtag_wait_for_eoc(exit_code);
           end default: begin
             $fatal(1, "Unsupported preload mode %d (reserved)!", boot_mode);
@@ -292,14 +292,16 @@ module tb_astral;
     string      secd_preload_elf;
     string      secd_flash_vmem;
     logic       secd_boot_mode;
+    string      secd_pulp_cl_bin;
 
     initial begin
       // Fetch plusargs or use safe (fail-fast) defaults
-      if (!$value$plusargs("BYPASS_PLL=%d",    bypass_pll))       bypass_pll       = 0;
-      if (!$value$plusargs("SECURE_BOOT=%d",   secure_boot))      secure_boot      = 0;
-      if (!$value$plusargs("SECD_IMAGE=%s",    secd_flash_vmem))  secd_flash_vmem  = "";
-      if (!$value$plusargs("SECD_BINARY=%s",   secd_preload_elf)) secd_preload_elf = "";
-      if (!$value$plusargs("SECD_BOOTMODE=%d", secd_boot_mode))   secd_boot_mode   = 0;
+      if (!$value$plusargs("BYPASS_PLL=%d",       bypass_pll))       bypass_pll       = 0;
+      if (!$value$plusargs("SECURE_BOOT=%d",      secure_boot))      secure_boot      = 0;
+      if (!$value$plusargs("SECD_IMAGE=%s",       secd_flash_vmem))  secd_flash_vmem  = "";
+      if (!$value$plusargs("SECD_BINARY=%s",      secd_preload_elf)) secd_preload_elf = "";
+      if (!$value$plusargs("SECD_BOOTMODE=%d",    secd_boot_mode))   secd_boot_mode   = 0;
+      if (!$value$plusargs("SECD_PULP_CL_BINARY=%s", secd_pulp_cl_bin)) secd_pulp_cl_bin = "";
 
       // set secure boot mode
       fix.set_secure_boot(secure_boot);
@@ -314,10 +316,13 @@ module tb_astral;
         // Wait for FLL lock
         fix.wait_fll_lock(bypass_pll);
 
+        // Initialize JTAG at first
+        fix.chs_vip.jtag_init();
+
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through serial link.");
-        fix.chs_vip.slink_write_32(HyperbusTburstMax, 32'd128);
+        $display("[TB] INFO: Configuring Hyperbus through JTAG.");
+        fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
 
         case(secd_boot_mode)
           0: begin
@@ -326,12 +331,16 @@ module tb_astral;
               @(posedge fix.ref_clk);
             fix.gen_secured_vip.secd_vip.debug_secd_module_init();
             fix.gen_secured_vip.secd_vip.load_secd_binary(secd_preload_elf);
+            if(secd_pulp_cl_bin != "") begin
+              fix.gen_secured_vip.secd_vip.load_secd_binary(secd_pulp_cl_bin);
+              $display("Loading cluster binary: %s", secd_pulp_cl_bin);
+            end
             fix.gen_secured_vip.secd_vip.jtag_secd_data_preload();
             fix.gen_secured_vip.secd_vip.jtag_secd_wakeup(32'hE0000080);
             fix.gen_secured_vip.secd_vip.jtag_secd_wait_eoc();
           end 1: begin
             fix.gen_secured_vip.secd_vip.spih_norflash_preload(secd_flash_vmem);
-            repeat(10000)
+            repeat(100000)
               @(posedge fix.ref_clk);
             fix.gen_secured_vip.secd_vip.jtag_secd_wait_eoc();
           end default: begin

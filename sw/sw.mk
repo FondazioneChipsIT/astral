@@ -137,6 +137,11 @@ car-pulpd-sw-offload-tests:
 
 endif
 
+# Security Island tests
+ifeq ($(shell echo $(SECURED_PRESENT)), 1)
+include $(CAR_SW_DIR)/tests/bare-metal/secd/sw.mk
+endif
+
 # Litmus tests
 LITMUS_REPO := https://github.com/pulp-platform/CHERI-Litmus.git
 LITMUS_DIR  := $(CAR_SW_DIR)/tests/bare-metal/riscv-litmus-tests

@@ -637,7 +637,7 @@ Shared L2 memory clk gate enable
 ## PERIPH_CLK_SEL
 Periph Domain fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
 - Offset: `0x84`
-- Reset default: `0x2`
+- Reset default: `0x0`
 - Reset mask: `0x3`
 
 ### Fields
@@ -649,7 +649,7 @@ Periph Domain fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd f
 |  Bits  |  Type  |  Reset  | Name           | Description   |
 |:------:|:------:|:-------:|:---------------|:--------------|
 |  31:2  |        |         |                | Reserved      |
-|  1:0   |   rw   |   0x2   | PERIPH_CLK_SEL |               |
+|  1:0   |   rw   |   0x0   | PERIPH_CLK_SEL |               |
 
 ## SAFETY_ISLAND_CLK_SEL
 Safety Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
@@ -671,7 +671,7 @@ Safety Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd f
 ## SECURITY_ISLAND_CLK_SEL
 Security Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)
 - Offset: `0x8c`
-- Reset default: `0x3`
+- Reset default: `0x1`
 - Reset mask: `0x3`
 
 ### Fields
@@ -683,7 +683,7 @@ Security Island fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd
 |  Bits  |  Type  |  Reset  | Name                    | Description   |
 |:------:|:------:|:-------:|:------------------------|:--------------|
 |  31:2  |        |         |                         | Reserved      |
-|  1:0   |   rw   |   0x3   | SECURITY_ISLAND_CLK_SEL |               |
+|  1:0   |   rw   |   0x1   | SECURITY_ISLAND_CLK_SEL |               |
 
 ## PULP_CLUSTER_CLK_SEL
 PULP Cluster fll select (0 -> host fll, 1 -> alt fll, 2 -> per fll, 3 -> secd fll)

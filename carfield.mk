@@ -52,7 +52,7 @@ include $(CAR_ROOT)/bender-safed.mk
 ######################
 
 CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
-CAR_NONFREE_COMMIT ?= d9deefd7a755412555804de898d2f8d937386025 # main
+CAR_NONFREE_COMMIT ?= 796672135d32aafa4272e18cb3e0fe2982e41c82
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC
@@ -91,8 +91,11 @@ SAFED_BOOTMODE ?= 0
 # Security island, security and secure boot
 SECD_ROOT     ?= $(shell $(BENDER) path opentitan)
 SECD_BINARY   ?=
+SECD_SW_BUILD := secd-sw-build
+SECD_SW_INIT  := secd-sw-init
 SECD_BOOTMODE ?= 0
 SECD_IMAGE    ?=
+SECD_PULP_CL_BIN ?=
 # Secure boot
 SECURE_BOOT   ?= 0
 
@@ -188,9 +191,9 @@ chs-sw-build: | venv
 
 .PHONY: car-sw-build
 ## Builds carfield application SW and specific libraries. It links against `libcheshire.a`.
-car-sw-build: chs-sw-build $(SAFED_SW_BUILD) $(PULPD_SW_BUILD) car-sw-all
+car-sw-build: chs-sw-build $(SAFED_SW_BUILD) $(PULPD_SW_BUILD) $(SECD_SW_BUILD)  car-sw-all
 
-.PHONY: safed-sw-init pulpd-sw-init
+.PHONY: safed-sw-init pulpd-sw-init secd-sw-init
 ## Clone safe domain's SW stack in the dedicated repository.
 safed-sw-init: $(SAFED_ROOT) $(SAFED_SW_DIR)/pulp-runtime $(SAFED_SW_DIR)/pulp-freertos
 
@@ -207,6 +210,14 @@ $(PULPD_ROOT)/pulp-runtime: $(PULPD_ROOT)
 $(PULPD_ROOT)/regression-tests: $(PULPD_ROOT)
 	$(MAKE) -C $(PULPD_ROOT) regression_tests
 
+## Clone secure domain's SW stack in the dedicated repository.
+secd-sw-init: $(SECD_ROOT) $(SECD_ROOT)/sw/tests/pulp-runtime $(SECD_ROOT)/sw/tests/regression_tests
+
+$(SECD_ROOT)/sw/tests/pulp-runtime: $(SECD_ROOT)
+	$(MAKE) -C $(SECD_ROOT) sw/tests/pulp-runtime
+$(SECD_ROOT)/sw/tests/regression_tests: $(SECD_ROOT)
+	$(MAKE) -C $(SECD_ROOT) sw/tests/regression_tests
+
 ## Build safe domain SW
 .PHONY: safed-sw-build
 safed-sw-build: safed-sw-init
@@ -218,6 +229,12 @@ safed-sw-build: safed-sw-init
 pulpd-sw-build: pulpd-sw-init
 	. $(CAR_ROOT)/env/pulpd-env.sh; \
 	$(MAKE) pulpd-sw-all
+
+## Build integer secure domain SW
+.PHONY: secd-sw-build
+secd-sw-build: secd-sw-init
+	. $(CAR_ROOT)/env/secd-env.sh; \
+	$(MAKE) secd-sw-all
 
 ## Build vectorial PMCA domain SW
 # TODO: properly compile spatz tests from carfield. For now, we symlink to existing tests. If you
@@ -237,7 +254,7 @@ pulpd-sw-build: pulpd-sw-init
 ## Initialize Carfield HW. This step takes care of the generation of the missing hardware or the
 ## update of default HW configurations in some of the domains. See the two prerequisite's comment
 ## for more information.
-car-hw-init: idma-hw-init $(SPATZD_HW_INIT) chs-hw-init $(SECD_HW_INIT)
+car-hw-init: idma-hw-init $(SPATZD_HW_INIT) chs-hw-init
 
 ## @section Carfield platform PCRs generation
 .PHONY: regenerate_soc_regs
@@ -333,7 +350,7 @@ include $(CAR_SIM_DIR)/sim.mk
 
 .PHONY: car-init-all
 ## Shortcut to initialize carfield with all the targets described above.
-car-init-all: car-checkout car-hw-init car-sim-init $(SAFED_SW_INIT) $(PULPD_SW_INIT) mibench
+car-init-all: car-checkout car-hw-init car-sim-init $(SAFED_SW_INIT) $(PULPD_SW_INIT) $(SECD_SW_INIT) mibench
 
 ## Initialize Carfield and build SW
 .PHONY: car-all
@@ -413,7 +430,7 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/$(TECHNOLOGY).git
 # no commit by default, change during development
-tech-commit := a2e8c5b859da31caabbd420783589e381ee664e1 # branch: main
+tech-commit := 3f8975fd3ca9a71370651829aff257ef14620bdb # branch: main
 
 tech-clone:
 	git clone $(tech-repo) $(CAR_TECH_DIR)
