@@ -6,6 +6,9 @@
 
 .PHONY: all clean
 
+# Select build tool for snooper_test: 'make' (default) or 'bazel'
+BUILD_TOOL ?= make
+
 # Make fragment for security island bare-metal tests.
 
 # List all the directories in the 'tests' folder
@@ -33,8 +36,34 @@ $(SECD_SW_DIR)/cluster_offload/cluster_offload.elf:
 	cp $(patsubst %/,%,$(dir $@))/cluster_offload.elf $(CAR_SECD_SW)/
 	cp $(patsubst %/,%,$(dir $@))/cluster_offload.dis $(CAR_SECD_SW)/
 
+SNOOPER_TEST = $(SECD_ROOT)/sw/tests/scarv/snooper_test/snooper_test.elf
+$(SECD_ROOT)/sw/tests/scarv/snooper_test/snooper_test.elf:
+ifeq ($(BUILD_TOOL),bazel)
+	$(MAKE) -C $(SECD_ROOT) compile-bazel-sram test_name=snooper_test target=scarv
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_test/bazel-out/snooper_test.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_test/bazel-out/snooper_test.dis $(CAR_SECD_SW)/
+else
+	$(MAKE) -C $(SECD_ROOT)/sw/tests/scarv/snooper_test clean all io=host_uart NO_STANDALONE=1
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_test/snooper_test.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_test/snooper_test.dis $(CAR_SECD_SW)/
+endif
+
+MBOX_TEST_HOST = $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.elf
+$(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.elf:
+ifeq ($(BUILD_TOOL),bazel)
+	$(MAKE) -C $(SECD_ROOT) compile-bazel-sram test_name=mbox_test_host target=scarv
+	cp -f $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/bazel-out/mbox_test_host.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/bazel-out/mbox_test_host.dis $(CAR_SECD_SW)/
+else
+	$(MAKE) -C $(SECD_ROOT)/sw/tests/scarv/mbox_test_host clean all io=host_uart NO_STANDALONE=1
+	cp -f $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.dis $(CAR_SECD_SW)/
+endif
+
 # Global targets
-secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(CLUSTER_OFFLOAD)
+secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(SNOOPER_TEST) $(MBOX_TEST_HOST)
+snoop_test: $(SNOOPER_TEST)
+mbox_test_host: $(MBOX_TEST_HOST)
 
 secd-sw-clean:
 	# Clean all the directories in 'tests'
