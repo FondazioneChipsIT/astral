@@ -62,7 +62,7 @@ pad_types:
     PAD_BIDIR_V: &bidir_v
         orientation: vertical
         width: 42
-        rtl_name: i_top_padframe_wrapper/i_astral_padframe/i_botl/i_botl_pads/i_*/gen_gf22_in_tc_pad_bidir_0__genblk1_i_gf22_in_tc_pad_bidir_v
+        rtl_name: i_top_padframe_wrapper/i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_bidir_v
     PAD_INPUT_V: *bidir_v
     PAD_OUTPUT_V: *bidir_v
     PAD_PWR_MNG_H:
@@ -88,7 +88,7 @@ pad_types:
     PAD_BIDIR_H: &bidir_h
         orientation: horizontal
         width: 42
-        rtl_name: i_top_padframe_wrapper/i_astral_padframe/i_botl/i_botl_pads/i_*/gen_gf22_in_tc_pad_bidir_0__genblk1_i_gf22_in_tc_pad_bidir_h
+        rtl_name: i_top_padframe_wrapper/i_astral_padframe/i_botl/i_botl_pads/i_*/genblk1_i_gf22_in_tc_pad_bidir_h
     PAD_INPUT_H: *bidir_h
     PAD_OUTPUT_H: *bidir_h
     
