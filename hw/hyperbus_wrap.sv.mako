@@ -261,6 +261,9 @@ assign ${hyp_name(phy, pin, chip, bit)} = pad2soc.${pad_name(phy, pin, chip, bit
 % endfor
 
 % for phy in phys:
+assign soc2pad.hyper_${phy}_schmitt_en_o = hyper_pad_cfg_o[${phy.removeprefix("phy")}][7];
+assign soc2pad.hyper_${phy}_pu_en_o = hyper_pad_cfg_o[${phy.removeprefix("phy")}][6];
+assign soc2pad.hyper_${phy}_pd_en_o = hyper_pad_cfg_o[${phy.removeprefix("phy")}][5];
 assign soc2pad.hyper_${phy}_slew_en_o = hyper_pad_cfg_o[${phy.removeprefix("phy")}][3];
 assign soc2pad.hyper_${phy}_drive_strength_o = hyper_pad_cfg_o[${phy.removeprefix("phy")}][1:0];
 % endfor

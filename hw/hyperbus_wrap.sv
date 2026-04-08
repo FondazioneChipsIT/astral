@@ -343,8 +343,14 @@ assign soc2pad.hyper_phy1_dq_o_b7 = hyper_dq_o[1][7];
 assign soc2pad.hyper_phy1_dq_oe_o = hyper_dq_oe_o[1];
 assign soc2pad.hyper_phy1_reset_no = hyper_reset_no[1];
 
+assign soc2pad.hyper_phy0_schmitt_en_o = hyper_pad_cfg_o[0][7];
+assign soc2pad.hyper_phy0_pu_en_o = hyper_pad_cfg_o[0][6];
+assign soc2pad.hyper_phy0_pd_en_o = hyper_pad_cfg_o[0][5];
 assign soc2pad.hyper_phy0_slew_en_o = hyper_pad_cfg_o[0][3];
 assign soc2pad.hyper_phy0_drive_strength_o = hyper_pad_cfg_o[0][1:0];
+assign soc2pad.hyper_phy1_schmitt_en_o = hyper_pad_cfg_o[1][7];
+assign soc2pad.hyper_phy1_pu_en_o = hyper_pad_cfg_o[1][6];
+assign soc2pad.hyper_phy1_pd_en_o = hyper_pad_cfg_o[1][5];
 assign soc2pad.hyper_phy1_slew_en_o = hyper_pad_cfg_o[1][3];
 assign soc2pad.hyper_phy1_drive_strength_o = hyper_pad_cfg_o[1][1:0];
 

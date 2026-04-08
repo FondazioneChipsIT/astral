@@ -152,6 +152,9 @@
     pad2chip: hyper_phy1_rwds_i
     input_en: ~hyper_phy1_rwds_oe_o
     output_en: hyper_phy1_rwds_oe_o
+    schmitt_en: hyper_phy1_schmitt_en_o
+    pu_en: hyper_phy1_pu_en_o
+    pd_en: hyper_phy1_pd_en_o
     slew_en: hyper_phy1_slew_en_o
     drive_strength: hyper_phy1_drive_strength_o
 
@@ -175,6 +178,9 @@
     pad2chip: hyper_phy1_dq_i_b{i}
     input_en: ~hyper_phy1_dq_oe_o
     output_en: hyper_phy1_dq_oe_o
+    schmitt_en: hyper_phy1_schmitt_en_o
+    pu_en: hyper_phy1_pu_en_o
+    pd_en: hyper_phy1_pd_en_o
     slew_en: hyper_phy1_slew_en_o
     drive_strength: hyper_phy1_drive_strength_o
 
@@ -222,6 +228,9 @@
     pad2chip: hyper_phy0_rwds_i
     input_en: ~hyper_phy0_rwds_oe_o
     output_en: hyper_phy0_rwds_oe_o
+    schmitt_en: hyper_phy0_schmitt_en_o
+    pu_en: hyper_phy0_pu_en_o
+    pd_en: hyper_phy0_pd_en_o
     slew_en: hyper_phy0_slew_en_o
     drive_strength: hyper_phy0_drive_strength_o
 
@@ -245,6 +254,9 @@
     pad2chip: hyper_phy0_dq_i_b{i}
     input_en: ~hyper_phy0_dq_oe_o
     output_en: hyper_phy0_dq_oe_o
+    schmitt_en: hyper_phy0_schmitt_en_o
+    pu_en: hyper_phy0_pu_en_o
+    pd_en: hyper_phy0_pd_en_o
     slew_en: hyper_phy0_slew_en_o
     drive_strength: hyper_phy0_drive_strength_o
 
