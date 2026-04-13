@@ -48,6 +48,18 @@ else
 	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_test/snooper_test.dis $(CAR_SECD_SW)/
 endif
 
+SNOOPER_STRESS_TEST = $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/snooper_stress_test.elf
+$(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/snooper_stress_test.elf:
+ifeq ($(BUILD_TOOL),bazel)
+	$(MAKE) -C $(SECD_ROOT) compile-bazel-sram test_name=snooper_stress_test target=scarv
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/bazel-out/snooper_stress_test.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/bazel-out/snooper_stress_test.dis $(CAR_SECD_SW)/
+else
+	$(MAKE) -C $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test clean all io=host_uart NO_STANDALONE=1
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/snooper_stress_test.elf $(CAR_SECD_SW)/
+	cp -f $(SECD_ROOT)/sw/tests/scarv/snooper_stress_test/snooper_stress_test.dis $(CAR_SECD_SW)/
+endif
+
 MBOX_TEST_HOST = $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.elf
 $(SECD_ROOT)/sw/tests/scarv/mbox_test_host/mbox_test_host.elf:
 ifeq ($(BUILD_TOOL),bazel)
@@ -61,8 +73,9 @@ else
 endif
 
 # Global targets
-secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(SNOOPER_TEST) $(MBOX_TEST_HOST)
+secd-sw-all: $(SECD_PULPD_BUILD_TARGETS) $(SNOOPER_TEST) $(SNOOPER_STRESS_TEST) $(MBOX_TEST_HOST)
 snoop_test: $(SNOOPER_TEST)
+snoop_stress_test: $(SNOOPER_STRESS_TEST)
 mbox_test_host: $(MBOX_TEST_HOST)
 
 secd-sw-clean:
