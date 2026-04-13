@@ -108,6 +108,10 @@ module hyperbus_wrap
   inout wire logic pad_hyper_phy1_reset_n_pad
 );
 
+logic rst_n;
+logic clk_phy;
+logic ph_phy;
+
 reg_req_t   reg_req;
 reg_rsp_t   reg_rsp;
 
@@ -148,8 +152,8 @@ axi_cdc_dst      #(
   .async_data_slave_r_wptr_o  ( axi_slave_r_wptr_o  ),
   .async_data_slave_r_rptr_i  ( axi_slave_r_rptr_i  ),
   // synchronous master port
-  .dst_clk_i                  ( clk_i ),
-  .dst_rst_ni                 ( rst_ni    ),
+  .dst_clk_i                  ( clk_phy ),
+  .dst_rst_ni                 ( rst_n ),
   .dst_req_o                  ( hyper_req ),
   .dst_resp_i                 ( hyper_rsp )
 );
@@ -159,8 +163,8 @@ reg_cdc_dst #(
   .req_t    ( reg_req_t ),
   .rsp_t    ( reg_rsp_t )
 ) i_hyper_reg_cdc_dst (
-  .dst_clk_i   ( clk_i ),
-  .dst_rst_ni  ( rst_ni ),
+  .dst_clk_i   ( clk_phy ),
+  .dst_rst_ni  ( rst_n ),
   .dst_req_o   ( reg_req ),
   .dst_rsp_i   ( reg_rsp ),
 
@@ -171,6 +175,21 @@ reg_cdc_dst #(
   .async_req_o (reg_async_mst_req_o),
   .async_ack_i (reg_async_mst_ack_i),
   .async_data_o(reg_async_mst_data_o)
+);
+
+rstgen i_hyper_rstgen (
+  .clk_i   ( clk_i ),
+  .rst_ni,
+  .test_mode_i,
+  .rst_no  ( rst_n ),
+  .init_no ( )
+);
+
+hyperbus_clk_gen i_hyper_clk_gen (
+    .clk_i    ( clk_i ),
+    .rst_ni   ( rst_n ),
+    .clk_phy_o ( clk_phy ),
+    .ph_phy_o  ( ph_phy )
 );
 
 logic [NumPhys-1:0][NumChips-1:0] hyper_cs_no;
@@ -209,10 +228,10 @@ hyperbus           #(
   .PhyStartupCycles ( PhyStartupCycles ),
   .SyncStages       ( CdcSyncStages    )
 ) i_hyperbus        (
-  .clk_phy_i        ( clk_i              ),
-  .rst_phy_ni       ( rst_ni             ),
-  .clk_sys_i        ( clk_i              ),
-  .rst_sys_ni       ( rst_ni             ),
+  .clk_phy_x2_i     ( clk_i              ),
+  .clk_phy_i        ( clk_phy            ),
+  .rst_ni           ( rst_n              ),
+  .ph_phy_i         ( ph_phy              ),
   .test_mode_i      ( test_mode_i        ),
   .axi_req_i        ( hyper_req          ),
   .axi_rsp_o        ( hyper_rsp          ),
@@ -324,8 +343,14 @@ assign soc2pad.hyper_phy1_dq_o_b7 = hyper_dq_o[1][7];
 assign soc2pad.hyper_phy1_dq_oe_o = hyper_dq_oe_o[1];
 assign soc2pad.hyper_phy1_reset_no = hyper_reset_no[1];
 
+assign soc2pad.hyper_phy0_schmitt_en_o = hyper_pad_cfg_o[0][7];
+assign soc2pad.hyper_phy0_pu_en_o = hyper_pad_cfg_o[0][6];
+assign soc2pad.hyper_phy0_pd_en_o = hyper_pad_cfg_o[0][5];
 assign soc2pad.hyper_phy0_slew_en_o = hyper_pad_cfg_o[0][3];
 assign soc2pad.hyper_phy0_drive_strength_o = hyper_pad_cfg_o[0][1:0];
+assign soc2pad.hyper_phy1_schmitt_en_o = hyper_pad_cfg_o[1][7];
+assign soc2pad.hyper_phy1_pu_en_o = hyper_pad_cfg_o[1][6];
+assign soc2pad.hyper_phy1_pd_en_o = hyper_pad_cfg_o[1][5];
 assign soc2pad.hyper_phy1_slew_en_o = hyper_pad_cfg_o[1][3];
 assign soc2pad.hyper_phy1_drive_strength_o = hyper_pad_cfg_o[1][1:0];
 

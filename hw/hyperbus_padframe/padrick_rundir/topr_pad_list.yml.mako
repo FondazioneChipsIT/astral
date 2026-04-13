@@ -16,12 +16,6 @@
   # connections:
   #   retcin: retcin_i
 
-- name: corner_{i}
-  multiple: 1
-  description: "Corner pad"
-  pad_type: PAD_CORNER
-  is_static: true
-
 #-----------------------#
 #                       #
 #  ****** NORTH ******  #
@@ -159,6 +153,9 @@
     pad2chip: hyper_${phy}_rwds_i
     input_en: ~hyper_${phy}_rwds_oe_o
     output_en: hyper_${phy}_rwds_oe_o
+    schmitt_en: hyper_${phy}_schmitt_en_o
+    pu_en: hyper_${phy}_pu_en_o
+    pd_en: hyper_${phy}_pd_en_o
     slew_en: hyper_${phy}_slew_en_o
     drive_strength: hyper_${phy}_drive_strength_o
 
@@ -182,6 +179,9 @@
     pad2chip: hyper_${phy}_dq_i_b{i}
     input_en: ~hyper_${phy}_dq_oe_o
     output_en: hyper_${phy}_dq_oe_o
+    schmitt_en: hyper_${phy}_schmitt_en_o
+    pu_en: hyper_${phy}_pu_en_o
+    pd_en: hyper_${phy}_pd_en_o
     slew_en: hyper_${phy}_slew_en_o
     drive_strength: hyper_${phy}_drive_strength_o
 
