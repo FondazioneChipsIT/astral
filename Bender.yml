@@ -13,7 +13,7 @@ package:
 dependencies:
   register_interface: { git: https://github.com/pulp-platform/register_interface.git,   version: 0.4.3                                }
   axi:                { git: https://github.com/pulp-platform/axi.git,                  version: 0.39.1                               }
-  cheshire:           { git: https://github.com/FondazioneChipsIT/cheshire.git,         rev: 27942ed1e27887896312de72cfa095c9c074a995 } # branch: devel/scarv
+  cheshire:           { git: https://github.com/FondazioneChipsIT/cheshire.git,         rev: 626f3be9a97d11bd0d451d2d45d66f4debfb4077 } # branch: devel/scarv
   hyperbus:           { git: https://github.com/pulp-platform/hyperbus.git,             version: 0.0.9}
   dyn_mem:            { git: https://github.com/pulp-platform/dyn_spm.git,              rev: 480590062742230dc9bd4050358a15b4747bdf34 } # branch: main
   safety_island:      { git: https://github.com/pulp-platform/safety_island.git,        rev: 584eb697195c44ef1b1cbd1f4b7accdf5192200a } # branch: main
