@@ -389,9 +389,11 @@ packages:
     source:
       Git: https://github.com/LuigiGhionda/neureka.git
     dependencies:
+    - common_cells
     - hci
     - hwpe-ctrl
     - hwpe-stream
+    - redundancy_cells
     - register_interface
     - zeroriscy
   obi:
@@ -411,7 +413,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: 212974d8a61c45de6f61354adc55cc08e100ed58
+    revision: 1753078bf733aeda1da4e2a5252e21dd938aa410
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
@@ -453,7 +455,7 @@ packages:
     - idma
     - register_interface
   pulp_cluster:
-    revision: 3856719aee82c4c36430e6bf400fe101395f87cb
+    revision: b2dd982cb829b5b280a651d3312a69e5b4e3c3f3
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/pulp_cluster.git
@@ -501,10 +503,10 @@ packages:
     - register_interface
     - tech_cells_generic
   redundancy_cells:
-    revision: 9e31f7c6c24877eaf58279903e7a162b16c9a721
+    revision: cb3d8468c564687c1f8f2516b90bd4af05bd052d
     version: null
     source:
-      Git: https://github.com/pulp-platform/redundancy_cells.git
+      Git: https://github.com/FondazioneChipsIT/redundancy_cells.git
     dependencies:
     - common_cells
     - common_verification

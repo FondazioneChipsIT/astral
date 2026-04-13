@@ -13,7 +13,7 @@ overrides:
   fpnew:                { git: "https://github.com/FondazioneChipsIT/cvfpu.git"           , rev: 49b1cb4d50893a9d23f8329d857527ebe5bc8529 } # branch: yt/pulp-merge-v2
   cv32e40p:             { git: "https://github.com/pulp-platform/cv32e40p.git"            , rev: e863f576699815b38cc9d80dbdede8ed5efd5991 }
   axi_rt:               { git: "https://github.com/pulp-platform/axi_rt.git"              , version: =0.0.0-alpha.10 }
-  redundancy_cells:     { git: "https://github.com/pulp-platform/redundancy_cells.git"    , rev: 9e31f7c6c24877eaf58279903e7a162b16c9a721 } # branch: astral-v0
+  redundancy_cells:     { git: "https://github.com/FondazioneChipsIT/redundancy_cells.git", rev: cb3d8468c564687c1f8f2516b90bd4af05bd052d  } # branch: yt/timing_diversity
   register_interface:   { git: "https://github.com/pulp-platform/register_interface.git"  , version: =0.4.7 }
   common_cells:         { git: "https://github.com/pulp-platform/common_cells.git"        , version: =1.38.0 }
   riscv-iommu:          { git: "https://github.com/zero-day-labs/riscv-iommu.git"         , rev: c1dea3732d0d05e5659b31773e43f3364bc866fc } # branch: pulp
