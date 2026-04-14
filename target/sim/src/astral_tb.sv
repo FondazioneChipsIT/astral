@@ -95,7 +95,7 @@ module tb_astral;
     end
 
     // PLL bypass
-    fix.set_bypass_pll(bypass_pll);
+    // fix.set_bypass_pll(bypass_pll);
 
     // Set boot mode and preload boot image if there is one
     fix.set_secure_boot(secure_boot);
@@ -110,7 +110,7 @@ module tb_astral;
 
       // Wait for FLL lock
       fix.wait_fll_lock(bypass_pll);
-
+    
       // Initialize JTAG at first
       fix.chs_vip.jtag_init();
 
