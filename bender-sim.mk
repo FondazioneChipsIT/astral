@@ -15,6 +15,6 @@ ifeq ($(TECH_SIM), 1)
 	sim_targs += -t $(TECHNOLOGY)
 ifeq ($(TECHNOLOGY), gf22)
 	sim_defs  += -D INITIALIZE_MEM
-	sim_defs  += -D GF22_FFL
+	sim_defs  += -D GF22_FLL
 endif
 endif
