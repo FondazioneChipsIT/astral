@@ -177,8 +177,8 @@
   connections:
     chip2pad: hyper_${phy}_dq_o_b{i}
     pad2chip: hyper_${phy}_dq_i_b{i}
-    input_en: ~hyper_${phy}_dq_oe_o
-    output_en: hyper_${phy}_dq_oe_o
+    input_en: ~hyper_${phy}_dq_oe_o_b{i}
+    output_en: hyper_${phy}_dq_oe_o_b{i}
     schmitt_en: hyper_${phy}_schmitt_en_o
     pu_en: hyper_${phy}_pu_en_o
     pd_en: hyper_${phy}_pd_en_o

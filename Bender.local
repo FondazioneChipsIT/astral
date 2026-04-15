@@ -3,10 +3,7 @@
 # SPDX-License-Identifier: SHL-0.51
 
 overrides:
-  hyperbus: { git: "https://github.com/FondazioneChipsIt/hyperbus.git", rev: "e51bca81ea908b695808e32cdabbb4d9cd0b5d2d" } # Temporary override by Bender using `bender snapshot` command
-#  hyperbus: { path: "working_dir/hyperbus" } # Temporary override by Bender using `bender clone` command
-##  hyperbus: { git: "https://github.com/FondazioneChipsIt/hyperbus.git", rev: "b5cdbc39ca52194b0d8dddb72e45270398c2040d" } # Temporary override by Bender using `bender snapshot` command
-###  hyperbus: { path: "working_dir/hyperbus" } # Temporary override by Bender using `bender clone` command
+  hyperbus: { git: "https://github.com/FondazioneChipsIt/hyperbus.git", rev: "e932375a02654fdad5113b725842363bce79c0f3" } # Temporary override by Bender using `bender snapshot` command
   axi:                  { git: "https://github.com/pulp-platform/axi.git"                 , version: =0.39.8 }
   axi_riscv_atomics:    { git: "https://github.com/pulp-platform/axi_riscv_atomics.git"   , rev: 062bc36cbcca25629384e7f12efa6693273b3e07 } # branch: main
   apb:                  { git: "https://github.com/pulp-platform/apb.git"                 , version: =0.2.4 }
