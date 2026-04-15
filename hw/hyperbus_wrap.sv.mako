@@ -6,7 +6,7 @@
   chips = {n: [""] for n in pins + pads}
   bits = {n: [""] for n in pins + pads}
   chips["cs_no"] = chips["cs_n"] = range(2)
-  bits["dq_o"] = bits["dq_i"] = bits["dq"] = range(8)
+  bits["dq_o"] = bits["dq_i"] = bits["dq"] = bits["dq_oe_o"] = range(8)
   bits["pad_cfg_o"] = range(8)
   def loop_over(p):
     items = []

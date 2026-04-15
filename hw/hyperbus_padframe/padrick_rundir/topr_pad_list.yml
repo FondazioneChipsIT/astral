@@ -176,8 +176,8 @@
   connections:
     chip2pad: hyper_phy1_dq_o_b{i}
     pad2chip: hyper_phy1_dq_i_b{i}
-    input_en: ~hyper_phy1_dq_oe_o
-    output_en: hyper_phy1_dq_oe_o
+    input_en: ~hyper_phy1_dq_oe_o_b{i}
+    output_en: hyper_phy1_dq_oe_o_b{i}
     schmitt_en: hyper_phy1_schmitt_en_o
     pu_en: hyper_phy1_pu_en_o
     pd_en: hyper_phy1_pd_en_o
@@ -252,8 +252,8 @@
   connections:
     chip2pad: hyper_phy0_dq_o_b{i}
     pad2chip: hyper_phy0_dq_i_b{i}
-    input_en: ~hyper_phy0_dq_oe_o
-    output_en: hyper_phy0_dq_oe_o
+    input_en: ~hyper_phy0_dq_oe_o_b{i}
+    output_en: hyper_phy0_dq_oe_o_b{i}
     schmitt_en: hyper_phy0_schmitt_en_o
     pu_en: hyper_phy0_pu_en_o
     pd_en: hyper_phy0_pd_en_o
