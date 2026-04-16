@@ -15,26 +15,39 @@
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "car_util.h"
+#include "printf.h"
+
+#ifndef VERBOSE
+#define VERBOSE 0
+#endif
+#define LOG(fmt, ...) do { if (VERBOSE) printf(fmt, ##__VA_ARGS__); } while (0)
 
 static dif_rv_plic_t plic0;
 
-#define IRQID 69 // index of mbox irq in the irq vector input to the PLIC
+#define IRQID 64 // index of mbox irq in the irq vector input to the PLIC
+
+// Synchronization values (ibex -> CVA6 via CHESHIRE_SCRATCH_4)
+#define SYNC_IBEX_READY  0xa5a5a5a5  // ibex interrupt setup done, CVA6 may send mbox message
 
 int main(int argc, char const *argv[]) {
 
     // Put SMP Hart to sleep
     // if (hart_id() != 0) wfi();
+        // Init the HW (this also includes UART)
+    car_init_start();
 
     int prio = 0x1;
     int a,b,c,d,e;
     bool t;
     unsigned global_irq_en   = 0x00001808;
     unsigned external_irq_en = 0x00000800;
+    LOG("hello cheshire\n\r");
 
-    // Uart setup
-    uint32_t rtc_freq = *reg32(&__base_regs, CHESHIRE_RTC_FREQ_REG_OFFSET);
-    uint64_t reset_freq = clint_get_core_freq(rtc_freq, 2500);
-    uart_init(&__base_uart, reset_freq, 115200);
+    // // Uart setup
+    // uint32_t rtc_freq = *reg32(&__base_regs, CHESHIRE_RTC_FREQ_REG_OFFSET);
+    // uint64_t reset_freq = clint_get_core_freq(rtc_freq, 2500);
+    // uart_init(&__base_uart, reset_freq, 115200);
 
     asm volatile("csrw  mstatus, %0\n" : : "r"(global_irq_en  ));     // Set global interrupt enable in CVA6 csr
     asm volatile("csrw  mie, %0\n"     : : "r"(external_irq_en));     // Set external interrupt enable in CVA6 csr
@@ -46,21 +59,28 @@ int main(int argc, char const *argv[]) {
       t = dif_rv_plic_irq_set_priority(&plic0, IRQID+i*5, prio);
       t = dif_rv_plic_irq_set_enabled(&plic0, IRQID+i*5, 0, kDifToggleEnabled);
     }
-    writew(0xBAADC0DE, 0x40000280);
-    a = readw(0x40000280);
-    if( a == 0xBAADC0DE )
-      writew(0x00000001, 0x40000204); // ring doorbell if mailbox is accessible
-      writew(0x00000001, 0x4000020C);
+    // Wait for ibex to finish setting up its interrupt handler before sending
+    while (*reg32(&__base_regs, CHESHIRE_SCRATCH_4_REG_OFFSET) != (int)SYNC_IBEX_READY)
+        ;
+
+    writew(0xBAADC0DE, MBOX_CAR_LETTER0(0x1));
+    a = readw(MBOX_CAR_LETTER0(1));
+    if( a == 0xBAADC0DE ) {
+      writew(0x00000001, MBOX_CAR_INT_SND_SET(0x1)); // ring doorbell if mailbox is accessible
+      writew(0x00000001, MBOX_CAR_INT_SND_EN(0x1));
+    }
     wfi();
     return 0;
 }
 
 void trap_vector (void){
    int * claim_irq;
+   LOG("Interrupt catched");
    dif_rv_plic_irq_claim(&plic0, 0, &claim_irq);
    dif_rv_plic_irq_complete(&plic0, 0, &claim_irq);
-   writew(0x0, 0x40000D04);
-   writew(0x0, 0x40000D0C);
-   writew(0x1, 0x40000D08);
+   writew(0x0, MBOX_CAR_INT_SND_SET(0x7));
+   writew(0x0, MBOX_CAR_INT_SND_EN(0x7));
+   writew(0x1, MBOX_CAR_INT_SND_CLR(0x7));
+   LOG("[mbox_test] PASSED\n\r");
    return;
 }
