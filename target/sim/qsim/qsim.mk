@@ -126,5 +126,3 @@ endif
   qsim $(pargs) +designfile +permissive $(QSIM_FLAGS) +notimingchecks +nospecify +init_mem_data=0 -t 1ps $(TBENCH)_opt -do "$(RUN_AND_EXIT)"; \
 	$(POST_SIM)
 
-## Generate all required VIPs and compilation scripts for all supported simulators
-car-sim-init: car-qsim-sim-init

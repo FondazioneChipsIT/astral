@@ -36,7 +36,8 @@ CAR_VSIM_ALL += $(CAR_VSIM_DIR)/compile.carfield_soc.tcl
 
 ## Generate all required VIPs (SPI flash, I2c EEPROm, HyperRAM, etc) and compilation scripts for Questasim
 .PHONY: car-vsim-sim-init
-car-vsim-sim-init: $(CAR_VSIM_ALL)
+car-vsim-sim-init: car-checkout
+	$(MAKE) $(CAR_VSIM_ALL)
 
 ## Compile Carfield HW using Questasim. Run `make car-sim-init` from the root directory to prepare
 ## the simulation environment before running this command.
@@ -118,9 +119,3 @@ ifneq ($(SPATZD_BINARY),)
 endif
 	cd $(CAR_VSIM_DIR); \
 	vsim ${pargs} ${VSIM_FLAGS} +init_mem_data=0 -t 1ps ${TBENCH}_opt -do "${RUN_AND_EXIT}";
-
-## @section Global targets
-.PHONY: car-sim-init
-
-## Generate all required VIPs and compilation scripts for all supported simulators
-car-sim-init: car-vsim-sim-init
