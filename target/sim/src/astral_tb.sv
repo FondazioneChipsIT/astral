@@ -73,6 +73,8 @@ module tb_astral;
   logic car_phy_sel_valid;
   logic car_phy_sel;
 
+  logic secd_start;
+
   // timing format for $display("...$t..", $realtime)
   initial begin : timing_format
     $timeformat(-9, 0, "ns", 9);
@@ -88,6 +90,8 @@ module tb_astral;
     if (!$value$plusargs("CHS_IMAGE=%s",    chs_boot_hex))    chs_boot_hex    = "";
     if (!$value$plusargs("CHS_MEM_RAND=%d", chs_mem_rand))    chs_mem_rand    = 0;
     car_phy_sel_valid = $value$plusargs("CAR_PHY_SEL=%d", car_phy_sel);
+
+    secd_start = 1'b0;
 
     if (car_phy_sel_valid) begin
       $display("[TB] PHY %0d selected and enabled, all other PHYs forced to high-Z", car_phy_sel);
@@ -173,6 +177,7 @@ module tb_astral;
             end
             $display("[TB] %t - Loading '%s' through JTAG", $realtime, chs_preload_elf);
             fix.chs_vip.jtag_elf_run(chs_preload_elf);
+            secd_start = 1'b1;
             fix.chs_vip.jtag_wait_for_eoc(exit_code);
           end 1: begin  // Standalone Serial Link passive preload
             $display("[TB] %t - Loading '%s' through SLINK", $realtime, chs_preload_elf);
@@ -217,6 +222,7 @@ module tb_astral;
       $finish;
     end else begin
       $display("[TB] %t - Cheshire not executing no binary provided", $realtime);
+      secd_start = 1'b1;
     end
   end
 
@@ -316,13 +322,17 @@ module tb_astral;
         // Wait for FLL lock
         fix.wait_fll_lock(bypass_pll);
 
+        wait (secd_start == 1'b1);
+        repeat(1000)
+          @(posedge fix.ref_clk);
+
         // Initialize JTAG at first
         fix.chs_vip.jtag_init();
 
         // Writing max burst length in Hyperbus configuration registers to
         // prevent the Verification IPs from triggering timing checks.
-        $display("[TB] INFO: Configuring Hyperbus through JTAG.");
-        fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
+        //$display("[TB] INFO: Configuring Hyperbus through JTAG.");
+        //fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
 
         case(secd_boot_mode)
           0: begin
