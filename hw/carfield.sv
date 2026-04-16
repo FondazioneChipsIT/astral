@@ -1829,7 +1829,6 @@ if (CarfieldIslandsCfg.secured.enable) begin : gen_secure_subsystem
   security_island i_security_island (
   `endif
     .clk_i            ( security_clk    ),
-    .clk_cluster_i    ( security_clk    ),
     .clk_ref_i        ( rt_clk          ),
     .rst_ni           ( security_rst_n  ),
     .pwr_on_rst_ni    ( security_pwr_on_rst_n ),
