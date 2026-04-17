@@ -29,3 +29,10 @@ RUNTIME_DEFINES += -timescale \"1 ns / 1 ps\"
 
 include $(CAR_QSIM_DIR)/qsim.mk
 include $(CAR_VSIM_DIR)/vsim.mk
+
+## @section Global targets
+.PHONY: car-sim-init
+
+## Generate all required VIPs and compilation scripts for all supported simulators
+car-sim-init: car-vsim-sim-init car-qsim-sim-init
+
