@@ -14,8 +14,8 @@
   `define USE_QSPI
   `define USE_STARTUPE3
   `define USE_VIO
-  `define HypNumChips 1
-  `define HypNumPhys 1
+  `define HypNumChips 2
+  `define HypNumPhys 2
   `ifdef GEN_NO_HYPERBUS
     `define USE_DDR4
   `endif

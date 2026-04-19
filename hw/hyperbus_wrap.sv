@@ -74,6 +74,7 @@ module hyperbus_wrap
   output reg_rsp_t reg_async_mst_data_o,
 
   // Physical interace: HyperBus PADs
+`ifndef PULP_FPGA_EMUL
   inout wire logic pad_config_tc_pad_internal_signals_0,
   inout wire logic pad_config_tc_pad_internal_signals_1,
   inout wire logic pad_config_tc_pad_internal_signals_2,
@@ -106,6 +107,15 @@ module hyperbus_wrap
   inout wire logic pad_hyper_phy1_dq_b6_pad,
   inout wire logic pad_hyper_phy1_dq_b7_pad,
   inout wire logic pad_hyper_phy1_reset_n_pad
+`else
+  input clk_ref200_i,
+  inout  [NumPhys-1:0][NumChips-1:0] pad_hyper_csn,
+  inout  [NumPhys-1:0]               pad_hyper_ck,
+  inout  [NumPhys-1:0]               pad_hyper_ckn,
+  inout  [NumPhys-1:0]               pad_hyper_rwds,
+  inout  [NumPhys-1:0]               pad_hyper_reset,
+  inout  [NumPhys-1:0][7:0]          pad_hyper_dq
+`endif
 );
 
 logic rst_n;
@@ -237,6 +247,9 @@ hyperbus           #(
   .axi_rsp_o        ( hyper_rsp          ),
   .reg_req_i        ( reg_req            ),
   .reg_rsp_o        ( reg_rsp            ),
+`ifdef PULP_FPGA_EMUL
+  .clk_ref200_i,
+`endif
   .hyper_cs_no,
   .hyper_ck_o,
   .hyper_ck_no,
@@ -250,6 +263,7 @@ hyperbus           #(
   .hyper_pad_cfg_o
 );
 
+`ifndef PULP_FPGA_EMUL
 pad_domain_topr_static_connection_signals_pad2soc_t pad2soc; //output
 pad_domain_topr_static_connection_signals_soc2pad_t soc2pad; //input
 
@@ -353,5 +367,27 @@ assign soc2pad.hyper_phy1_pu_en_o = hyper_pad_cfg_o[1][6];
 assign soc2pad.hyper_phy1_pd_en_o = hyper_pad_cfg_o[1][5];
 assign soc2pad.hyper_phy1_slew_en_o = hyper_pad_cfg_o[1][3];
 assign soc2pad.hyper_phy1_drive_strength_o = hyper_pad_cfg_o[1][1:0];
+
+`else
+
+genvar i, j;
+generate
+  for(i=0; i<NumPhys; i++) begin
+    pad_functional_pu padinst_hyper_rwds  (.OEN(~hyper_rwds_oe_o[i]  ), .I( hyper_rwds_o[i]  ), .O( hyper_rwds_i[i]  ), .PAD( pad_hyper_rwds[i]   ), .PEN(1'b1 ) );
+
+    pad_functional_pu padinst_hyper_csn0  (.OEN(1'b0                 ), .I( hyper_cs_no[i][0]  ), .O(                  ), .PAD( pad_hyper_csn[i][0] ), .PEN(1'b1 ) );
+    pad_functional_pu padinst_hyper_csn1  (.OEN(1'b0                 ), .I( hyper_cs_no[i][1]  ), .O(                  ), .PAD( pad_hyper_csn[i][1] ), .PEN(1'b1 ) );
+    pad_functional_pu padinst_hyper_clk   (.OEN(1'b0                 ), .I( hyper_ck_o[i]      ), .O(                  ), .PAD( pad_hyper_ck[i]     ), .PEN(1'b1 ) );
+    pad_functional_pu padinst_hyper_clkn  (.OEN(1'b0                 ), .I( hyper_ck_no[i]     ), .O(                  ), .PAD( pad_hyper_ckn[i]    ), .PEN(1'b1 ) );
+    pad_functional_pu padinst_hyper_reset (.OEN(1'b0                 ), .I( hyper_reset_no[i]  ), .O(                  ), .PAD( pad_hyper_reset[i]  ), .PEN(1'b1 ) );
+
+    for (j=0; j<8; j++) begin
+      pad_functional_pu padinst_hyper_dqio  (.OEN(~hyper_dq_oe_o[i]   ), .I( hyper_dq_o[i][j]   ), .O( hyper_dq_i[i][j]  ), .PAD( pad_hyper_dq[i][j]   ), .PEN(1'b1 ) );
+    end 
+  end
+endgenerate
+
+
+`endif
 
 endmodule: hyperbus_wrap

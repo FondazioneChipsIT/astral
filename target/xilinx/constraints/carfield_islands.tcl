@@ -10,7 +10,31 @@
 
 set SOC_TCK 20
 
-proc handle_domain_clock_mux { clk_sel_path clk_name } {
+## Generate a clock based on the default clk_sel value for a clock mux
+## @param clk_sel_path path to the clk_sel register
+## @param clk_sel_val default clk_sel value
+proc handle_domain_clock_mux { clk_sel_path clk_sel_val clk_name } {
+  upvar SOC_TCK SOC_TCK
+  # Start from a known clk_sel register and get fanout to find the clk_mux
+  set domain_clk_mux [lindex [regexp -inline {[^ ]*gen_domain_clock_mux\[[0-9]*\]} [filter [all_fanout -flat [get_pins $clk_sel_path/q[*]]] -filter {NAME=~*gen_domain_clock_mux*}]] 0]
+  # This domain_clk_mux not be here if the island is not activated
+  if { $domain_clk_mux != "" } {
+    # Create a unique generated clock to avoid fake clock path across the mux
+    create_generated_clock -source [get_pins $domain_clk_mux.i_clk_mux/clks_i[$clk_sel_val]] -divide_by 1 -name $clk_name [get_pins $domain_clk_mux.i_clk_mux/clk_o]
+    set_case_analysis [expr $clk_sel_val >> 0 & 1] [get_pins $clk_sel_path/q[0]]
+    set_case_analysis [expr $clk_sel_val >> 1 & 1] [get_pins $clk_sel_path/q[1]]
+    # Add max_delay 0 to spot missing CDCs
+    set_max_delay 0 -from [get_clocks -filter "NAME != $clk_name"] -to [get_clocks $clk_name]
+    set_max_delay 0 -from [get_clocks $clk_name] -to [get_clocks -filter "NAME != $clk_name"]
+    puts "Generated domain clock $clk_name"
+  }
+}
+
+handle_domain_clock_mux [get_cells -hier u_periph_clk_sel] 1 periph_domain_clk
+handle_domain_clock_mux [get_cells -hier u_security_island_clk_sel] 2 security_domain_clk
+
+
+proc handle_multiple_clks { clk_sel_path clk_name } {
   set clocks [list clk_50 clk_10 clk_20]
   # Start from a known clk_sel register and get fanout to find the clk_mux
   set domain_clk_mux [lindex [regexp -inline {[^ ]*gen_domain_clock_mux\[[0-9]*\]} [filter [all_fanout -flat [get_pins $clk_sel_path/q[*]]] -filter {NAME=~*gen_domain_clock_mux*}]] 0]
@@ -32,13 +56,10 @@ proc handle_domain_clock_mux { clk_sel_path clk_name } {
   }
 }
 
+#handle_multiple_clks [get_cells -hier u_periph_clk_sel] periph_domain_clk
+#handle_multiple_clks [get_cells -hier u_security_island_clk_sel] security_domain_clk
 
-handle_domain_clock_mux [get_cells -hier u_periph_clk_sel] periph_domain_clk
-handle_domain_clock_mux [get_cells -hier u_security_island_clk_sel] security_domain_clk
-#handle_domain_clock_mux [get_cells -hier u_pulp_cluster_clk_sel] pulp_domain_clk
-#handle_domain_clock_mux [get_cells -hier u_spatz_cluster_clk_sel] spatz_domain_clk
-#handle_domain_clock_mux [get_cells -hier u_l2_clk_sel] l2_domain_clk
-#handle_domain_clock_mux [get_cells -hier u_safety_island_clk_sel] safety_domain_clk
+
 
 #################
 # Carfield CDCs #

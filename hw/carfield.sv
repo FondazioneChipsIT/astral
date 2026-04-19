@@ -138,6 +138,7 @@ module carfield
   output logic [SlinkNumChan-1:0][SlinkNumLanes-1:0]  slink_o,
   // HyperBus interface
   // verilog_lint: waive-start line-length
+`ifndef PULP_FPGA_EMUL
   inout wire logic pad_config_tc_pad_internal_signals_0,
   inout wire logic pad_config_tc_pad_internal_signals_1,
   inout wire logic pad_config_tc_pad_internal_signals_2,
@@ -170,6 +171,16 @@ module carfield
   inout wire logic pad_hyper_phy1_dq_b6_pad,
   inout wire logic pad_hyper_phy1_dq_b7_pad,
   inout wire logic pad_hyper_phy1_reset_n_pad,
+`else
+  input  clk_ref200_i,
+  inout  [HypNumPhys-1:0][HypNumChips-1:0] pad_hyper_csn,
+  inout  [HypNumPhys-1:0]               pad_hyper_ck,
+  inout  [HypNumPhys-1:0]               pad_hyper_ckn,
+  inout  [HypNumPhys-1:0]               pad_hyper_rwds,
+  inout  [HypNumPhys-1:0]               pad_hyper_reset,
+  inout  [HypNumPhys-1:0][7:0]          pad_hyper_dq,
+`endif
+
   // verilog_lint: waive-stop line-length
 `ifdef GEN_NO_HYPERBUS
   // LLC interface
@@ -1061,6 +1072,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .reg_async_mst_req_o ( ext_reg_async_slv_req_in  [HyperBusAsyncIdx] ),
     .reg_async_mst_ack_i ( ext_reg_async_slv_ack_out [HyperBusAsyncIdx] ),
     .reg_async_mst_data_o( ext_reg_async_slv_data_in [HyperBusAsyncIdx] ),
+`ifndef PULP_FPGA_EMUL
     .pad_config_tc_pad_internal_signals_0,
     .pad_config_tc_pad_internal_signals_1,
     .pad_config_tc_pad_internal_signals_2,
@@ -1093,6 +1105,15 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .pad_hyper_phy1_dq_b6_pad,
     .pad_hyper_phy1_dq_b7_pad,
     .pad_hyper_phy1_reset_n_pad
+  `else
+    .clk_ref200_i,
+    .pad_hyper_csn,
+    .pad_hyper_ck,
+    .pad_hyper_ckn,
+    .pad_hyper_rwds,
+    .pad_hyper_dq,
+    .pad_hyper_reset
+  `endif
 );
 `endif // GEN_NO_HYPERBUS
 

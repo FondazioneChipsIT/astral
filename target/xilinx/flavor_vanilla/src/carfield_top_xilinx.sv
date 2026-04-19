@@ -115,7 +115,7 @@ module carfield_top_xilinx
   inout  [`HypNumPhys-1:0]                   pad_hyper_ck,
   inout  [`HypNumPhys-1:0]                   pad_hyper_ckn,
   inout  [`HypNumPhys-1:0]                   pad_hyper_rwds,
-  // inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
+  inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
   inout  [`HypNumPhys-1:0][7:0]              pad_hyper_dq,
 `endif
 
@@ -200,8 +200,10 @@ module carfield_top_xilinx
     .clk_100 ( clk_100  ),
     .clk_50  ( clk_50   ),
     .clk_20  ( clk_20   ),
-    .clk_10  ( clk_10   )
+    .clk_10  ( clk_10   ),
+    .clk_200 ( clk_200  ) //For the hyperbus
   );
+  
   localparam rtc_clk_divider = 4;
   logic[carfield_pkg::NumFll-1:0] domain_clk;
 
@@ -603,6 +605,14 @@ module carfield_top_xilinx
       .llc_w_data,
       .llc_w_wptr,
       .llc_w_rptr,
+  `else
+      .clk_ref200_i(clk_200),
+      .pad_hyper_csn,
+      .pad_hyper_ck,
+      .pad_hyper_ckn,
+      .pad_hyper_rwds,
+      .pad_hyper_dq,
+      .pad_hyper_reset,
 `endif
       // Serial link interface
       .slink_rcv_clk_i           (),
