@@ -168,7 +168,7 @@ module tb_astral;
 `ifndef ASTRAL_TOP_NETLIST
                 @(posedge fix.i_dut.clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx]);
 `else
-                #10ns;
+                #60ns;
 `endif
             end
             $display("[TB] %t - Loading '%s' through JTAG", $realtime, chs_preload_elf);
