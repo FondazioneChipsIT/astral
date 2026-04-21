@@ -19,7 +19,8 @@ SCARV_TESTS := \
 	cluster_offload \
 	idma_test \
 	mbox_host \
-	mbox_wu_cluster
+	mbox_wu_cluster \
+	snooper_stress_test 
 
 PULP_TEST_DIRS    := $(filter-out %deeploy/ %neureka/, $(wildcard $(SECD_PULPD_SW_DIR)/*/))
 NEUREKA_TEST_DIRS := $(wildcard $(SECD_PULPD_SW_DIR)/neureka/*/)
@@ -40,7 +41,7 @@ secd-pulpd-sw-clean:
 	$(foreach test, $(ALL_PULPD_TEST_DIRS), $(MAKE) -C $(test) clean;)
 
 ot-sw-build:
-	$(foreach test, $(SCARV_TESTS), $(MAKE) -C $(SECD_ROOT) compile-bazel-sram target=scarv test_name=$(test) defines=NO_STANDALONE=1;)
+	$(foreach test, $(SCARV_TESTS), CHS_ROOT=$(CHS_ROOT) $(MAKE) -C $(SECD_ROOT) compile-bazel-sram target=scarv test_name=$(test) defines=NO_STANDALONE=1;)
 	$(foreach test, $(SCARV_TESTS), install -m 755 $(SECD_SCARV_SW_DIR)/$(test)/bazel-out/$(test).elf $(CAR_SECD_SW)/$(test).elf;)
 
 ot-sw-clean:
