@@ -52,7 +52,7 @@ include $(CAR_ROOT)/bender-safed.mk
 ######################
 
 CAR_NONFREE_REMOTE ?= git@gitlab.chips.it:digitalresearchline/scar-v/nonfree.git
-CAR_NONFREE_COMMIT ?= 092b13770f4fe2a48df5fa2421c3bef49eca825f
+CAR_NONFREE_COMMIT ?= 9990ac478fae998be1ddc678dd9e2ff661757520
 
 ## @section Carfield platform nonfree components
 ## Clone the non-free verification IP for Carfield. Some components such as CI scripts and ASIC

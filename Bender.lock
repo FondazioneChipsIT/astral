@@ -124,7 +124,7 @@ packages:
       Git: https://github.com/AlSaqr-platform/can_bus.git
     dependencies: []
   cheshire:
-    revision: 54672da4ec7d001bf1c1a104eb70ef25a7e1f4db
+    revision: 77fa77e81c4d4dd93c7d96f6c161a79995c496fb
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cheshire.git
@@ -413,7 +413,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: 1f4a4525593fc6e9dbaf24561b3b2010de23e069
+    revision: c33baf15b2c93b19ae3ec776d6ccd66326ec9ef7
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
