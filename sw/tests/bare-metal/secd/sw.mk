@@ -17,7 +17,9 @@ SECD_PULPD_SW_DIR := $(SECD_SW_DIR)/regression_tests/opentitan-cluster
 
 SCARV_TESTS := \
 	cluster_offload \
-	idma_test
+	idma_test \
+	mbox_host \
+	mbox_wu_cluster
 
 PULP_TEST_DIRS    := $(filter-out %deeploy/ %neureka/, $(wildcard $(SECD_PULPD_SW_DIR)/*/))
 NEUREKA_TEST_DIRS := $(wildcard $(SECD_PULPD_SW_DIR)/neureka/*/)
