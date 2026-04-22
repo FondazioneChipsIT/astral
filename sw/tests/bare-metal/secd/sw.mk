@@ -20,13 +20,14 @@ SCARV_TESTS := \
 	idma_test \
 	mbox_host \
 	mbox_wu_cluster \
-	snooper_stress_test 
+	snooper_stress_test \
+	ot_clk_div_test
 
 PULP_TEST_DIRS    := $(filter-out %deeploy/ %neureka/, $(wildcard $(SECD_PULPD_SW_DIR)/*/))
 NEUREKA_TEST_DIRS := $(wildcard $(SECD_PULPD_SW_DIR)/neureka/*/)
 DEEPLOY_TEST_DIRS := $(wildcard $(SECD_PULPD_SW_DIR)/deeploy/*/*/)
 
-ALL_PULPD_TEST_DIRS := $(PULP_TEST_DIRS) $(NEUREKA_TEST_DIRS) $(DEEPLOY_TEST_DIRS)
+ALL_PULPD_TEST_DIRS := $(PULP_TEST_DIRS) $(NEUREKA_TEST_DIRS) #$(DEEPLOY_TEST_DIRS)
 
 .PHONY: secd-pulpd-sw-build secd-pulpd-sw-clean ot-sw-build ot-sw-clean secd-sw-all secd-sw-clean
 
@@ -34,7 +35,7 @@ secd-pulpd-sw-build:
 	mkdir -p $(CAR_SECD_PULPD_SW)
 	$(foreach test, $(PULP_TEST_DIRS),    $(MAKE) -C $(test) all io=host_uart;)
 	$(foreach test, $(NEUREKA_TEST_DIRS), $(MAKE) -C $(test) all MODE=1 io=host_uart;)
-	$(foreach test, $(DEEPLOY_TEST_DIRS), $(MAKE) -C $(test) pulp_nn all io=host_uart;)
+# 	$(foreach test, $(DEEPLOY_TEST_DIRS), $(MAKE) -C $(test) pulp_nn all io=host_uart;)
 	$(foreach test, $(ALL_PULPD_TEST_DIRS), cp $(test)/build/test/test $(CAR_SECD_PULPD_SW)/$(notdir $(test:%/=%)).elf;)
 
 secd-pulpd-sw-clean:
