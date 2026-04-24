@@ -413,7 +413,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: ec68699991adc33446f54581fba541f692c26de6
+    revision: d017bc599422ac5176e7b2827c8c2d74e0023d7d
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
