@@ -32,11 +32,16 @@ switch $::env(XILINX_BOARD) {
   }
 }
 
-# Add the DDR4 interface pins
+# Add the Hyperbus constraints
+if { [catch {set ::env(GEN_NO_HYPERBUS)}] && ($::env(XILINX_BOARD)=="vcu118")} {
+    import_files -fileset constrs_1 -norecurse ../constraints/constr_hyperbus.xdc
+}
+
+# Add the DDR4/Hyperbus interface pins
 if {[info exists ::env(GEN_NO_HYPERBUS)] && ($::env(GEN_NO_HYPERBUS)==1) && ($::env(XILINX_BOARD)=="vcu118")} {
     import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_ddr4.xdc
 } else {
-    import_files -fileset constrs_1 -norecurse ../constraints/constr_hyperbus.xdc
+    import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_hyperbus.xdc
 }
 
 # Add the auxiliary JTAG interface pins
