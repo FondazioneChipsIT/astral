@@ -371,7 +371,7 @@ assign soc2pad.hyper_phy1_drive_strength_o = hyper_pad_cfg_o[1][1:0];
 `else
 
 genvar i, j;
-gen_hyperbus_pins: generate
+generate
   for(i=0; i<NumPhys; i++) begin: gen_phys
     pad_functional_pu padinst_hyper_rwds  (
       .OEN( ~hyper_rwds_oe_o[i] ),
