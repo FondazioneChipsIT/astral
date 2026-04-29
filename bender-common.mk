@@ -23,7 +23,6 @@ common_targs += -t snitch_cluster
 common_targs += -t deprecated
 # Carfield config target.
 common_targs += -t $(CARFIELD_CONFIG)
-common_targs += -t hyperbus_dline
 # bender defines
 common_defs += -D FEATURE_ICACHE_STAT
 common_defs += -D PRIVATE_ICACHE
