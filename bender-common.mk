@@ -16,6 +16,9 @@ common_targs += -t cv64a6splus_imafdc_sv39_hpdcache_wb
 common_targs += -t rtl
 common_targs += -t idma
 common_targs += -t use_idma
+# Use the hyperbus_macro target to use the hyperbus as macro, including padframe,
+# CDC and other logic instantiated in the wrapper provided with the IP.
+common_targs += -t hyperbus_macro
 # The `snitch_cluster` target is needed for iDMA backend generation
 common_targs += -t snitch_cluster
 # The `deprecated` is needed for the redundancy cells, used as a
