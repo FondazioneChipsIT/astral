@@ -100,11 +100,8 @@ sources:
   - hw/carfield_chip_pkg.sv
   - hw/regs/carfield_reg_pkg.sv
   - hw/regs/carfield_reg_top.sv
-  - hw/padframe/tc_pad_pkg.sv
   - hw/padframe/astral_padframe/src/pkg_astral_padframe.sv
   - hw/padframe/astral_padframe/src/pkg_internal_astral_padframe_botl.sv
-  - hw/hyperbus_padframe/src/pkg_hyperbus_padframe.sv
-  - hw/hyperbus_padframe/src/hyperbus_padframe_topr_pads.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_config_reg_pkg.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_config_reg_top.sv
   - hw/padframe/astral_padframe/src/astral_padframe_botl_pads.sv
@@ -117,17 +114,12 @@ sources:
   - hw/padframe/top_padframe_wrapper.sv
   # Level 1
   - hw/cheshire_wrap.sv
-  - hw/hyperbus_wrap.sv
   - hw/l2_wrap.sv
   - hw/ethernet_wrap.sv
   - hw/carfield_rstgen.sv
   # Level 2
   - hw/carfield.sv
   - hw/astral_wrap.sv
-
-  - target: all(not(synthesis), not(tech_sim))
-    files:
-      - hw/padframe/tc_pad.sv
 
   - target: spatz
     files:
