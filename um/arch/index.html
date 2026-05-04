@@ -482,33 +482,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#accelerator-domain" class="md-nav__link">
-    Accelerator domain
-  </a>
-  
-    <nav class="md-nav" aria-label="Accelerator domain">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hmr-integer-pmca" class="md-nav__link">
-    HMR integer PMCA
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vectorial-pmca" class="md-nav__link">
-    Vectorial PMCA
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -580,27 +553,6 @@
           <li class="md-nav__item">
   <a href="#generic-and-advanced-timer" class="md-nav__link">
     Generic and advanced timer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#watchdog-timer" class="md-nav__link">
-    Watchdog timer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#can" class="md-nav__link">
-    CAN
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ethernet" class="md-nav__link">
-    Ethernet
   </a>
   
 </li>
@@ -742,33 +694,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#accelerator-domain" class="md-nav__link">
-    Accelerator domain
-  </a>
-  
-    <nav class="md-nav" aria-label="Accelerator domain">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hmr-integer-pmca" class="md-nav__link">
-    HMR integer PMCA
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vectorial-pmca" class="md-nav__link">
-    Vectorial PMCA
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -844,27 +769,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#watchdog-timer" class="md-nav__link">
-    Watchdog timer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#can" class="md-nav__link">
-    CAN
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ethernet" class="md-nav__link">
-    Ethernet
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -923,39 +827,39 @@
 
 
 <h1 id="architecture">Architecture</h1>
-<p><a class="glightbox" href="../../img/arch.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Carfield Block Diagram" src="../../img/arch.svg" /></a></p>
-<p>Carfield is organized in <em>domains</em>. As a mixed-criticality system (MCS), each domain serves
+<p><a class="glightbox" href="../../img/arch.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="SCAR-V Block Diagram" src="../../img/arch.svg" /></a></p>
+<p>SCAR-V is organized in <em>domains</em>. As a mixed-criticality system (MCS), each domain serves
 different purposes in terms of functional safety and reliability, security, and computation
 capabilities.</p>
-<p>Carfield relies on Cheshire as its host domain, and extends its minimal SoC with additional
+<p>SCAR-V relies on Cheshire as its host domain, and extends its minimal SoC with additional
 interconnect ports and interrupts.</p>
-<p>The above block diagram depicts a fully-featured Carfield SoC, which currently provides:</p>
+<p>The above block diagram depicts a fully-featured SCAR-V SoC, which currently provides:</p>
 <ul>
 <li>
 <p><strong>Domains</strong>:</p>
 <ul>
 <li><em>Host domain</em> (Cheshire), a Linux-capable RV64 system based on dual-core CVA6 processors with
-  self-invalidation coherency mechanism</li>
-<li><em>Safe domain</em>, a Triple-Core-Lockstep (TCLS) RV32 microcontroller system based on CV32E40P,
-  with fast interrupt handling through the RISC-V CLIC</li>
+  self-invalidation coherency mechanism
+<!-- - *Safe domain*, a Triple-Core-Lockstep (TCLS) RV32 microcontroller system based on CV32E40P,
+  with fast interrupt handling through the RISC-V CLIC --></li>
 <li><em>Secure domain</em>, a Dual-Core-Lockstep (DCLS) RV32 Hardware Root of Trust (HW RoT) systems that
   ensures the secure boot for the whole platform, serves as secure monitor for the entire
-  system, and provides crypto acceleration services through various crypto-accelerators</li>
-<li><em>Accelerator domain</em>, comprises two programmable multi-core accelerators (PMCAs), an 12-cores
+  system, and provides crypto acceleration services through various crypto-accelerators
+<!-- - *Accelerator domain*, comprises two programmable multi-core accelerators (PMCAs), an 12-cores
   integer cluster with Hybrid Modular Redundancy (HMR) capabilities oriented to compute
   intensive integer workloads such as AI, and a vectorial cluster with floating point vector
-  processing capabilities to accelerate intensive control tasks</li>
+  processing capabilities to accelerate intensive control tasks --></li>
 </ul>
 </li>
 <li>
-<p><strong>On-chip and off-chip memory endpoints</strong>:</p>
+<p><strong>On-chip and off-chip memory endpoints</strong>:
+    &lt;!-- - <em>Dynamic SPM</em>: dynamically configurable scratchpad memory (SPM) for <em>interleaved</em> or
+      <em>contiguous</em> accesses aiming at reducing systematic bus conflicts to improve the
+      time-predictability of the on-chip communication</p>
 <ul>
-<li><em>Dynamic SPM</em>: dynamically configurable scratchpad memory (SPM) for <em>interleaved</em> or
-  <em>contiguous</em> accesses aiming at reducing systematic bus conflicts to improve the
-  time-predictability of the on-chip communication</li>
 <li><em>Partitionable hybrid LLC SPM</em>: the last-level cache (<em>host domain</em>) can be configured as SPM
   at runtime, as described in Cheshire's
-  <a href="https://pulp-platform.github.io/cheshire/um/arch/">Architecture</a></li>
+  <a href="https://pulp-platform.github.io/cheshire/um/arch/">Architecture</a> --&gt;</li>
 <li><em>External DRAM</em>: off-chip HyperRAM (Infineon) interfaced with in-house, open-source AXI4
   Hyberbus memory controller and digital PHY connected to Cheshire's LLC</li>
 </ul>
@@ -989,19 +893,16 @@ interconnect ports and interrupts.</p>
 <li>Dynamic interrupt routing from and to internal and external targets.</li>
 </ul>
 </li>
-<li>
-<p><strong>Peripherals</strong>:</p>
-<ul>
-<li>Generic timers</li>
-<li>PWM timers</li>
-<li>Watchdog timer</li>
-<li>Ethernet</li>
-<li>CAN</li>
 </ul>
-</li>
-</ul>
+<!-- - **Peripherals**:
+    - Generic timers
+    - PWM timers
+    - Watchdog timer
+    - Ethernet
+    - CAN -->
+
 <h2 id="memory-map">Memory Map</h2>
-<p>This section shows Carfield's memory map. The group <code>Internal to Cheshire</code> in the table below only
+<p>This section shows SCAR-V's memory map. The group <code>Internal to Cheshire</code> in the table below only
 recalls the memory map described in the dedicatd <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
 Cheshire</a> and is explicitely shown here for
 clarity.</p>
@@ -1458,7 +1359,7 @@ clarity.</p>
 <td></td>
 <td></td>
 <td>I/O</td>
-<td>Carfield Control and Status</td>
+<td>SCAR-V Control and Status</td>
 </tr>
 <tr>
 <td><code>0x2002_0000</code></td>
@@ -1672,9 +1573,9 @@ clarity.</p>
 </tbody>
 </table>
 <h2 id="interrupt-map">Interrupt map</h2>
-<p>Carfield's interrupt components are exhaustivly described in
+<p>SCAR-V's interrupt components are exhaustivly described in
 the dedicated section of the <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
-Cheshire</a>. This section describes Carfield's interrupt map.</p>
+Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <table>
 <thead>
 <tr>
@@ -1688,7 +1589,7 @@ Cheshire</a>. This section describes Carfield's interrupt map.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Carfield peripherals</strong></td>
+<td><strong>SCAR-V peripherals</strong></td>
 <td></td>
 <td></td>
 <td></td>
@@ -2724,11 +2625,11 @@ Cheshire</a>. This section describes Carfield's interrupt map.</p>
 <h2 id="domains">Domains</h2>
 <p>The total number of domains is 7: <em>host domain</em>, <em>safe domain</em>, <em>secure domain</em>, <em>integer PMCA
 domain</em>, <em>vectorial PMCA domain</em>, <em>peripheral domain</em>, <em>dynamic SPM</em>.</p>
-<p>Carfield's domains live in dedicated repositories. We therefore invite the reader to consult the
+<p>SCAR-V's domains live in dedicated repositories. We therefore invite the reader to consult the
 documentation of each domain.</p>
 <p>For more information about domains' memory requirements, visit <a href="../../tg/synth/">Synthesis and physical
 implementation</a>.</p>
-<p>Below, we focus on domains' parameterization within Carfield.</p>
+<p>Below, we focus on domains' parameterization within SCAR-V.</p>
 <h3 id="host-domain-cheshire"><a href="https://github.com/pulp-platform/cheshire">Host domain (Cheshire)</a></h3>
 <p>The <em>host domain</em> (Cheshire) embeds all the necessary components required to run OSs such as
 embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
@@ -2738,7 +2639,7 @@ embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
 i.e. non time- and non safety-critical applications. For example, this could be the case of infotainment
 on a modern car. In this mode, as in traditional automotive platforms, safety and resiliency
 features are deferred to a dedicated 32-bit microcontroller-like system, called <code>safe domain</code> in
-Carfield.</p>
+SCAR-V.</p>
 </li>
 <li>
 <p><em>Hybrid trusted/untrusted mode</em>: in this operation mode, the host domain is in charge of both
@@ -2787,7 +2688,7 @@ and virtualization support.</li>
 <li>2 external interruptible harts (<code>CarfieldNumInterruptibleHarts</code>). The interruptible harts are
   Snitch core #0 and #1 in the vectorial cluster.</li>
 <li>An interrupt router with 1 external target (<code>CarfieldNUmRouterTargets</code>), tasked to distribute N
-  input interrupts to M targets. In Carfield, the external target is the <code>safe domain</code>.</li>
+  input interrupts to M targets. In SCAR-V, the external target is the <code>safe domain</code>.</li>
 <li>All Cheshire peripherals, except for VGA</li>
 </ul>
 <p>By default, Cheshire hosts 128KiB of hybrid LLC/SPM, user-configurable.</p>
@@ -2800,12 +2701,12 @@ reliability.</p>
 <p>The <em>safe domain</em> is essential when the <em>host domain</em> is operated in <em>untrusted</em> mode.</p>
 <p>The <em>safe domain</em> is configured as follows:</p>
 <ul>
-<li>1 RISC-V debug module prividing indipendent JTAG interface off-Carfield</li>
+<li>1 RISC-V debug module prividing indipendent JTAG interface off-SCAR-V</li>
 <li>1 AXI manager and 1 AXI subordinate ports, 32-bit data and 32-bit address wide, to and from the
   <em>host domain</em>, respectively. AXI datawidth conversion with the host domain is handled internally
   to the safe domain.</li>
 <li>1 generic timer, essential for periodic ticks common in RTOSs. The generic timer in the <em>safe
-  domain</em> is the same integrated in <a href="#peripheral-domain">Carfield's <em>peripheral domain</em></a>.</li>
+  domain</em> is the same integrated in <a href="#peripheral-domain">SCAR-V's <em>peripheral domain</em></a>.</li>
 <li>CLIC RISC-V interrupt controller; as opposed to Cheshire, currently the CLIC is configured to run
   run in M-mode.</li>
 <li>128 <em>external</em> input interrupts. Unused are tied to 0.</li>
@@ -2820,10 +2721,10 @@ user-configurable.</p>
 project</a>, serves as the Hardware Root-of-Trust
 (HWRoT) of the platform. It handles <em>secure boot</em> and system integrity monitoring fully in HW
 through cryptographic acceleration services.</p>
-<p>Compared to vanilla OpenTitan, the secure domain integrated in Carfield is modified/configured as follows:</p>
+<p>Compared to vanilla OpenTitan, the secure domain integrated in SCAR-V is modified/configured as follows:</p>
 <ul>
 <li>
-<p>1 AXI4 manager interface to Carfield, with a bridge between AXI4 and TileLink Uncached Lightweight
+<p>1 AXI4 manager interface to SCAR-V, with a bridge between AXI4 and TileLink Uncached Lightweight
   (TL-UL) internally used by OpenTitan. By only exposing a manager port, unwanted access to the
   secure domain is prevented.</p>
 </li>
@@ -2841,52 +2742,65 @@ through cryptographic acceleration services.</p>
 </li>
 </ul>
 <p>By default, the secure domain hosts 512KiB of main SPM, and 16KiB of OTP memory, user-configurable.</p>
-<h3 id="accelerator-domain">Accelerator domain</h3>
-<p>To augment computational capabilities, Carfield incorporates two PMCAs, described below. Both PMCAs
-integrate DMA engines to independently fetch data from the on-chip SPM or external DRAM.</p>
-<h4 id="hmr-integer-pmca"><a href="https://github.com/pulp-platform/pulp_cluster/tree/yt/rapidrecovery">HMR integer PMCA</a></h4>
-<p>The <a href="https://arxiv.org/abs/2303.08706">hybrid modular redundancy (HMR) <em>integer PMCA</em></a> is
+<!-- ### Accelerator domain
+
+To augment computational capabilities, SCAR-V incorporates two PMCAs, described below. Both PMCAs
+integrate DMA engines to independently fetch data from the on-chip SPM or external DRAM.
+
+#### [HMR integer PMCA](https://github.com/pulp-platform/pulp_cluster/tree/yt/rapidrecovery)
+
+The [hybrid modular redundancy (HMR) *integer PMCA*](https://arxiv.org/abs/2303.08706) is
 specialized in accelerating the inference of Deep Learning and Machine Learning models. The
 multicore accelerator is built around 12 32-bit RISC-V cores empowered with ISA extensions, enabling
-integer arithmetic from 32-bit down to 2-bit precision.</p>
-<p>The integer PMCA does not integrate a fully-fledged FPU co-processor. Nevertheless, it features a
+integer arithmetic from 32-bit down to 2-bit precision.
+
+The integer PMCA does not integrate a fully-fledged FPU co-processor. Nevertheless, it features a
 highly specialized domain specific accelerator (DSA),
-<a href="https://www.sciencedirect.com/science/article/pii/S0167739X23002546">RedMulE</a>, which enables fast
+[RedMulE](https://www.sciencedirect.com/science/article/pii/S0167739X23002546), which enables fast
 and energy-efficient floating-point GEMM on 16-bit and 8-bit data formats. This makes the PMCA
-capable of on-chip training of generalized Deep Learning models.</p>
-<p>As part of a MCS, the integer PMCA's general-purpose cores can be reconfigured for <em>redundant
-execution</em>. A <a href="https://doi.org/10.1145/3635161">Hybrid Modular Redundancy (HMR)</a> unit allows the
+capable of on-chip training of generalized Deep Learning models.
+
+As part of a MCS, the integer PMCA's general-purpose cores can be reconfigured for *redundant
+execution*. A [Hybrid Modular Redundancy (HMR)](https://doi.org/10.1145/3635161) unit allows the
 split/lock of the available cores in different redundant configurations during runtime, trading off
 the computing performance and the fault resilience capability according to the criticality of the
-application.</p>
-<p>The PMCA can be configured in multiple redundant modes:
-* <strong>Independent:</strong> All cores act independently with no redundancy mechanism. This configuration allows
+application.
+
+The PMCA can be configured in multiple redundant modes:
+* **Independent:** All cores act independently with no redundancy mechanism. This configuration allows
   higher performance but has no reliability.
-* <strong>Dual Modular Redundancy (DMR)</strong>: The cores are grouped in lock-stepped pairs and rely on a
+* **Dual Modular Redundancy (DMR)**: The cores are grouped in lock-stepped pairs and rely on a
   specialized hardware extension for fast fault recovery in less than 30 clock cycles in case of
   fault detection. The PMCA provides the best trade-off between performance and fault recovery in
   this configuration.
-* <strong>Triple Modular Redundancy (TMR)</strong>: The cores are grouped in lock-stepped triplets and rely on
+* **Triple Modular Redundancy (TMR)**: The cores are grouped in lock-stepped triplets and rely on
   either hardware extension or software mechanisms to recover from incurring faults. The PMCA
-  provides the highest fault resilience in this configuration, at the cost of reduced performance.</p>
-<p>By default, the integer PMCA's processing elements and tensor accelerator share access to 256KiB of
-L1 SPM, user-configurable.</p>
-<h4 id="vectorial-pmca"><a href="https://github.com/pulp-platform/spatz">Vectorial PMCA</a></h4>
-<p>The <a href="https://dl.acm.org/doi/abs/10.1145/3508352.3549367"><em>vectorial PMCA</em>, or Spatz PMCA</a> handles
-vectorizable multi-format floating-point workloads.</p>
-<p>A Spatz vector unit acts as a coprocessor of the <a href="https://github.com/pulp-platform/snitch_cluster">Snitch
-core</a>, a tiny RV32IMA core which decodes and
-forwards vector instructions to the vector unit.</p>
-<p>A Snitch core and a Spatz vector unit are together referred to as <em>Core Complex (CC)</em>. The vectorial
-PMCA is composed by two CCs, each with the following configuration:</p>
-<ul>
-<li>2 KiB of latch-based VRF</li>
-<li>4 transprecision FPUs</li>
-<li>1 integer processing unit (IPU)</li>
-</ul>
-<p>Each FPU supports <em>FP8</em>, <em>FP16</em>, <em>FP32</em>, and <em>FP64</em> computation, while the IPU supports 8, 16, 32,
-and 64-bit integer computation.</p>
-<p>By default, the CCs share access to 128KiB of L1 SPM, user-configurable.</p>
+  provides the highest fault resilience in this configuration, at the cost of reduced performance.
+
+By default, the integer PMCA's processing elements and tensor accelerator share access to 256KiB of
+L1 SPM, user-configurable.
+
+#### [Vectorial PMCA](https://github.com/pulp-platform/spatz)
+
+The [*vectorial PMCA*, or Spatz PMCA](https://dl.acm.org/doi/abs/10.1145/3508352.3549367) handles
+vectorizable multi-format floating-point workloads.
+
+A Spatz vector unit acts as a coprocessor of the [Snitch
+core](https://github.com/pulp-platform/snitch_cluster), a tiny RV32IMA core which decodes and
+forwards vector instructions to the vector unit.
+
+A Snitch core and a Spatz vector unit are together referred to as *Core Complex (CC)*. The vectorial
+PMCA is composed by two CCs, each with the following configuration:
+
+* 2 KiB of latch-based VRF
+* 4 transprecision FPUs
+* 1 integer processing unit (IPU)
+
+Each FPU supports *FP8*, *FP16*, *FP32*, and *FP64* computation, while the IPU supports 8, 16, 32,
+and 64-bit integer computation.
+
+By default, the CCs share access to 128KiB of L1 SPM, user-configurable. -->
+
 <h2 id="on-chip-and-off-chip-memory-endpoints">On-chip and off-chip memory endpoints</h2>
 <h3 id="dynamic-scratchpad-memory-spm"><a href="https://github.com/pulp-platform/dyn_spm">Dynamic scratchpad memory (SPM)</a></h3>
 <p>The dynamic SPM features dynamically switching address mapping policy. It manages the following
@@ -2899,14 +2813,14 @@ features:</p>
 <li>Every address space points to the same physical SRAM through a low-latency matrix crossbar</li>
 <li>ECC-equipped memory banks</li>
 </ul>
-<p>By default, Carfield hosts 1MiB of dynamic SPM, user-configurable.</p>
+<p>By default, SCAR-V hosts 1MiB of dynamic SPM, user-configurable.</p>
 <h3 id="partitionable-hybrid-llcspm"><a href="https://github.com/pulp-platform/axi_llc">Partitionable hybrid LLC/SPM</a></h3>
-<p>Carfield hosts a LLC optionaly reconfigurable as SPM during runtime. In addition, the LLC supports
+<p>SCAR-V hosts a LLC optionaly reconfigurable as SPM during runtime. In addition, the LLC supports
 HW-based partitioning to exploit intra-process or inter-processes isolation, improving the system's
 predictability. The LLC is described in detail in Cheshire's
 <a href="https://pulp-platform.github.io/cheshire/um/arch">Architecture</a>.</p>
 <h3 id="hyperbus-off-chip-link"><a href="https://github.com/pulp-platform/hyperbus">HyperBus off-chip link</a></h3>
-<p>Carfield integrates a in-house, open-source implementation of Infineon' HyperBus off-chip controller
+<p>SCAR-V integrates a in-house, open-source implementation of Infineon' HyperBus off-chip controller
 to connect to external HyperRAM modules.</p>
 <p>It manages the following features:</p>
 <ul>
@@ -2924,7 +2838,7 @@ additional external AXI manager and subordinate ports.</p>
 <p>Cheshire's auxiliary <a href="https://github.com/pulp-platform/register_interface">Regbus</a> demultiplexer is
 extended with additional peripheral configuration ports for external PLL/FLL and padmux
 configuration, which are specific of ASIC wrappers.</p>
-<p>An additional peripheral subsystem based on APB hosts Carfield-specific peripherals.</p>
+<p>An additional peripheral subsystem based on APB hosts SCAR-V-specific peripherals.</p>
 <h2 id="mailbox-unit"><a href="https://github.com/pulp-platform/mailbox_unit">Mailbox unit</a></h2>
 <p>The mailbox unit consists in a number of configurable mailboxes. Each mailbox is the preferred
 communication vehicle between <em>domains</em>. It can be used to wake-up certain domains, notify an
@@ -2935,7 +2849,7 @@ others.</p>
 <ul>
 <li>Interrupt based signaling receiver and sender</li>
 <li>A shared memory space common to all the mailboxes, implemented as a single register file.
-  Currently, Carfield implements 25 mailboxes.</li>
+  Currently, SCAR-V implements 25 mailboxes.</li>
 <li>Support for 32-bit word aligned read/write access.</li>
 <li>A convenience AXI-Lite wrapper for the configuration port.</li>
 </ul>
@@ -3014,11 +2928,11 @@ others.</p>
 </tbody>
 </table>
 <p>The above register map can be found in the dedicated
-<a href="https://github.com/pulp-platform/mailbox_uni">repository</a> and is reported here for convenience.</p>
+<a href="https://github.com/pulp-platform/mailbox_unit">repository</a> and is reported here for convenience.</p>
 <h2 id="platform-control-registers">Platform control registers</h2>
 <p>PCRs provide basic system information, and control clock, reset and other functionalities of
-Carfield's <em>domains</em>.</p>
-<p>A more detailed overview of each PCR (register subfields and description) can be found
+SCAR-V's <em>domains</em>.</p>
+<p>A more detailed overview of each PCR (relgister subfieds and description) can be found
 <a href="../../hw/regs/pcr.md">here</a>. PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
 other devices.</p>
 <table>
@@ -3412,12 +3326,12 @@ other devices.</p>
 </tbody>
 </table>
 <h2 id="peripherals">Peripherals</h2>
-<p>Carfield enhances Cheshire's peripheral subsystem with additional capabilities.</p>
+<p>SCAR-V enhances Cheshire's peripheral subsystem with additional capabilities.</p>
 <p>An external AXI manager port is attached to the matrix crossbar. The 64-bit data, 48-bit address AXI
 protocol is converted to the slower, 32-bit data and address APB protocol. An APB demultiplexer
 allows attaching several peripherals, described below.</p>
 <h3 id="generic-and-advanced-timer">Generic and advanced timer</h3>
-<p>Carfield integrates a generic timer and an advanced timer.</p>
+<p>SCAR-V integrates a generic timer and an advanced timer.</p>
 <p>The <a href="https://github.com/pulp-platform/timer_unit"><em>generic timer</em></a> manages the following features:</p>
 <ul>
 <li>2 general purpose 32-bit up counter timers</li>
@@ -3450,7 +3364,7 @@ features:</p>
 <li>32 GPIOs</li>
 <li>Real-time clock (RTC) at crystal frequency (32kHz) or higher</li>
 <li>FLL/PLL clock
-  In Carfield, we rely on a RTC.</li>
+  In SCAR-V, we rely on a RTC.</li>
 <li>Configurable input trigger modes</li>
 <li>Configurable prescaler for each timer</li>
 <li>Configurable counting mode for each timer</li>
@@ -3460,57 +3374,64 @@ features:</p>
 </ul>
 <p>For more information, read the dedicated
 <a href="https://github.com/pulp-platform/apb_adv_timer/blob/master/doc/APB_ADV_TIMER_reference.xlsx">documentation</a>.</p>
-<h3 id="watchdog-timer">Watchdog timer</h3>
-<p>We employ the watchdog timer developed by the <a href="https://opentitan.org/book/doc/introduction.html">OpenTitan
-project</a> project. It manages the following
-features:</p>
-<ul>
-<li>Two 32-bit upcounting timers: one timer functions as a wakeup timer, one as a watchdog timer</li>
-<li>2 thresholds: <em>bark</em> (generates an interrupt) and <em>bite</em> (resets core)</li>
-<li>A 12 bit pre-scaler for the wakeup timer to enable very long timeouts</li>
-</ul>
-<p>For more information, read the dedicated
-<a href="https://opentitan.org/book/hw/ip/aon_timer/">documentation</a>.</p>
-<h3 id="can">CAN</h3>
-<p>We employ a CAN device developed by the <a href="https://github.com/AlSaqr-platform/can_bus/tree/pulp">Czech Technical
-University</a> in Prague. It manages the
-following features:</p>
-<ul>
-<li>CAN 2.0, CAN FD 1.0 and ISO CAN FD</li>
-<li>Avalon memory bus</li>
-<li>Timestamping and transmission at given time</li>
-<li>Optional event and error logging</li>
-<li>Fault confinement state manipulation</li>
-<li>Transceiver delay measurement</li>
-<li>Variety of interrupt sources</li>
-<li>Filtering of received frame</li>
-<li>Listen-only mode, Self-test mode, Acknowledge forbidden mode</li>
-<li>Up to 14 Mbit in “Data” bit-rate (with 100 Mhz Core clock)</li>
-</ul>
-<p>For more information, read the dedicated
-<a href="https://github.com/AlSaqr-platform/can_bus/tree/pulp/doc">documentation</a></p>
-<h3 id="ethernet">Ethernet</h3>
-<p>We employ Ethernet IPs developed by <a href="https://github.com/alexforencich/verilog-ethernet">Alex
-Forencich</a> and assemble them with a
-high-performant DMA, the same used in Cheshire.</p>
-<p>We use Reduced gigabit media-independent interface (RGMII) that supports speed up to 1000Mbit/s
-(1GHz).</p>
-<p>For more information, read the dedicated
-<a href="http://alexforencich.com/wiki/en/verilog/ethernet/start">documentation</a> of Ethernet components from
-its original repository.</p>
+<!-- ### Watchdog timer
+
+We employ the watchdog timer developed by the [OpenTitan
+project](https://opentitan.org/book/doc/introduction.html) project. It manages the following
+features:
+
+* Two 32-bit upcounting timers: one timer functions as a wakeup timer, one as a watchdog timer
+* 2 thresholds: *bark* (generates an interrupt) and *bite* (resets core)
+* A 12 bit pre-scaler for the wakeup timer to enable very long timeouts
+
+For more information, read the dedicated
+[documentation](https://opentitan.org/book/hw/ip/aon_timer/).
+
+### CAN
+
+We employ a CAN device developed by the [Czech Technical
+University](https://github.com/AlSaqr-platform/can_bus/tree/pulp) in Prague. It manages the
+following features:
+
+* CAN 2.0, CAN FD 1.0 and ISO CAN FD
+* Avalon memory bus
+* Timestamping and transmission at given time
+* Optional event and error logging
+* Fault confinement state manipulation
+* Transceiver delay measurement
+* Variety of interrupt sources
+* Filtering of received frame
+* Listen-only mode, Self-test mode, Acknowledge forbidden mode
+* Up to 14 Mbit in “Data” bit-rate (with 100 Mhz Core clock)
+
+For more information, read the dedicated
+[documentation](https://github.com/AlSaqr-platform/can_bus/tree/pulp/doc)
+
+### Ethernet
+
+We employ Ethernet IPs developed by [Alex
+Forencich](https://github.com/alexforencich/verilog-ethernet) and assemble them with a
+high-performant DMA, the same used in Cheshire.
+
+We use Reduced gigabit media-independent interface (RGMII) that supports speed up to 1000Mbit/s
+(1GHz).
+
+For more information, read the dedicated
+[documentation](http://alexforencich.com/wiki/en/verilog/ethernet/start) of Ethernet components from
+its original repository. -->
+
 <h2 id="clock-and-reset">Clock and reset</h2>
 <p><a class="glightbox" href="../../img/clk_rst.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Reset and Clock Distribution for a domain *X*" src="../../img/clk_rst.svg" /></a></p>
 <p><a class="glightbox" href="../../img/isolation.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Isolation for a domain *X*" src="../../img/isolation.svg" /></a></p>
 <p>The two figures above show the clock, reset and isolation distribution for a <em>domain</em> <code>X</code> in
-Carfield, and their relationship. A more detailed description is provided below.</p>
+SCAR-V, and their relationship. A more detailed description is provided below.</p>
 <h3 id="clock-distribution-scheme-clock-gating-and-isolation">Clock distribution scheme, clock gating and isolation</h3>
-<p>Carfield is provided with 3 clocks sources. They can be fully asynchronous and not bound to any
+<p>SCAR-V is provided with 3 clocks sources. They can be fully asynchronous and not bound to any
 phase relationship, since dual-clock FIFOs are placed between domains to allow clock domain crossing
 (CDC):</p>
 <ul>
 <li><code>host_clk_i</code>: preferably, clock of the <em>host domain</em></li>
-<li><code>alt_clk_i</code>: preferably, clock of <em>alternate</em> domains, namely <em>safe domain</em>, <em>secure domain</em>,
-  <em>accelerator domain</em></li>
+<li><code>secd_clk_i</code>: preferably, clock of the <em>secure domain</em></li>
 <li><code>per_clk_i</code>: preferably, clock of <em>peripheral domain</em></li>
 </ul>
 <p>In addition, a real-time clock (RTC, <code>rt_clk_i</code>) is provided externally, at crystal frequency
@@ -3518,7 +3439,7 @@ phase relationship, since dual-clock FIFOs are placed between domains to allow c
 <p>These clocks are supplied externally, by a dedicated PLL per clock source or by a single PLL that
 supplies all three clock sources. The configuration of the clock source can be handled by the
 external PLL wrapper configuration registers, e.g. in a ASIC top level</p>
-<p>Regardless of the specific name used for the clock signals in HW, Carfield has a flexible clock
+<p>Regardless of the specific name used for the clock signals in HW, SCAR-V has a flexible clock
 distribution that allows each of the 3 clock sources to be assigned to a <em>domain</em>, as explained
 below.</p>
 <hr />
@@ -3573,7 +3494,7 @@ regulated by the input pin <code>secure_boot_i</code> according to the following
 isolated after POR, SW or external physical interfaces (JTAG/Serial Link) must handle their wake-up
 process. Routines are provided in the <a href="../../sw/include/car_util.h">Software Stack</a>.</p>
 <h3 id="reset-distribution-scheme">Reset distribution scheme</h3>
-<p>Carfield is provided with one POR (active-low), <code>pwr_on_rst_ni</code>, responsible for the platform's
+<p>SCAR-V is provided with one POR (active-low), <code>pwr_on_rst_ni</code>, responsible for the platform's
 <em>cold reset</em>.</p>
 <p>The POR is synchronized with the clock of each domain, user-selected as explained above, and
 propagated to the domain.</p>
