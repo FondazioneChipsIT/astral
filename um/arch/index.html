@@ -469,13 +469,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#safe-domain" class="md-nav__link">
-    Safe domain
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#secure-domain" class="md-nav__link">
     Secure domain
   </a>
@@ -494,13 +487,6 @@
   
     <nav class="md-nav" aria-label="On-chip and off-chip memory endpoints">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dynamic-scratchpad-memory-spm" class="md-nav__link">
-    Dynamic scratchpad memory (SPM)
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#partitionable-hybrid-llcspm" class="md-nav__link">
@@ -681,13 +667,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#safe-domain" class="md-nav__link">
-    Safe domain
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#secure-domain" class="md-nav__link">
     Secure domain
   </a>
@@ -706,13 +685,6 @@
   
     <nav class="md-nav" aria-label="On-chip and off-chip memory endpoints">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#dynamic-scratchpad-memory-spm" class="md-nav__link">
-    Dynamic scratchpad memory (SPM)
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#partitionable-hybrid-llcspm" class="md-nav__link">
@@ -828,35 +800,31 @@
 
 <h1 id="architecture">Architecture</h1>
 <p><a class="glightbox" href="../../img/scarv_bd.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="SCAR-V Block Diagram" src="../../img/scarv_bd.png" /></a></p>
-<p>SCAR-V is organized in <em>domains</em>. As a mixed-criticality system (MCS), each domain serves
-different purposes in terms of functional safety and reliability, security, and computation
-capabilities.</p>
+<p>SCAR-V is organized in <em>domains</em>: <em>host domain</em>, <em>secure domain</em>, <em>peripheral domain</em>.</p>
 <p>SCAR-V relies on Cheshire as its host domain, and extends its minimal SoC with additional
 interconnect ports and interrupts.</p>
-<p>The above block diagram depicts a fully-featured SCAR-V SoC, which currently provides:</p>
+<p>The above block diagram depicts SCAR-V SoC architecture, which includes:</p>
 <ul>
 <li>
 <p><strong>Domains</strong>:</p>
 <ul>
 <li><em>Host domain</em> (Cheshire), a Linux-capable RV64 system based on dual-core CVA6 processors with
-  self-invalidation coherency mechanism
-<!-- - *Safe domain*, a Triple-Core-Lockstep (TCLS) RV32 microcontroller system based on CV32E40P,
-  with fast interrupt handling through the RISC-V CLIC --></li>
-<li><em>Secure domain</em>, a Dual-Core-Lockstep (DCLS) RV32 Hardware Root of Trust (HW RoT) systems that
-  ensures the secure boot for the whole platform, serves as secure monitor for the entire
-  system, and provides crypto acceleration services through various crypto-accelerators
-<!-- - *Accelerator domain*, comprises two programmable multi-core accelerators (PMCAs), an 12-cores
-  integer cluster with Hybrid Modular Redundancy (HMR) capabilities oriented to compute
-  intensive integer workloads such as AI, and a vectorial cluster with floating point vector
-  processing capabilities to accelerate intensive control tasks --></li>
+  self-invalidation coherency mechanism</li>
+<li><em>Secure domain</em>, which comprises:</li>
+<li>a RV32-based Hardware Root of Trust (HW RoT) system that ensures the secure boot
+    for the whole platform, serves as secure monitor for the entire
+      system, and provides crypto acceleration services through various crypto-accelerators.<ul>
+<li>a programmable multi-core accelerator (PMCA), which is an 8-cores
+cluster with Hybrid Modular Redundancy (HMR) capabilities oriented to compute
+  intensive integer workloads such as AI, and with floating point vector
+  processing capabilities to accelerate intensive control tasks</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
 <p><strong>On-chip and off-chip memory endpoints</strong>:</p>
 <ul>
-<li><em>Dynamic SPM</em>: dynamically configurable scratchpad memory (SPM) for <em>interleaved</em> or
-  <em>contiguous</em> accesses aiming at reducing systematic bus conflicts to improve the
-  time-predictability of the on-chip communication</li>
 <li><em>Partitionable hybrid LLC SPM</em>: the last-level cache (<em>host domain</em>) can be configured as SPM
   at runtime, as described in Cheshire's
   <a href="https://pulp-platform.github.io/cheshire/um/arch/">Architecture</a></li>
@@ -893,14 +861,14 @@ interconnect ports and interrupts.</p>
 <li>Dynamic interrupt routing from and to internal and external targets.</li>
 </ul>
 </li>
+<li>
+<p><strong>Peripherals</strong>:</p>
+<ul>
+<li>Generic timers</li>
+<li>PWM timers</li>
 </ul>
-<!-- - **Peripherals**:
-    - Generic timers
-    - PWM timers
-    - Watchdog timer
-    - Ethernet
-    - CAN -->
-
+</li>
+</ul>
 <h2 id="memory-map">Memory Map</h2>
 <p>This section shows SCAR-V's memory map. The group <code>Internal to Cheshire</code> in the table below only
 recalls the memory map described in the dedicatd <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
@@ -1573,7 +1541,7 @@ clarity.</p>
 </tbody>
 </table>
 <h2 id="interrupt-map">Interrupt map</h2>
-<p>SCAR-V's interrupt components are exhaustivly described in
+<p>SCAR-V's interrupt components are exhaustively described in
 the dedicated section of the <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
 Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <table>
@@ -2623,14 +2591,13 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 </tbody>
 </table>
 <h2 id="domains">Domains</h2>
-<p>The total number of domains is 7: <em>host domain</em>, <em>safe domain</em>, <em>secure domain</em>, <em>integer PMCA
-domain</em>, <em>vectorial PMCA domain</em>, <em>peripheral domain</em>, <em>dynamic SPM</em>.</p>
+<p>The total number of domains is 3: <em>host domain</em>, <em>secure domain</em>, <em>peripheral domain</em>.</p>
 <p>SCAR-V's domains live in dedicated repositories. We therefore invite the reader to consult the
 documentation of each domain.</p>
 <p>For more information about domains' memory requirements, visit <a href="../../tg/synth/">Synthesis and physical
 implementation</a>.</p>
 <p>Below, we focus on domains' parameterization within SCAR-V.</p>
-<h3 id="host-domain-cheshire"><a href="https://github.com/pulp-platform/cheshire">Host domain (Cheshire)</a></h3>
+<h3 id="host-domain-cheshire"><a href="https://github.com/FondazioneChipsIT/cheshire">Host domain (Cheshire)</a></h3>
 <p>The <em>host domain</em> (Cheshire) embeds all the necessary components required to run OSs such as
 embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
 <ol>
@@ -2692,31 +2659,7 @@ and virtualization support.</li>
 <li>All Cheshire peripherals, except for VGA</li>
 </ul>
 <p>By default, Cheshire hosts 128KiB of hybrid LLC/SPM, user-configurable.</p>
-<h3 id="safe-domain"><a href="https://github.com/pulp-platform/safety_island">Safe domain</a></h3>
-<p>The <em>safe domain</em> is a simple MCU-like domain that comprises three 32-bit real-time CV32E40P
-(CV32RT) RISC-V cores operating in triple-core-lockstep mode (TCLS).</p>
-<p>These cores, enhanced with the RISC-V CLIC controller and optimized for fast interrupt handling and
-context switch, run RTOSs and safety-critical applications, embodying a core tenet of the platform
-reliability.</p>
-<p>The <em>safe domain</em> is essential when the <em>host domain</em> is operated in <em>untrusted</em> mode.</p>
-<p>The <em>safe domain</em> is configured as follows:</p>
-<ul>
-<li>1 RISC-V debug module prividing indipendent JTAG interface off-SCAR-V</li>
-<li>1 AXI manager and 1 AXI subordinate ports, 32-bit data and 32-bit address wide, to and from the
-  <em>host domain</em>, respectively. AXI datawidth conversion with the host domain is handled internally
-  to the safe domain.</li>
-<li>1 generic timer, essential for periodic ticks common in RTOSs. The generic timer in the <em>safe
-  domain</em> is the same integrated in <a href="#peripheral-domain">SCAR-V's <em>peripheral domain</em></a>.</li>
-<li>CLIC RISC-V interrupt controller; as opposed to Cheshire, currently the CLIC is configured to run
-  run in M-mode.</li>
-<li>128 <em>external</em> input interrupts. Unused are tied to 0.</li>
-<li>Fast interrupt extension that extends CV32 with additional logic to accelerate context switching.
-  From here, the name <a href="https://arxiv.org/abs/2311.08320">CV32RT</a></li>
-<li>1 32-bit per-core FPU with down to float-16 precision, totaling 3 FPUs</li>
-</ul>
-<p>By default, the processing elements share access to 128KiB of SPM for instructions and data,
-user-configurable.</p>
-<h3 id="secure-domain"><a href="https://github.com/pulp-platform/opentitan/tree/carfield-soc">Secure domain</a></h3>
+<h3 id="secure-domain"><a href="https://github.com/FondazioneChipsIT/security_island">Secure domain</a></h3>
 <p>The secure domain, based on the <a href="https://opentitan.org/book/doc/introduction.html">OpenTitan
 project</a>, serves as the Hardware Root-of-Trust
 (HWRoT) of the platform. It handles <em>secure boot</em> and system integrity monitoring fully in HW
@@ -2802,18 +2745,6 @@ and 64-bit integer computation.
 By default, the CCs share access to 128KiB of L1 SPM, user-configurable. -->
 
 <h2 id="on-chip-and-off-chip-memory-endpoints">On-chip and off-chip memory endpoints</h2>
-<h3 id="dynamic-scratchpad-memory-spm"><a href="https://github.com/pulp-platform/dyn_spm">Dynamic scratchpad memory (SPM)</a></h3>
-<p>The dynamic SPM features dynamically switching address mapping policy. It manages the following
-features:</p>
-<ul>
-<li>Two AXI subordinate ports</li>
-<li>Two address mapping modes: <em>interleaved</em> and <em>contiguous</em></li>
-<li>4 address spaces, 2 for each port. The address space is used to select the AXI port to use, and
-  the mapping mode</li>
-<li>Every address space points to the same physical SRAM through a low-latency matrix crossbar</li>
-<li>ECC-equipped memory banks</li>
-</ul>
-<p>By default, SCAR-V hosts 1MiB of dynamic SPM, user-configurable.</p>
 <h3 id="partitionable-hybrid-llcspm"><a href="https://github.com/pulp-platform/axi_llc">Partitionable hybrid LLC/SPM</a></h3>
 <p>SCAR-V hosts a LLC optionaly reconfigurable as SPM during runtime. In addition, the LLC supports
 HW-based partitioning to exploit intra-process or inter-processes isolation, improving the system's
@@ -3374,52 +3305,6 @@ features:</p>
 </ul>
 <p>For more information, read the dedicated
 <a href="https://github.com/pulp-platform/apb_adv_timer/blob/master/doc/APB_ADV_TIMER_reference.xlsx">documentation</a>.</p>
-<!-- ### Watchdog timer
-
-We employ the watchdog timer developed by the [OpenTitan
-project](https://opentitan.org/book/doc/introduction.html) project. It manages the following
-features:
-
-* Two 32-bit upcounting timers: one timer functions as a wakeup timer, one as a watchdog timer
-* 2 thresholds: *bark* (generates an interrupt) and *bite* (resets core)
-* A 12 bit pre-scaler for the wakeup timer to enable very long timeouts
-
-For more information, read the dedicated
-[documentation](https://opentitan.org/book/hw/ip/aon_timer/).
-
-### CAN
-
-We employ a CAN device developed by the [Czech Technical
-University](https://github.com/AlSaqr-platform/can_bus/tree/pulp) in Prague. It manages the
-following features:
-
-* CAN 2.0, CAN FD 1.0 and ISO CAN FD
-* Avalon memory bus
-* Timestamping and transmission at given time
-* Optional event and error logging
-* Fault confinement state manipulation
-* Transceiver delay measurement
-* Variety of interrupt sources
-* Filtering of received frame
-* Listen-only mode, Self-test mode, Acknowledge forbidden mode
-* Up to 14 Mbit in “Data” bit-rate (with 100 Mhz Core clock)
-
-For more information, read the dedicated
-[documentation](https://github.com/AlSaqr-platform/can_bus/tree/pulp/doc)
-
-### Ethernet
-
-We employ Ethernet IPs developed by [Alex
-Forencich](https://github.com/alexforencich/verilog-ethernet) and assemble them with a
-high-performant DMA, the same used in Cheshire.
-
-We use Reduced gigabit media-independent interface (RGMII) that supports speed up to 1000Mbit/s
-(1GHz).
-
-For more information, read the dedicated
-[documentation](http://alexforencich.com/wiki/en/verilog/ethernet/start) of Ethernet components from
-its original repository. -->
-
 <h2 id="clock-and-reset">Clock and reset</h2>
 <p><a class="glightbox" href="../../img/clk_rst.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Reset and Clock Distribution for a domain *X*" src="../../img/clk_rst.svg" /></a></p>
 <p><a class="glightbox" href="../../img/isolation.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Isolation for a domain *X*" src="../../img/isolation.svg" /></a></p>
@@ -3432,7 +3317,7 @@ phase relationship, since dual-clock FIFOs are placed between domains to allow c
 <ul>
 <li><code>host_clk_i</code>: preferably, clock of the <em>host domain</em></li>
 <li><code>secd_clk_i</code>: preferably, clock of the <em>secure domain</em></li>
-<li><code>per_clk_i</code>: preferably, clock of <em>peripheral domain</em></li>
+<li><code>periph_clk_i</code>: preferably, clock of <em>peripheral domain</em></li>
 </ul>
 <p>In addition, a real-time clock (RTC, <code>rt_clk_i</code>) is provided externally, at crystal frequency
 (32kHz) or higher.</p>
@@ -3443,15 +3328,13 @@ external PLL wrapper configuration registers, e.g. in a ASIC top level</p>
 distribution that allows each of the 3 clock sources to be assigned to a <em>domain</em>, as explained
 below.</p>
 <hr />
-<p>As the top figure shows, out of the 7 <em>domains</em> described in <a href="#domains">Domains</a>, 6 can be clock
-gated and <em>isolated</em>: <em>safe domain</em>, <em>secure domain</em>, <em>accelerator domain</em>, <em>peripheral domain</em>,
-<em>dynamic SPM</em>.</p>
+<p><em>Secure domain</em> and <em>peripheral domain</em> can be clock gated and <em>isolated</em>.</p>
 <p>When <em>isolation</em> for a domain <code>X</code> is enabled, data transfers towards a domain are terminated and
 never reach it. To achieve this, an AXI4 compliant <em>isolation</em> module is placed in front of each
 domain. The bottom figure shows in detail the architecture of the isolation scheme between the <em>host
 domain</em> and a generic <code>X</code> domain, highlighting its relationship with the domain's reset and cloc
 signals.</p>
-<p>For each of the 6 clock gateable domains, the following clock distribution scheme applies:</p>
+<p>For each of these domains, the following clock distribution scheme applies:</p>
 <ol>
 <li>The user selects one of the 3 different clock sources</li>
 <li>The selected clock source for the domain is fed into a default-bypassed arbitrary integer clock
@@ -3481,12 +3364,12 @@ regulated by the input pin <code>secure_boot_i</code> according to the following
 <tr>
 <td align="left"><code>0</code></td>
 <td align="right"><code>OFF</code></td>
-<td align="left"><em>secure domain</em> gated and isolated as the other 5 domains, <em>host domain</em> always-on and idle</td>
+<td align="left"><em>secure domain</em> gated and isolated as <em>peripheral domain</em>, <em>host domain</em> always-on and idle</td>
 </tr>
 <tr>
 <td align="left"><code>1</code></td>
 <td align="right"><code>ON</code></td>
-<td align="left"><em>host domain</em> always-on and idle, <em>secure domain</em> active, takes over <em>secure boot</em> and can't be warm reset-ed; other 5 domains gated and isolated</td>
+<td align="left"><em>host domain</em> always-on and idle, <em>secure domain</em> active, takes over <em>secure boot</em> and can't be warm reset-ed; <em>peripheral domain</em> gated and isolated</td>
 </tr>
 </tbody>
 </table>
