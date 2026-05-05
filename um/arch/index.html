@@ -852,14 +852,14 @@ interconnect ports and interrupts.</p>
 </ul>
 </li>
 <li>
-<p><strong>On-chip and off-chip memory endpoints</strong>:
-    &lt;!-- - <em>Dynamic SPM</em>: dynamically configurable scratchpad memory (SPM) for <em>interleaved</em> or
-      <em>contiguous</em> accesses aiming at reducing systematic bus conflicts to improve the
-      time-predictability of the on-chip communication</p>
+<p><strong>On-chip and off-chip memory endpoints</strong>:</p>
 <ul>
+<li><em>Dynamic SPM</em>: dynamically configurable scratchpad memory (SPM) for <em>interleaved</em> or
+  <em>contiguous</em> accesses aiming at reducing systematic bus conflicts to improve the
+  time-predictability of the on-chip communication</li>
 <li><em>Partitionable hybrid LLC SPM</em>: the last-level cache (<em>host domain</em>) can be configured as SPM
   at runtime, as described in Cheshire's
-  <a href="https://pulp-platform.github.io/cheshire/um/arch/">Architecture</a> --&gt;</li>
+  <a href="https://pulp-platform.github.io/cheshire/um/arch/">Architecture</a></li>
 <li><em>External DRAM</em>: off-chip HyperRAM (Infineon) interfaced with in-house, open-source AXI4
   Hyberbus memory controller and digital PHY connected to Cheshire's LLC</li>
 </ul>
@@ -2932,7 +2932,7 @@ others.</p>
 <h2 id="platform-control-registers">Platform control registers</h2>
 <p>PCRs provide basic system information, and control clock, reset and other functionalities of
 SCAR-V's <em>domains</em>.</p>
-<p>A more detailed overview of each PCR (relgister subfieds and description) can be found
+<p>A more detailed overview of each PCR (register subfields and description) can be found
 <a href="../../hw/regs/pcr.md">here</a>. PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
 other devices.</p>
 <table>
