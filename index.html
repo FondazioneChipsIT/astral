@@ -513,39 +513,73 @@
 
 
 <h1 id="scar-v">SCAR-V</h1>
-<p>SCAR-V (Superscalar CFI Accelerated RISC-V Processor) is an open-research heterogeneous platform for secure systems with the aim of demonstrating the execution of Control-flow Integrity algorithms accelerated by RISC-V cores.</p>
+<p>SCAR-V (Superscalar Cfi Accelerated Risc-V processor) is an open-research heterogeneous platform for secure systems with the aim of demonstrating the execution of Control-flow Integrity algorithms accelerated by RISC-V cores.</p>
 <p>SCAR-V is developed by Fondazione Chips-IT.</p>
 <h2 id="motivation">Motivation</h2>
-<p>The rapid evolution of AI algorithms and the massive amount of sensed data across
+<p>Modern embedded systems, such as IoT devices
+and safety-critical cyber-physical platforms deployed in the field,
+are exposed to control-flow hijacking attacks, where techniques
+like Return-Oriented Programming and Jump-Oriented Pro￾gramming can bypass safety checks and compromise system
+integrity. Control-Flow Integrity has long been recognized as a
+security countermeasure. However, existing solutions either rely
+on pure-software mechanisms incurring high latency overheads,
+or hardware solutions which are either based on fixed hardware
+monitors that prevents runtime adapatbility, or on proprietary
+ISA extensions and compiling toolchains, limiting flexibility.
+Moreover, most of existing solutions are not anchored to a
+hardware Root-of-Trust (RoT).</p>
+<p>To overcome these limitations, we present ML-TitanCFI, the
+first fully open-source framework that exploits the RoT to im￾plement runtime-adaptable machine learning-based CFI enforce￾ment in heterogeneous RISC-V SoCs. ML-TitanCFI integrates a
+zero-overhead Control-Transfer Record Unit in the application
+core exposing the execution traces to a trace snooper; secure
+orchestration within the OpenTitan Root of Trust; low-latency
+AI-based CFI anomaly detection deployed on an 8-core cluster
+executing in a secure environment within the RoT perimeter.
+We implemented the ML-TitanCFI framework on a reference
+architecture that features OpenTitan as embedded RoT and
+synthesized the system in Global Foundries 22 nm FD-SOI
+process. The cost of the logic dedicated to snoop and record
+the instructions from the commit stage of the CPU introduces
+about 1% of area overhead to the SoC. The DNN involved into
+CFI anomaly detection achieves up to 98.5% of accuracy within
+5ms of latency for each inference running on the accelerator.
+This is the first work, to the best of our knowledge, that
+implements open-source, real-time, ISA-independent, runtime-enforceable, and re-configurable context-sensitive CFI real-time/offline policies employing neural networks deployed within
+the secure perimeter of a hardware RoT.</p>
+<!-- The rapid evolution of AI algorithms and the massive amount of sensed data across
 application-domains such as Automotive, Space and Cyber-Physical embedded systems (CPSs), call for a
-<em>paradigm shift</em> in the design of <strong>next generation of mixed-criticality systems (MCSs)</strong>, from
-simple micro-controllers towards powerful and heterogeneous edge computers.</p>
-<p>These must not only deliver outstanding performance and energy efficiency but also ensure steadfast
-safety, resilience, and security.</p>
-<p>The SCAR-V platform aims to tackle these architectural challenges establishing itself as a
-pre-competitive heterogeneous platform for MCSs, underpinned by <strong>fully open-source Intellectual
-Properties (IPs)</strong>.</p>
-<p>SCAR-V showcases pioneering hardware solutions, addressing challenges related to time-predictable
+*paradigm shift* in the design of **next generation of mixed-criticality systems (MCSs)**, from
+simple micro-controllers towards powerful and heterogeneous edge computers.
+
+These must not only deliver outstanding performance and energy efficiency but also ensure steadfast
+safety, resilience, and security.
+
+The SCAR-V platform aims to tackle these architectural challenges establishing itself as a
+pre-competitive heterogeneous platform for MCSs, underpinned by **fully open-source Intellectual
+Properties (IPs)**.
+
+SCAR-V showcases pioneering hardware solutions, addressing challenges related to time-predictable
 on/off-chip communication, robust fault recovery mechanisms, secure boot processes, cryptographic
 acceleration services, hardware-assisted virtualization, and accelerated computation for both
-floating-point and integer workloads.</p>
+floating-point and integer workloads. -->
+
 <h2 id="quick-start">Quick Start</h2>
 <ul>
-<li>To learn how to build and use SCAR-V, see <a href="https://pulp-platform.github.io/carfield/gs/">Getting
+<li>To learn how to build and use SCAR-V, see <a href="https://fondazionechipsit.github.io/astral/gs/">Getting
   Started</a>.</li>
 <li>To learn about available simulation, FPGA, and ASIC targets, see
-  <a href="https://pulp-platform.github.io/carfield/tg">Targets</a>.</li>
-<li>For detailed information on SCAR-V's inner workings, consult the <a href="https://pulp-platform.github.io/carfield/um/">User
+  <a href="https://fondazionechipsit.github.io/astral/tg">Targets</a>.</li>
+<li>For detailed information on SCAR-V's inner workings, consult the <a href="https://fondazionechipsit.github.io/astral/um/">User
   Manual</a>.</li>
 </ul>
 <p>If you are impatient and have all needed
-<a href="https://pulp-platform.github.io/carfield/gs/#dependencies">dependencies</a>, type:</p>
+<a href="https://fondazionechipsit.github.io/astral/gs/#dependencies">dependencies</a>, type:</p>
 <pre><code>source env/env-chips.sh
 bender update
 make car-all PYTHON=python3
 make tech-init
 </code></pre>
-<p>and then run a <a href="https://pulp-platform.github.io/carfield/tg/sim">simulation</a> with Questasim by
+<p>and then run a <a href="https://fondazionechipsit.github.io/astral/tg/sim">simulation</a> with Questasim by
 typing:</p>
 <pre><code class="language-tcl">make car-vsim-sim-build DEBUG=1 TECH_SIM=1
 make car-vsim-sim-run CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.l2.elf DEBUG=1 TECH_SIM=1
