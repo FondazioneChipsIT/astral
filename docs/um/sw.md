@@ -1,6 +1,6 @@
 # Software Stack
 
-Carfield's Software Stack is provided in the `sw/` folder, organized as follows:
+SCAR-V's Software Stack is provided in the `sw/` folder, organized as follows:
 
 ```
 sw
@@ -12,15 +12,12 @@ sw
 ├── tests
     ├── bare-metal
     │   ├── hostd
-    │   ├── pulpd
-    │   ├── safed
     │   ├── secd
-    │   └── spatzd
     └── linux
 ```
 
-Employing Cheshire as *host domain*, Carfield's software stack is largely based on, and built on top
-of, [Cheshire's](https://pulp-platform.github.io/cheshire/um/sw/).
+Employing Cheshire as *host domain*, SCAR-V's software stack is largely based on, and built on top
+of, [Cheshire's](https://fondazionechipsit.github.io/cheshire/um/sw/).
 
 This means that it shares the same:
 
@@ -32,20 +29,19 @@ This means that it shares the same:
 
 Therefore, we defer the reader to Cheshire's Software Stack description for more information.
 
-Programs compiled for Carfield are linked against Cheshire's static library (`libcheshire.a`). This
+Programs compiled for SCAR-V are linked against Cheshire's static library (`libcheshire.a`). This
 operation is transparent to the programmer, that can take advantage of Cheshire's device drivers and
-SW routines within Carfield seamlessly.
+SW routines within SCAR-V seamlessly.
 
-Provided the equivalence and reuse between Carfield and Cheshire, in this page we focus on
-Carfield-specific SW components and build flow, with an emphasis on domains different than Cheshire.
+Provided the equivalence and reuse between SCAR-V and Cheshire, in this page we focus on
+SCAR-V-specific SW components and build flow, with an emphasis on domains different than Cheshire.
 
 ## Compiler requirements
 
-General-purpose processing elements (PEs) integrated in Carfield implement the RISC-V ISA, targeting
-either RV64 (*host domain*) or RV32 (all the others: *safe domain*, *secure domain*, *integer PMCA*,
-and *vectorial PMCA*).
+General-purpose processing elements (PEs) integrated in SCAR-V implement the RISC-V ISA, targeting
+either RV64 (*host domain*) or RV32 (*secure domain*, Opentitan and Pulp Cluster).
 
-To build programs for a Carfield domain with the base ISA and its regular extensions (namely,
+To build programs for a SCAR-V domain with the base ISA and its regular extensions (namely,
 `RV64G` and `RV32IMACF`) *without* using *custom* extensions that each domain provide, you simply
 need vanilla RV64 and RV32 compilers.
 
@@ -55,16 +51,16 @@ a container-based build flow.
 
 ## Boot Flow and Secure Boot
 
-Carfield supports two *operative boot flows*: 
+SCAR-V supports two *operative boot flows*:
 
 * **Non-secure**: being an always-on domain, in this *operative boot flow* Cheshire takes over
-  Carfield's boot flow. This means that *passive* and *autonomous* boot are equivalent to those
-  described in Cheshire's [Software Stack](https://pulp-platform.github.io/cheshire/um/sw/). Since
+  SCAR-V's boot flow. This means that *passive* and *autonomous* boot are equivalent to those
+  described in Cheshire's [Software Stack](https://fondazionechipsit.github.io/cheshire/um/sw/). Since
   the other domains are clock gated, SW to be executed on them requires Cheshire to handle their
   wake-up sequence.
 
 * **Secure**: The *secure domain* performs the secure boot process on the code that will be executed
-  on the Carfield system, independently of the domain. For more information, read the dedicated
+  on the SCAR-V system, independently of the domain. For more information, read the dedicated
   [secure boot documentation](https://opentitan.org/book/doc/security/specs/secure_boot) of the
   OpenTitan project.
 
@@ -72,7 +68,7 @@ Carfield supports two *operative boot flows*:
 
 ### Baremetal programs (BMPs)
 
-BMPs for all domains can be built from the root of Carfield through a portable *make fragment*
+BMPs for all domains can be built from the root of SCAR-V through a portable *make fragment*
 `sw.mk` located in the `sw/` folder.
 
 To simplify each domain SW build as much as possible, we provide a make fragment located at
@@ -93,11 +89,11 @@ supported by the platform, as described in [Simulation](../tg/sim.md) or on FPGA
 
 ---
 
-As in Cheshire, Carfield programs can be created to be executed from several memory locations:
+As in Cheshire, SCAR-V programs can be created to be executed from several memory locations:
 
-* Dynamic SPM (`*.l2.elf`): the linkerscript is provided in Carfield's `sw/link/` folder, since
+* Dynamic SPM (`*.l2.elf`): the linkerscript is provided in SCAR-V's `sw/link/` folder, since
   Dynamic SPM is not integrated in the minimal Cheshire
-* LLC SPM (`*.spm.elf`): valid when the LLC is configured as such. In Carfield, half of the LLC is
+* LLC SPM (`*.spm.elf`): valid when the LLC is configured as such. In SCAR-V, half of the LLC is
   configured as SPM from the boot ROM during system bringup, as this is the default behavior in
   Cheshire.
 * DRAM (`*.dram.elf`): the off-chip DRAM, e.g., the HyperRAM
@@ -126,11 +122,10 @@ example, test programs targeting Linux that require it are located in different 
 
 ## Inter-domain offload
 
-Offload of programs to Carfield domains involves:
+Offload of programs to SCAR-V domains involves:
 
-* An *offloader*, typically one of the two controllers, i.e., the *host* or *safe* domains
-* A *target device*, typically the *accelerator domain*. The *safe domain* can also play the role of
-  target device when offloaded RTOS payloads from the *host domain*.
+* An *offloader*, typically the controller, i.e., the *host* domain (CHECK)
+* A *target device*, typically the PMCA inside the *secure domain*.
 
 Programs can be offloaded with:
 
@@ -138,8 +133,8 @@ Programs can be offloaded with:
   executed with cycle-accurate RTL simulations. For instance, this can be the case of dynamic timing
   analysis (DTA) carried out during an ASIC development cycle.
 
-* **The [OpenMP](https://www.openmp.org/) API**, recommended when developing SW for Carfield on a
-  FPGA or, eventually, ASIC implementing Carfield, because of the ready-to-use OS support
+* **The [OpenMP](https://www.openmp.org/) API**, recommended when developing SW for SCAR-V on a
+  FPGA or, eventually, ASIC implementing SCAR-V, because of the ready-to-use OS support
   (currently, Linux). Note that usage of the OpenMP API with non OS-directed (baremetal) SW can be
   supported, and would eventually replace the BMO described above.
 
@@ -160,7 +155,7 @@ location, initializing the target and launching its execution through a simple E
 Loader source code is located in the offloader's SW directory, and follows a naming convention:
 
 ```
-<target_device>_offloader_<blocking|non_blocking>.c 
+<target_device>_offloader_<blocking|non_blocking>.c
 ```
 
 The target device's ELF is included into the offloader's ELF Loader as a *header file*. The target
@@ -181,14 +176,14 @@ Currently, *blocking BMO* is implemented.
 
 ---
 
-As an example, assume the *host domain* as offloader and the *integer PMCA* as target device.
+As an example, assume the *host domain* as offloader and the *PMCA* as target device.
 
 1. The host domain ELF Loader is included in `sw/tests/bare-metal/hostd`
 1. A header file is generated out of each regression test available in the integer PMCA repository.
-   For this example, the resulting header files are included in `sw/tests/bare-metal/pulpd`
+   For this example, the resulting header files are included in `sw/tests/bare-metal/secd`
 2. The final ELF executed by the offloader is created by subsequently including each header file
    from each integer PMCA regression test
-   
+
 The resulting offloader ELF's name reads:
 
 ```
@@ -204,21 +199,21 @@ The final offloader ELF can be preloaded with simulation methods described in th
 
 **Note for the reader**
 
-BMO is in general not recommended for developing SW for Carfield, as it was introduced during ASIC
+BMO is in general not recommended for developing SW for SCAR-V, as it was introduced during ASIC
 development cycle and can be an effective litmus test to find and fix HW bugs, or during DTA.
 
-For SW development on Carfield and in particular domain-driven offload, it is recommended to use
+For SW development on SCAR-V and in particular domain-driven offload, it is recommended to use
 OpenMP offload on FPGA/ASIC, described below. The latter will eventually replace the simple BMO also
 for baremetal regression checks in future releases of the project.
 
 ### OpenMP offload (recommended: use on FPGA/ASIC)
 
-TODO Cyril
+TODO
 
 ## External benchmarks
 
 We support several external benchmarks, whose build flow has been slightly adapted to align with
-Carfield's. Currently, they are:
+SCAR-V's. Currently, they are:
 
 * [Mibench, a free, commercially representative embedded benchmark
   suite](https://ieeexplore.ieee.org/document/990739)
