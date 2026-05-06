@@ -1180,12 +1180,14 @@ interconnect ports and interrupts.</p>
 <ul>
 <li><em>Host domain</em> (Cheshire), a Linux-capable RV64 system based on dual-core CVA6 processors with
   self-invalidation coherency mechanism</li>
-<li><em>Secure domain</em>, which comprises 2 main units:</li>
+<li><em>Secure domain</em>, which comprises 2 main units:<ul>
 <li>a RV32-based Hardware Root of Trust (HW RoT) system that ensures the secure boot
-    for the whole platform, serves as secure monitor for the entire
-    system, and provides crypto acceleration services through various crypto-accelerators.</li>
+  for the whole platform, serves as secure monitor for the entire
+  system, and provides crypto acceleration services through various crypto-accelerators.</li>
 <li>a programmable multi-core accelerator (PMCA), which is an 8-cores
-    cluster with floating point processing capabilities (FPU) to accelerate intensive control tasks and with Hybrid Modular Redundancy (HMR) capabilities oriented to compute intensive integer workloads such as AI.</li>
+  cluster with floating point processing capabilities (FPU) to accelerate intensive control tasks and with Hybrid Modular Redundancy (HMR) capabilities oriented to compute intensive integer workloads such as AI.</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
