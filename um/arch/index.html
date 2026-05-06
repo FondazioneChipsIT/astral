@@ -752,10 +752,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mailbox-unit" class="md-nav__link">
+  <a href="#mailbox-unit-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mailbox unit
+        Mailbox unit (CHECK)
       
     </span>
   </a>
@@ -763,10 +763,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#platform-control-registers" class="md-nav__link">
+  <a href="#platform-control-registers-check-should-we-remove-all-pcrs-related-to-missing-domains" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Platform control registers
+        Platform control registers (CHECK: should we remove all PCRs related to missing domains??)
       
     </span>
   </a>
@@ -1050,10 +1050,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mailbox-unit" class="md-nav__link">
+  <a href="#mailbox-unit-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mailbox unit
+        Mailbox unit (CHECK)
       
     </span>
   </a>
@@ -1061,10 +1061,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#platform-control-registers" class="md-nav__link">
+  <a href="#platform-control-registers-check-should-we-remove-all-pcrs-related-to-missing-domains" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Platform control registers
+        Platform control registers (CHECK: should we remove all PCRs related to missing domains??)
       
     </span>
   </a>
@@ -1171,8 +1171,7 @@
 
 <h1 id="architecture">Architecture</h1>
 <p><a class="glightbox" href="../../img/scarv_bd.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="SCAR-V Block Diagram" src="../../img/scarv_bd.png" /></a></p>
-<p>SCAR-V is organized in <em>domains</em>: <em>host domain</em>, <em>secure domain</em>, <em>peripheral domain</em>.</p>
-<p>SCAR-V relies on Cheshire as its host domain, and extends its minimal SoC with additional
+<p>SCAR-V is organized in <em>domains</em>: <em>host domain</em>, <em>secure domain</em>, <em>peripheral domain</em>: it relies on Cheshire as its host domain, and extends its minimal SoC with additional
 interconnect ports and interrupts.</p>
 <p>The above block diagram depicts SCAR-V SoC architecture, which includes:</p>
 <ul>
@@ -1184,12 +1183,9 @@ interconnect ports and interrupts.</p>
 <li><em>Secure domain</em>, which comprises 2 main units:</li>
 <li>a RV32-based Hardware Root of Trust (HW RoT) system that ensures the secure boot
     for the whole platform, serves as secure monitor for the entire
-      system, and provides crypto acceleration services through various crypto-accelerators.<ul>
+    system, and provides crypto acceleration services through various crypto-accelerators.</li>
 <li>a programmable multi-core accelerator (PMCA), which is an 8-cores
-cluster with floating point processing capabilities (FPU) to accelerate intensive control tasks
-and with Hybrid Modular Redundancy (HMR) capabilities oriented to compute intensive integer workloads such as AI.</li>
-</ul>
-</li>
+    cluster with floating point processing capabilities (FPU) to accelerate intensive control tasks and with Hybrid Modular Redundancy (HMR) capabilities oriented to compute intensive integer workloads such as AI.</li>
 </ul>
 </li>
 <li>
@@ -2243,9 +2239,8 @@ additional external AXI manager and subordinate ports.</p>
 extended with additional peripheral configuration ports for external PLL/FLL and padmux
 configuration, which are specific of ASIC wrappers.</p>
 <p>An additional peripheral subsystem based on APB hosts SCAR-V-specific peripherals.</p>
-<h2 id="mailbox-unit"><a href="https://github.com/pulp-platform/mailbox_unit">Mailbox unit</a></h2>
-<p><strong>(CHECK)</strong>
-The mailbox unit consists in a number of configurable mailboxes. Each mailbox is the preferred
+<h2 id="mailbox-unit-check"><a href="https://github.com/pulp-platform/mailbox_unit">Mailbox unit</a> <strong>(CHECK)</strong></h2>
+<p>The mailbox unit consists in a number of configurable mailboxes. Each mailbox is the preferred
 communication vehicle between <em>domains</em>. It can be used to wake-up certain domains, notify an
 <em>offloader</em> (e.g., Cheshire) that a <em>target device</em> (e.g., the integer PMCA) has reached execution
 completion, dispatch <em>entry points</em> to a <em>target device</em> to jump-start its execution, and many
@@ -2334,7 +2329,7 @@ others.</p>
 </table>
 <p>The above register map can be found in the dedicated
 <a href="https://github.com/pulp-platform/mailbox_unit">repository</a> and is reported here for convenience.</p>
-<h2 id="platform-control-registers">Platform control registers</h2>
+<h2 id="platform-control-registers-check-should-we-remove-all-pcrs-related-to-missing-domains">Platform control registers <strong>(CHECK: should we remove all PCRs related to missing domains??)</strong></h2>
 <p>PCRs provide basic system information, and control clock, reset and other functionalities of
 SCAR-V's <em>domains</em>.</p>
 <p>A more detailed overview of each PCR (register subfields and description) can be found
