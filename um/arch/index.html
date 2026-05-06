@@ -624,10 +624,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#memory-map" class="md-nav__link">
+  <a href="#memory-map-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Memory Map
+        Memory Map (CHECK)
       
     </span>
   </a>
@@ -635,10 +635,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interrupt-map" class="md-nav__link">
+  <a href="#interrupt-map-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interrupt map
+        Interrupt map (CHECK)
       
     </span>
   </a>
@@ -676,6 +676,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Secure domain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hmr-pmca-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HMR PMCA (CHECK)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -905,10 +922,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#memory-map" class="md-nav__link">
+  <a href="#memory-map-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Memory Map
+        Memory Map (CHECK)
       
     </span>
   </a>
@@ -916,10 +933,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interrupt-map" class="md-nav__link">
+  <a href="#interrupt-map-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interrupt map
+        Interrupt map (CHECK)
       
     </span>
   </a>
@@ -957,6 +974,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Secure domain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hmr-pmca-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HMR PMCA (CHECK)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1198,16 +1232,16 @@ and with Hybrid Modular Redundancy (HMR) capabilities oriented to compute intens
 </ul>
 </li>
 <li>
-<p><strong>Peripherals</strong>:</p>
+<p><strong>Peripherals</strong>: <strong>(CHECK)</strong></p>
 <ul>
 <li>Generic timers</li>
 <li>PWM timers</li>
 </ul>
 </li>
 </ul>
-<h2 id="memory-map">Memory Map</h2>
+<h2 id="memory-map-check">Memory Map <strong>(CHECK)</strong></h2>
 <p>This section shows SCAR-V's memory map. The group <code>Internal to Cheshire</code> in the table below only
-recalls the memory map described in the dedicatd <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
+recalls the memory map described in the dedicatd <a href="https://fondazionechipsit.github.io/cheshire/um/arch/">documentation for
 Cheshire</a> and is explicitely shown here for
 clarity.</p>
 <table>
@@ -1369,17 +1403,6 @@ clarity.</p>
 <td><a href="https://opentitan.org/book/hw/ip/uart/doc/registers.html">UART</a></td>
 </tr>
 <tr>
-<td><code>0x0300_3000</code></td>
-<td><code>0x0300_4000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td><a href="https://opentitan.org/book/hw/ip/i2c/doc/registers.html">I2C</a></td>
-</tr>
-<tr>
 <td><code>0x0300_4000</code></td>
 <td><code>0x0300_5000</code></td>
 <td><code>0x00_1000</code></td>
@@ -1400,50 +1423,6 @@ clarity.</p>
 <td></td>
 <td>I/O</td>
 <td><a href="https://opentitan.org/book/hw/ip/gpio/doc/registers.html">GPIO</a></td>
-</tr>
-<tr>
-<td><code>0x0300_6000</code></td>
-<td><code>0x0300_7000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Config</td>
-<td>Serial Link</td>
-</tr>
-<tr>
-<td><code>0x0300_7000</code></td>
-<td><code>0x0300_8000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Config</td>
-<td>VGA</td>
-</tr>
-<tr>
-<td><code>0x0300_8000</code></td>
-<td><code>0x0300_A000</code></td>
-<td><code>0x00_1000</code></td>
-<td>8 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Config</td>
-<td>UNBENT (bus error unit)</td>
-</tr>
-<tr>
-<td><code>0x0300_A000</code></td>
-<td><code>0x0300_B000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Config</td>
-<td>Tagger (LLC partitioning)</td>
 </tr>
 <tr>
 <td><code>0x0300_8000</code></td>
@@ -1523,50 +1502,6 @@ clarity.</p>
 <td></td>
 </tr>
 <tr>
-<td><code>0x2000_0000</code></td>
-<td><code>0x2000_1000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>Ethernet</td>
-</tr>
-<tr>
-<td><code>0x2000_1000</code></td>
-<td><code>0x2000_2000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>CAN BUS</td>
-</tr>
-<tr>
-<td><code>0x2000_2000</code></td>
-<td><code>0x2000_3000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>(empty)</td>
-</tr>
-<tr>
-<td><code>0x2000_3000</code></td>
-<td><code>0x2000_4000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>(empty)</td>
-</tr>
-<tr>
 <td><code>0x2000_4000</code></td>
 <td><code>0x2000_5000</code></td>
 <td><code>0x00_1000</code></td>
@@ -1600,41 +1535,8 @@ clarity.</p>
 <td>GP timer 3</td>
 </tr>
 <tr>
-<td><code>0x2000_7000</code></td>
-<td><code>0x2000_8000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>Watchdog timer</td>
-</tr>
-<tr>
-<td><code>0x2000_8000</code></td>
-<td><code>0x2000_9000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>(empty)</td>
-</tr>
-<tr>
-<td><code>0x2000_9000</code></td>
-<td><code>0x2000_a000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>HyperBUS</td>
-</tr>
-<tr>
-<td><code>0x2000_a000</code></td>
-<td><code>0x2000_b000</code></td>
+<td><code>0x2100_0000</code></td>
+<td><code>0x2100_1000</code></td>
 <td><code>0x00_1000</code></td>
 <td>4 KiB</td>
 <td>rw</td>
@@ -1644,19 +1546,8 @@ clarity.</p>
 <td>Pad Config</td>
 </tr>
 <tr>
-<td><code>0x2000_b000</code></td>
-<td><code>0x2000_c000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>I/O</td>
-<td>L2 ECC Config</td>
-</tr>
-<tr>
-<td><code>0x2001_0000</code></td>
-<td><code>0x2001_1000</code></td>
+<td><code>0x2100_2000</code></td>
+<td><code>0x2100_3000</code></td>
 <td><code>0x00_1000</code></td>
 <td>4 KiB</td>
 <td>rw</td>
@@ -1666,8 +1557,8 @@ clarity.</p>
 <td>SCAR-V Control and Status</td>
 </tr>
 <tr>
-<td><code>0x2002_0000</code></td>
-<td><code>0x2002_1000</code></td>
+<td><code>0x2100_3000</code></td>
+<td><code>0x2100_4000</code></td>
 <td><code>0x00_1000</code></td>
 <td>4 KiB</td>
 <td>rw</td>
@@ -1675,6 +1566,17 @@ clarity.</p>
 <td></td>
 <td>I/O</td>
 <td>(if any) PLL/CLOCK</td>
+</tr>
+<tr>
+<td><code>0x2100_4000</code></td>
+<td><code>0x2100_5000</code></td>
+<td><code>0x00_1000</code></td>
+<td>4 KiB</td>
+<td>rw</td>
+<td></td>
+<td></td>
+<td>I/O</td>
+<td>HyperBus Cfg</td>
 </tr>
 <tr>
 <td><code>0x2800_1000</code></td>
@@ -1689,202 +1591,25 @@ clarity.</p>
 </tr>
 <tr>
 <td><code>0x4000_0000</code></td>
-<td><code>0x4000_1000</code></td>
-<td><code>0x00_1000</code></td>
-<td>4 KiB</td>
+<td><code>0x4000_3000</code></td>
+<td><code>0x00_3000</code></td>
+<td>12 KiB</td>
 <td>rw</td>
 <td></td>
 <td></td>
 <td>Irq</td>
 <td>Mailboxes</td>
 </tr>
-<tr>
-<td><code>0x4000_1000</code></td>
-<td><code>0x5000_0000</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><em>Reserved</em></td>
-<td></td>
-</tr>
-<tr>
-<td><code>0x5000_0000</code></td>
-<td><code>0x5080_0000</code></td>
-<td><code>0x80_0000</code></td>
-<td>8 MiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Accelerators</td>
-<td>Integer Cluster</td>
-</tr>
-<tr>
-<td><code>0x5080_0000</code></td>
-<td><code>0x5100_0000</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><em>Reserved</em></td>
-<td></td>
-</tr>
-<tr>
-<td><code>0x5100_0000</code></td>
-<td><code>0x5180_0000</code></td>
-<td><code>0x80_0000</code></td>
-<td>8 MiB</td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Accelerators</td>
-<td>FP Cluster</td>
-</tr>
-<tr>
-<td><code>0x5100_0000</code></td>
-<td><code>0x6000_0000</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><em>Reserved</em></td>
-<td></td>
-</tr>
-<tr>
-<td><code>0x6000_0000</code></td>
-<td><code>0x6002_0000</code></td>
-<td><code>0x02_0000</code></td>
-<td>128 KiB</td>
-<td>rw</td>
-<td></td>
-<td>yes</td>
-<td>Safe domain</td>
-<td>Safety Island Memory</td>
-</tr>
-<tr>
-<td><code>0x6002_0000</code></td>
-<td><code>0x6020_0000</code></td>
-<td><code>0x1e_0000</code></td>
-<td></td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Safe domain</td>
-<td>reserved</td>
-</tr>
-<tr>
-<td><code>0x6020_0000</code></td>
-<td><code>0x6030_0000</code></td>
-<td><code>0x10_0000</code></td>
-<td>1 MiB</td>
-<td>rw</td>
-<td></td>
-<td>yes</td>
-<td>Safe domain</td>
-<td>Safety Island Peripherals</td>
-</tr>
-<tr>
-<td><code>0x6030_0000</code></td>
-<td><code>0x6080_0000</code></td>
-<td><code>0x50_0000</code></td>
-<td></td>
-<td>rw</td>
-<td></td>
-<td></td>
-<td>Safe domain</td>
-<td>reserved</td>
-</tr>
-<tr>
-<td><code>0x6080_0000</code></td>
-<td><code>0x7000_0000</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><em>Reserved</em></td>
-<td></td>
-</tr>
-<tr>
-<td><code>0x7000_0000</code></td>
-<td><code>0x7002_0000</code></td>
-<td><code>0x02_0000</code></td>
-<td>128 KiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>LLC Scratchpad</td>
-</tr>
-<tr>
-<td><code>0x7800_0000</code></td>
-<td><code>0x7810_0000</code></td>
-<td><code>0x10_0000</code></td>
-<td>1 MiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>L2 Scratchpad (Port 1, interleaved)</td>
-</tr>
-<tr>
-<td><code>0x7810_0000</code></td>
-<td><code>0x7820_0000</code></td>
-<td><code>0x10_0000</code></td>
-<td>1 MiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>L2 Scratchpad (Port 1, non-interleaved)</td>
-</tr>
-<tr>
-<td><code>0x7820_0000</code></td>
-<td><code>0x7830_0000</code></td>
-<td><code>0x10_0000</code></td>
-<td>1 MiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>L2 Scratchpad (Port 2, interleaved)</td>
-</tr>
-<tr>
-<td><code>0x7830_0000</code></td>
-<td><code>0x7840_0000</code></td>
-<td><code>0x10_0000</code></td>
-<td>1 MiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>L2 Scratchpad (Port 2, non-interleaved)</td>
-</tr>
-<tr>
-<td><code>0x8000_0000</code></td>
-<td><code>0x20_8000_0000</code></td>
-<td><code>0x20_0000_0000</code></td>
-<td>128 GiB</td>
-<td>rwx</td>
-<td>yes</td>
-<td>yes</td>
-<td>Memory</td>
-<td>LLC/DRAM</td>
-</tr>
 </tbody>
 </table>
-<h2 id="interrupt-map">Interrupt map</h2>
-<p>SCAR-V's interrupt components are exhaustively described in
-the dedicated section of the <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
+<h2 id="interrupt-map-check">Interrupt map <strong>(CHECK)</strong></h2>
+<p>SCAR-V's interrupt components are exhaustively described in the dedicated section of the <a href="https://pulp-platform.github.io/cheshire/um/arch/">documentation for
 Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <table>
 <thead>
 <tr>
 <th><strong>Interrupt Source</strong></th>
-<th><strong>Interrupt sink</strong></th>
+<th><strong>Interrupt Sink</strong></th>
 <th><strong>Bitwidth</strong></th>
 <th><strong>Connection</strong></th>
 <th><strong>Type</strong></th>
@@ -1905,22 +1630,6 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td></td>
 <td>1</td>
 <td><code>car_wdt_intrs[0]</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>intr_wdog_timer_bark_o</code></td>
-<td></td>
-<td>1</td>
-<td><code>car_wdt_intrs[1]</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>nmi_wdog_timer_bark_o</code></td>
-<td></td>
-<td>1</td>
-<td><code>car_wdt_intrs[2]</code></td>
 <td>level-sensitive</td>
 <td></td>
 </tr>
@@ -2053,126 +1762,6 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td></td>
 </tr>
 <tr>
-<td><code>i2c_fmt_threshold</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_fmt_threshold</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_rx_threshold</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_rx_threshold</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_fmt_overflow</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_fmt_overflow</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_rx_overflow</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_rx_overflow</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_nak</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_nak</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_scl_interference</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_scl_interference</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_sda_interference</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_sda_interference</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_stretch_timeout</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_stretch_timeout</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_sda_unstable</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_sda_unstable</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_cmd_complete</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_cmd_complete</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_tx_stretch</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_tx_stretch</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_tx_overflow</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_tx_overflow</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_acq_full</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_acq_full</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_unexp_stop</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_unexp_stop</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
-<td><code>i2c_host_timeout</code></td>
-<td></td>
-<td>1</td>
-<td><code>i2c_host_timeout</code></td>
-<td>level-sensitive</td>
-<td></td>
-</tr>
-<tr>
 <td><code>spih_error</code></td>
 <td></td>
 <td>1</td>
@@ -2195,62 +1784,6 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>gpio</code></td>
 <td>level-sensitive</td>
 <td></td>
-</tr>
-<tr>
-<td><strong>Spatz cluster</strong></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><code>msip_i[0]</code></td>
-<td>1</td>
-<td><code>(hostd_spatzcl_mb_intr_ored[0] \| safed_spatzcl_intr_mb[0])</code></td>
-<td>level-sensitive</td>
-<td>Snitch core #0</td>
-</tr>
-<tr>
-<td></td>
-<td><code>msip_i[1]</code></td>
-<td>1</td>
-<td><code>(hostd_spatzcl_mb_intr_ored[1] \| safed_spatzcl_intr_mb[1])</code></td>
-<td>level-sensitive</td>
-<td>Snitch core #1</td>
-</tr>
-<tr>
-<td></td>
-<td><code>mtip_i[0]</code></td>
-<td>1</td>
-<td><code>chs_mti[0]</code></td>
-<td>level-sensitive</td>
-<td>Snitch core #0</td>
-</tr>
-<tr>
-<td></td>
-<td><code>mtip_i[1]</code></td>
-<td>1</td>
-<td><code>chs_mti[1]</code></td>
-<td>level-sensitive</td>
-<td>Snitch core #1</td>
-</tr>
-<tr>
-<td></td>
-<td><code>meip_i</code></td>
-<td>2</td>
-<td><code>\-</code></td>
-<td></td>
-<td>unconnected</td>
-</tr>
-<tr>
-<td></td>
-<td><code>seip_i</code></td>
-<td>2</td>
-<td><code>\-</code></td>
-<td></td>
-<td>unconnected</td>
 </tr>
 <tr>
 <td><strong>HRM integer cluster</strong></td>
@@ -2293,358 +1826,6 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>to wake-up Ibex core</td>
 </tr>
 <tr>
-<td><strong>Safe domain</strong></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[0]</code></td>
-<td>1</td>
-<td><code>hostd_safed_mbox_intr[0]</code></td>
-<td>level-sensitive</td>
-<td>from host domain CVA6#0</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[1]</code></td>
-<td>1</td>
-<td><code>hostd_safed_mbox_intr[1]</code></td>
-<td>level-sensitive</td>
-<td>from host domain CVA6#1</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[2]</code></td>
-<td>1</td>
-<td><code>secd_safed_mbox_intr</code></td>
-<td>level-sensitive</td>
-<td>from secure domain</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[3]</code></td>
-<td>1</td>
-<td><code>pulpcl_safed_mbox_intr</code></td>
-<td>level-sensitive</td>
-<td>from HMR custer</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[4]</code></td>
-<td>1</td>
-<td><code>spatzcl_safed_mbox_intr</code></td>
-<td>level-sensitive</td>
-<td>from vectorial cluster</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[5]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_249</code></td>
-<td>level-sensitive</td>
-<td>tied to 0</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[6]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_250</code></td>
-<td>level-sensitive</td>
-<td>host domain UART</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[7]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_251</code></td>
-<td>level-sensitive</td>
-<td>i2c_fmt_threshold</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[8]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_252</code></td>
-<td>level-sensitive</td>
-<td>i2c_rx_threshold</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[9]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_253</code></td>
-<td>level-sensitive</td>
-<td>i2c_fmt_overview</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[10]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_254</code></td>
-<td>level-sensitive</td>
-<td>i2c_rx_overflow</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[11]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_255</code></td>
-<td>level-sensitive</td>
-<td>i2c_nak</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[12]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_256</code></td>
-<td>level-sensitive</td>
-<td>i2c_scl_interference</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[13]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_257</code></td>
-<td>level-sensitive</td>
-<td>i2c_sda_interference</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[14]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_258</code></td>
-<td>level-sensitive</td>
-<td>i2c_stret h_timeout</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[15]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_259</code></td>
-<td>level-sensitive</td>
-<td>i2c_sda_unstable</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[16]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_260</code></td>
-<td>level-sensitive</td>
-<td>i2c_cmd_complete</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[17]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_261</code></td>
-<td>level-sensitive</td>
-<td>i2c_tx_stretch</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[18]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_262</code></td>
-<td>level-sensitive</td>
-<td>i2c_tx_overflow</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[19]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_263</code></td>
-<td>level-sensitive</td>
-<td>i2c_acq_full</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[20]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_264</code></td>
-<td>level-sensitive</td>
-<td>i2c_unexp_stop</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[21]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_265</code></td>
-<td>level-sensitive</td>
-<td>i2c_host_timeout</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[22]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_266</code></td>
-<td>level-sensitive</td>
-<td>spih_error</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[23]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_267</code></td>
-<td>level-sensitive</td>
-<td>spih_spi_event</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs[55:24]</code></td>
-<td>32</td>
-<td><code>irqs_distributed_299:268</code></td>
-<td>level-sensitive</td>
-<td>gpio</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[56]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_300</code></td>
-<td>level-sensitive</td>
-<td>pulpcl_eoc</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[57]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_309</code></td>
-<td>level-sensitive</td>
-<td>car_wdt_intrs[0]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[58]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_310</code></td>
-<td>level-sensitive</td>
-<td>car_wdt_intrs[1]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[59]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_311</code></td>
-<td>level-sensitive</td>
-<td>car_wdt_intrs[2]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[60]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_312</code></td>
-<td>level-sensitive</td>
-<td>car_wdt_intrs[3]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[61]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_313</code></td>
-<td>level-sensitive</td>
-<td>car_wdt_intrs[4]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[62]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_314</code></td>
-<td>level-sensitive</td>
-<td>car_can_intr</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[63]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_315</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_ch0</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[64]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_316</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_ch1</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[65]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_317</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_ch2</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[66]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_318</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_ch3</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[67]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_319</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_events[0]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[68]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_320</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_events[1]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[69]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_321</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_events[2]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[70]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_322</code></td>
-<td>edge-sensitive</td>
-<td>car_adv_timer_events[0]</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[71]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_323</code></td>
-<td>edge-sensitive</td>
-<td>car_sys_timer_lo</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[72]</code></td>
-<td>1</td>
-<td><code>irqs_distributed_324</code></td>
-<td>edge-sensitive</td>
-<td>car_sys_timer_hi</td>
-</tr>
-<tr>
-<td></td>
-<td><code>irqs_i[127:73]</code></td>
-<td>54</td>
-<td><code>irqs_distributed_331:325</code></td>
-<td>-</td>
-<td>tied to 0</td>
-</tr>
-<tr>
 <td><strong>Cheshire</strong></td>
 <td></td>
 <td></td>
@@ -2667,22 +1848,6 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>pulpcl_hostd_mbox_intr</code></td>
 <td>level-sensitive</td>
 <td>from HMR cluster</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[4:3]</code></td>
-<td>2</td>
-<td><code>spatzcl_hostd_mbox_intr</code></td>
-<td>level-sensitive</td>
-<td>from vectorial cluster</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[6:5]</code></td>
-<td>2</td>
-<td><code>safed_hostd_mbox_intr</code></td>
-<td>level-sensitive</td>
-<td>from safe domain</td>
 </tr>
 <tr>
 <td></td>
@@ -2906,7 +2071,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>-</td>
 <td></td>
 <td>level-sensitive</td>
-<td>Snitch core #0</td>
+<td>unconnected</td>
 </tr>
 <tr>
 <td><code>mtip_ext_o[1]</code></td>
@@ -2914,7 +2079,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>-</td>
 <td></td>
 <td>level-sensitive</td>
-<td>Snitch core #1</td>
+<td>unconnected</td>
 </tr>
 <tr>
 <td><code>mtip_ext_o[2]</code></td>
@@ -2935,7 +2100,7 @@ implementation</a>.</p>
 <p>Below, we focus on domains' parameterization within SCAR-V.</p>
 <h3 id="host-domain-cheshire"><a href="https://github.com/FondazioneChipsIT/cheshire">Host domain (Cheshire)</a></h3>
 <p>The <em>host domain</em> (Cheshire) embeds all the necessary components required to run OSs such as
-embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
+embedded Linux. It has two orthogonal <em>operation modes</em>. <strong>(CHECK)</strong></p>
 <ol>
 <li>
 <p><em>Untrusted mode</em>: in this operation mode, the host domain is tasked to run untrusted services,
@@ -2960,7 +2125,7 @@ controller CLIC,</li>
 </ol>
 <p>Hybrid operation mode is currently experimental, and mostly for research purposes. We advise of
   relying on a combination of host ad safe domain for a more traditional approach.</p>
-<p>Cheshire is configured as follows:</p>
+<p>Cheshire is configured as follows: <strong>(CHECK)</strong></p>
 <ul>
 <li>Two 64-bit, RISC-V CVA6 cores, with lightweight self-invalidation cache coherency, fast interrupt
 and virtualization support.</li>
@@ -3014,92 +2179,64 @@ through cryptographic acceleration services.</p>
 </li>
 <li>
 <p>Finally, a <em>boot manager</em> module has been designed and integrated to manage the <a href="../sw/">two available
-  bootmodes</a>. In <strong>Secure</strong> mode, the systems executes the secure boot framework as soon as
+  bootmodes</a>. In <strong>Secure</strong> mode, the system executes the secure boot framework as soon as
   the reset is asserted, loading code from the external SPI and performing the signature check on
   its content. Otherwise, in <strong>Non-secure</strong> mode, the <em>secure domain</em> is clock gated and must be
   clocked and woken-up by an external entity (e.g., <em>host domain</em>)</p>
 </li>
 </ul>
 <p>By default, the secure domain hosts 512KiB of main SPM, and 16KiB of OTP memory, user-configurable.</p>
-<!-- ### Accelerator domain
-
-To augment computational capabilities, SCAR-V incorporates two PMCAs, described below. Both PMCAs
-integrate DMA engines to independently fetch data from the on-chip SPM or external DRAM.
-
-#### [HMR integer PMCA](https://github.com/pulp-platform/pulp_cluster/tree/yt/rapidrecovery)
-
-The [hybrid modular redundancy (HMR) *integer PMCA*](https://arxiv.org/abs/2303.08706) is
+<h4 id="hmr-pmca-check"><a href="https://github.com/pulp-platform/pulp_cluster/tree/yt/rapidrecovery">HMR PMCA</a> <strong>(CHECK)</strong></h4>
+<p>To augment computational capabilities, the secure domain incorporates one PMCA, described below. This PMCA
+integrates a DMA engine to independently fetch data from the on-chip SPM or external DRAM.</p>
+<p>The <a href="https://arxiv.org/abs/2303.08706">hybrid modular redundancy (HMR) <em>PMCA</em></a> is
 specialized in accelerating the inference of Deep Learning and Machine Learning models. The
 multicore accelerator is built around 12 32-bit RISC-V cores empowered with ISA extensions, enabling
-integer arithmetic from 32-bit down to 2-bit precision.
-
-The integer PMCA does not integrate a fully-fledged FPU co-processor. Nevertheless, it features a
+integer arithmetic from 32-bit down to 2-bit precision.</p>
+<p><strong>(CHECK)</strong> <strong>(CHECK)</strong> <strong>(CHECK)</strong></p>
+<p>The PMCA integrates an FPU co-processor to support multi-format floating-point operations.</p>
+<!-- The PMCA does not integrate a fully-fledged FPU co-processor. Nevertheless, it features a
 highly specialized domain specific accelerator (DSA),
 [RedMulE](https://www.sciencedirect.com/science/article/pii/S0167739X23002546), which enables fast
 and energy-efficient floating-point GEMM on 16-bit and 8-bit data formats. This makes the PMCA
-capable of on-chip training of generalized Deep Learning models.
+capable of on-chip training of generalized Deep Learning models. -->
 
-As part of a MCS, the integer PMCA's general-purpose cores can be reconfigured for *redundant
-execution*. A [Hybrid Modular Redundancy (HMR)](https://doi.org/10.1145/3635161) unit allows the
+<p>Including the <a href="https://arxiv.org/abs/2602.04803">Safe-NEureka</a> neural engine, the PMCA's general-purpose
+cores can be reconfigured for <em>redundant execution</em>. A <a href="https://doi.org/10.1145/3635161">Hybrid Modular Redundancy (HMR)</a> unit allows the
 split/lock of the available cores in different redundant configurations during runtime, trading off
 the computing performance and the fault resilience capability according to the criticality of the
-application.
-
-The PMCA can be configured in multiple redundant modes:
-* **Independent:** All cores act independently with no redundancy mechanism. This configuration allows
+application.</p>
+<p>The PMCA can be configured in multiple redundant modes:
+* <strong>Independent:</strong> All cores act independently with no redundancy mechanism. This configuration allows
   higher performance but has no reliability.
-* **Dual Modular Redundancy (DMR)**: The cores are grouped in lock-stepped pairs and rely on a
+* <strong>Dual Modular Redundancy (DMR)</strong>: The cores are grouped in lock-stepped pairs and rely on a
   specialized hardware extension for fast fault recovery in less than 30 clock cycles in case of
   fault detection. The PMCA provides the best trade-off between performance and fault recovery in
   this configuration.
-* **Triple Modular Redundancy (TMR)**: The cores are grouped in lock-stepped triplets and rely on
+* <strong>Triple Modular Redundancy (TMR)</strong>: The cores are grouped in lock-stepped triplets and rely on
   either hardware extension or software mechanisms to recover from incurring faults. The PMCA
-  provides the highest fault resilience in this configuration, at the cost of reduced performance.
-
-By default, the integer PMCA's processing elements and tensor accelerator share access to 256KiB of
-L1 SPM, user-configurable.
-
-#### [Vectorial PMCA](https://github.com/pulp-platform/spatz)
-
-The [*vectorial PMCA*, or Spatz PMCA](https://dl.acm.org/doi/abs/10.1145/3508352.3549367) handles
-vectorizable multi-format floating-point workloads.
-
-A Spatz vector unit acts as a coprocessor of the [Snitch
-core](https://github.com/pulp-platform/snitch_cluster), a tiny RV32IMA core which decodes and
-forwards vector instructions to the vector unit.
-
-A Snitch core and a Spatz vector unit are together referred to as *Core Complex (CC)*. The vectorial
-PMCA is composed by two CCs, each with the following configuration:
-
-* 2 KiB of latch-based VRF
-* 4 transprecision FPUs
-* 1 integer processing unit (IPU)
-
-Each FPU supports *FP8*, *FP16*, *FP32*, and *FP64* computation, while the IPU supports 8, 16, 32,
-and 64-bit integer computation.
-
-By default, the CCs share access to 128KiB of L1 SPM, user-configurable. -->
-
+  provides the highest fault resilience in this configuration, at the cost of reduced performance.</p>
+<p>By default, the PMCA's processing elements and tensor accelerator share access to 256KiB of
+L1 SPM, user-configurable.</p>
 <h2 id="on-chip-and-off-chip-memory-endpoints">On-chip and off-chip memory endpoints</h2>
 <h3 id="partitionable-hybrid-llcspm"><a href="https://github.com/pulp-platform/axi_llc">Partitionable hybrid LLC/SPM</a></h3>
 <p>SCAR-V hosts a LLC optionaly reconfigurable as SPM during runtime. In addition, the LLC supports
 HW-based partitioning to exploit intra-process or inter-processes isolation, improving the system's
 predictability. The LLC is described in detail in Cheshire's
 <a href="https://pulp-platform.github.io/cheshire/um/arch">Architecture</a>.</p>
-<h3 id="hyperbus-off-chip-link"><a href="https://github.com/pulp-platform/hyperbus">HyperBus off-chip link</a></h3>
+<h3 id="hyperbus-off-chip-link"><a href="https://github.com/FondazioneChipsIT/hyperbus">HyperBus off-chip link</a></h3>
 <p>SCAR-V integrates a in-house, open-source implementation of Infineon' HyperBus off-chip controller
 to connect to external HyperRAM modules.</p>
 <p>It manages the following features:</p>
 <ul>
-<li>An AXI interface that attaches to Cheshire's <a href="#partitionable-hybrid-llc-spm">partitionable hybrid
-  LLC/SPM</a></li>
+<li>An AXI interface that attaches to Cheshire's <a href="#partitionable-hybrid-llc-spm">partitionable hybrid LLC/SPM</a></li>
 <li>A configurable number of physical HyperRAM chips it can be attached to; by default, support for 2
   physical chips is provided</li>
 <li>Support for HyperRAM chips with different densities (from 8MiB to 64MiB per chip aligned with
   specs).</li>
 </ul>
 <h2 id="system-bus-interconnect">System bus interconnect</h2>
-<p>The interconnect is composed of a main <a href="https://github.com/pulp-platform/axi">AXI4</a> matrix (or
+<p>The interconnect is composed of a main <a href="https://github.com/FondazioneChipsIT/axi">AXI4</a> matrix (or
 crossbar) with AXI5 atomic operations (ATOPs) support. The crossbar extends Cheshire's with
 additional external AXI manager and subordinate ports.</p>
 <p>Cheshire's auxiliary <a href="https://github.com/pulp-platform/register_interface">Regbus</a> demultiplexer is
@@ -3107,7 +2244,8 @@ extended with additional peripheral configuration ports for external PLL/FLL and
 configuration, which are specific of ASIC wrappers.</p>
 <p>An additional peripheral subsystem based on APB hosts SCAR-V-specific peripherals.</p>
 <h2 id="mailbox-unit"><a href="https://github.com/pulp-platform/mailbox_unit">Mailbox unit</a></h2>
-<p>The mailbox unit consists in a number of configurable mailboxes. Each mailbox is the preferred
+<p><strong>(CHECK)</strong>
+The mailbox unit consists in a number of configurable mailboxes. Each mailbox is the preferred
 communication vehicle between <em>domains</em>. It can be used to wake-up certain domains, notify an
 <em>offloader</em> (e.g., Cheshire) that a <em>target device</em> (e.g., the integer PMCA) has reached execution
 completion, dispatch <em>entry points</em> to a <em>target device</em> to jump-start its execution, and many
@@ -3652,17 +2790,18 @@ phase relationship, since dual-clock FIFOs are placed between domains to allow c
 (CDC):</p>
 <ul>
 <li><code>host_clk_i</code>: preferably, clock of the <em>host domain</em></li>
-<li><code>secd_clk_i</code>: preferably, clock of the <em>secure domain</em></li>
 <li><code>periph_clk_i</code>: preferably, clock of <em>peripheral domain</em></li>
+<li><code>secd_clk_i</code>: preferably, clock of the <em>secure domain</em></li>
 </ul>
 <p>In addition, a real-time clock (RTC, <code>rt_clk_i</code>) is provided externally, at crystal frequency
 (32kHz) or higher.</p>
 <p>These clocks are supplied externally, by a dedicated PLL per clock source or by a single PLL that
 supplies all three clock sources. The configuration of the clock source can be handled by the
-external PLL wrapper configuration registers, e.g. in a ASIC top level</p>
+external PLL wrapper configuration registers, e.g. in a ASIC top level <strong>(CHECK)</strong></p>
 <p>Regardless of the specific name used for the clock signals in HW, SCAR-V has a flexible clock
 distribution that allows each of the 3 clock sources to be assigned to a <em>domain</em>, as explained
 below.</p>
+<p><a class="glightbox" href="../../img/scarv_clocks.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="clock domains from FLL" src="../../img/scarv_clocks.png" /></a></p>
 <hr />
 <p><em>Secure domain</em> and <em>peripheral domain</em> can be clock gated and <em>isolated</em>.</p>
 <p>When <em>isolation</em> for a domain <code>X</code> is enabled, data transfers towards a domain are terminated and
