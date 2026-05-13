@@ -605,10 +605,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interrupt-map-check" class="md-nav__link">
+  <a href="#interrupt-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interrupt map (CHECK)
+        Interrupt map
       
     </span>
   </a>
@@ -903,10 +903,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interrupt-map-check" class="md-nav__link">
+  <a href="#interrupt-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interrupt map (CHECK)
+        Interrupt map
       
     </span>
   </a>
@@ -1570,7 +1570,7 @@ clarity.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="interrupt-map-check">Interrupt map <strong>(CHECK)</strong></h2>
+<h2 id="interrupt-map">Interrupt map</h2>
 <p>SCAR-V's interrupt components are exhaustively described in the dedicated section of the <a href="https://fondazionechipsit.github.io/cheshire/um/arch/">documentation for
 Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <table>
@@ -1597,7 +1597,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>ch_0_o[0]</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_adv_timer_ch0</code></td>
+<td><code>car_adv_timer_intrs[0]</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1605,7 +1605,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>ch_0_o[1]</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_adv_timer_ch1</code></td>
+<td><code>car_adv_timer_intrs[1]</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1613,7 +1613,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>ch_0_o[2]</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_adv_timer_ch2</code></td>
+<td><code>car_adv_timer_intrs[2]</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1621,7 +1621,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>ch_0_o[3]</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_adv_timer_ch3</code></td>
+<td><code>car_adv_timer_intrs[3]</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1661,7 +1661,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>irq_lo_o</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_sys_timer_lo</code></td>
+<td><code>car_sys_timer_lo_intr</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1669,7 +1669,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td><code>irq_hi_o</code></td>
 <td></td>
 <td>1</td>
-<td><code>car_sys_timer_hi</code></td>
+<td><code>car_sys_timer_hi_intr</code></td>
 <td>edge-sensitive</td>
 <td></td>
 </tr>
@@ -1722,7 +1722,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td></td>
 </tr>
 <tr>
-<td><strong>Secure domain</strong></td>
+<td><strong>Secure Domain</strong></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1733,33 +1733,41 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td></td>
 <td><code>irq_ibex_i</code></td>
 <td>1</td>
-<td><code>hostd_secd_mb_intr_ored</code></td>
+<td><code>secd_mbox_intr</code></td>
 <td>level-sensitive</td>
 <td>to wake-up Ibex core</td>
 </tr>
 <tr>
-<td><strong>Cheshire</strong></td>
 <td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[0]</code></td>
+<td><code>cfi_req_irq_i</code></td>
 <td>1</td>
-<td><code>pulpcl_eoc</code></td>
+<td><code>chs_intrs_distributed</code></td>
 <td>level-sensitive</td>
-<td>from HMR cluster</td>
+<td>from CVA6 CFI Snooper</td>
 </tr>
 <tr>
 <td></td>
-<td><code>intr_ext_i[2:1]</code></td>
-<td>2</td>
-<td><code>pulpcl_hostd_mbox_intr</code></td>
+<td><code>cfi_watermark_irq_i</code></td>
+<td>1</td>
+<td><code>chs_intrs_distributed</code></td>
 <td>level-sensitive</td>
-<td>from HMR cluster</td>
+<td>from CVA6 CFI Snooper</td>
+</tr>
+<tr>
+<td><strong>Host Domain (Cheshire)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>intr_ext_i[6:0]</code></td>
+<td>7</td>
+<td><code>0</code></td>
+<td></td>
+<td>tied to 0</td>
 </tr>
 <tr>
 <td></td>
@@ -1771,83 +1779,43 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 </tr>
 <tr>
 <td></td>
-<td><code>intr_ext_i[9]</code></td>
-<td>1</td>
-<td><code>car_wdt_intrs[0]</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
-</tr>
-<tr>
+<td><code>intr_ext_i[14:9]</code></td>
+<td>6</td>
+<td><code>0</code></td>
 <td></td>
-<td><code>intr_ext_i[10]</code></td>
-<td>1</td>
-<td><code>car_wdt_intrs[1]</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[11]</code></td>
-<td>1</td>
-<td><code>car_wdt_intrs[2]</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[12]</code></td>
-<td>1</td>
-<td><code>car_wdt_intrs[3]</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[13]</code></td>
-<td>1</td>
-<td><code>car_wdt_intrs[4]</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
-</tr>
-<tr>
-<td></td>
-<td><code>intr_ext_i[14]</code></td>
-<td>1</td>
-<td><code>car_can_intr</code></td>
-<td>level-sensitive</td>
-<td>from carfield peripherals</td>
+<td>tied to 0</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[15]</code></td>
 <td>1</td>
-<td><code>car_adv_timer_ch0</code></td>
+<td><code>car_adv_timer_intrs[0]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[16]</code></td>
 <td>1</td>
-<td><code>car_adv_timer_ch1</code></td>
+<td><code>car_adv_timer_intrs[1]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[17]</code></td>
 <td>1</td>
-<td><code>car_adv_timer_ch2</code></td>
+<td><code>car_adv_timer_intrs[2]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[18]</code></td>
 <td>1</td>
-<td><code>car_adv_timer_ch3</code></td>
+<td><code>car_adv_timer_intrs[3]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
@@ -1855,7 +1823,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>1</td>
 <td><code>car_adv_timer_events[0]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
@@ -1863,7 +1831,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>1</td>
 <td><code>car_adv_timer_events[1]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
@@ -1871,7 +1839,7 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>1</td>
 <td><code>car_adv_timer_events[2]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
@@ -1879,23 +1847,23 @@ Cheshire</a>. This section describes SCAR-V's interrupt map.</p>
 <td>1</td>
 <td><code>car_adv_timer_events[3]</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[23]</code></td>
 <td>1</td>
-<td><code>car_sys_timer_lo</code></td>
+<td><code>car_sys_timer_lo_intr</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
 <td><code>intr_ext_i[24]</code></td>
 <td>1</td>
-<td><code>car_sys_timer_hi</code></td>
+<td><code>car_sys_timer_hi_intr</code></td>
 <td>edge-sensitive</td>
-<td>from carfield peripherals</td>
+<td>from peripherals</td>
 </tr>
 <tr>
 <td></td>
@@ -2011,6 +1979,7 @@ documentation of each domain.</p>
 implementation</a>.</p>
 <p>Below, we focus on domains' parameterization within SCAR-V.</p>
 <h3 id="host-domain-cheshire"><a href="https://github.com/FondazioneChipsIT/cheshire">Host domain (Cheshire)</a></h3>
+<p><strong>(CHECK parts on safe domain)</strong></p>
 <p>The <em>host domain</em> (Cheshire) embeds all the necessary components required to run OSs such as
 embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
 <ol>
@@ -2052,7 +2021,7 @@ controller CLIC,</li>
 <li>Hyperbus configuration: programming interface of the hyperbus controller</li>
 <li>Last-level cache (LLC) with HW spatial partitioning</li>
 <li>32 <em>external</em> input interrupts (<code>CarfieldNumExtIntrs</code>), see <a href="#interrupt-map">Interrupt map</a> in
-  addition to Cheshire's own internal interrupts. Unused are tied to 0 (currently 9/32)</li>
+  addition to Cheshire's own internal interrupts. Unused are tied to 0 (currently 20/32)</li>
 <li>An interrupt router with 1 external target (<code>CarfieldNUmRouterTargets</code>), tasked to distribute N
   input interrupts to M targets. In SCAR-V, the external target is the <code>secure domain</code>.</li>
 <li>These Cheshire peripherals: JTAG, SPI, UART, GPIO</li>
@@ -2433,7 +2402,7 @@ features:</p>
 <p>For more information, read the dedicated
 <a href="https://github.com/pulp-platform/apb_adv_timer/blob/master/doc/APB_ADV_TIMER_reference.xlsx">documentation</a>.</p>
 <h2 id="clock-and-reset">Clock and reset</h2>
-<p><a class="glightbox" href="../../img/clk_rst.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Reset and Clock Distribution for a domain *X*" src="../../img/clk_rst.svg" /></a></p>
+<p><a class="glightbox" href="../../img/scarv_clk_rst.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Reset and Clock Distribution for a domain *X*" src="../../img/scarv_clk_rst.png" /></a></p>
 <p><a class="glightbox" href="../../img/isolation.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Isolation for a domain *X*" src="../../img/isolation.svg" /></a></p>
 <p>The two figures above show the clock, reset and isolation distribution for a <em>domain</em> <code>X</code> in
 SCAR-V, and their relationship. A more detailed description is provided below.</p>
