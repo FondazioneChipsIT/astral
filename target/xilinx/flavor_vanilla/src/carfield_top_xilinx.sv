@@ -44,7 +44,7 @@ module carfield_top_xilinx
 `endif
 `endif // USE_JTAG
 
-`ifdef USE_AUX_JTAG
+`ifdef GEN_AUX_JTAG
   input logic         jtag_aux_tck_i,
   input logic         jtag_aux_tms_i,
   input logic         jtag_aux_tdi_i,
@@ -56,7 +56,7 @@ module carfield_top_xilinx
   output logic        jtag_aux_vdd_o,
   output logic        jtag_aux_gnd_o,
 `endif
-`endif // USE_AUX_JTAG
+`endif // GEN_AUX_JTAG
 
 `ifdef USE_I2C
   inout wire          i2c_scl_io,
@@ -159,7 +159,7 @@ module carfield_top_xilinx
 `ifdef USE_JTAG_VDDGND
   assign jtag_vdd_o  = '1;
   assign jtag_gnd_o  = '0;
-`ifdef USE_AUX_JTAG
+`ifdef GEN_AUX_JTAG
   assign jtag_aux_vdd_o = '1;
   assign jtag_aux_gnd_o = '0;
 `endif
@@ -167,7 +167,7 @@ module carfield_top_xilinx
 `ifndef USE_JTAG_TRSTN
   logic jtag_trst_ni;
   assign jtag_trst_ni = '1;
-`ifdef USE_AUX_JTAG
+`ifdef GEN_AUX_JTAG
   logic jtag_aux_trst_ni;
   assign jtag_aux_trst_ni = '1;
 `endif
@@ -533,7 +533,7 @@ module carfield_top_xilinx
       .jtag_trst_ni              (jtag_trst_ni),
       .jtag_tms_i                (jtag_tms_i),
       .jtag_tdi_i                (jtag_tdi_i),
-`ifdef USE_AUX_JTAG
+`ifdef GEN_AUX_JTAG
       .jtag_tdo_o                (jtag_tdo_o),
       .jtag_tdo_oe_o             (),
       // Secure Subsystem JTAG Interface

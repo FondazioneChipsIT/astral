@@ -33,7 +33,7 @@ switch $::env(XILINX_BOARD) {
 }
 
 # Add the Hyperbus constraints
-if { [catch {set ::env(GEN_NO_HYPERBUS)}] && ($::env(XILINX_BOARD)=="vcu118")} {
+if {[info exists ::env(GEN_NO_HYPERBUS)] && ($::env(GEN_NO_HYPERBUS)==0) && ($::env(XILINX_BOARD)=="vcu118")} { 
     import_files -fileset constrs_1 -norecurse ../constraints/constr_hyperbus.xdc
 }
 
