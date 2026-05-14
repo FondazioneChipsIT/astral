@@ -1979,34 +1979,8 @@ documentation of each domain.</p>
 implementation</a>.</p>
 <p>Below, we focus on domains' parameterization within SCAR-V.</p>
 <h3 id="host-domain-cheshire"><a href="https://github.com/FondazioneChipsIT/cheshire">Host domain (Cheshire)</a></h3>
-<p><strong>(CHECK parts on safe domain)</strong></p>
 <p>The <em>host domain</em> (Cheshire) embeds all the necessary components required to run OSs such as
-embedded Linux. It has two orthogonal <em>operation modes</em>.</p>
-<ol>
-<li>
-<p><em>Untrusted mode</em>: in this operation mode, the host domain is tasked to run untrusted services,
-i.e. non time- and non safety-critical applications. For example, this could be the case of infotainment
-on a modern car. In this mode, as in traditional automotive platforms, safety and resiliency
-features are deferred to a dedicated 32-bit microcontroller-like system, called <code>safe domain</code> in
-SCAR-V.</p>
-</li>
-<li>
-<p><em>Hybrid trusted/untrusted mode</em>: in this operation mode, the host domain is in charge of both
-critical and non-critical applications. Key features supported to achieve this are:</p>
-</li>
-<li>A virtualization layer, which allows the system to accommodate the execution of multiple OSs,
-including rich, Unix-like OSs and Real-Time OSs (RTOS), coexisting on the same HW.</li>
-<li>Spatial and temporal partitioning of resources: AXI matrix crossbar
-    (<a href="https://arxiv.org/abs/2311.09662">AXI-REALM</a>), LLC, TLB, and a <code>physical tagger</code> in front of
-    the cores to mark partitions by acting directly on the physical address space</li>
-<li>Runtime configurable data/instruction cache and SPM</li>
-<li>Fast interrupt handling, with optional interrupt routing through the RISC-V fast interrupt
-controller CLIC,</li>
-<li>Configurable dual core setup between <em>lockstep</em> or <em>SMP</em> mode.</li>
-</ol>
-<p>Hybrid operation mode is currently experimental, and mostly for research purposes. We advise of
-  relying on a combination of host ad safe domain for a more traditional approach.</p>
-<p>Cheshire is configured as follows:</p>
+embedded Linux. Cheshire is configured as follows:</p>
 <ul>
 <li>One 64-bit, RISC-V CVA6S+ superscalar core with Control Flow Integrity extensions (landing pad, shadow stack)</li>
 <li>2 external AXI manager ports (<code>AxiNumExtSlv</code>) added to the matrix crossbar:</li>
@@ -2200,7 +2174,7 @@ execution, and many others.</p>
 <p>PCRs provide basic system information, and control clock, reset and other functionalities of
 SCAR-V's <em>domains</em>.</p>
 <p>A more detailed overview of each PCR (register subfields and description) can be found
-<a href="../../hw/regs/pcr/">here</a>. PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
+<a href="../../hw/regs/pcr.md">here</a>. PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
 other devices.</p>
 <table>
 <thead>
