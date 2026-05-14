@@ -32,11 +32,34 @@ if {[info exists ::env(GEN_EXT_JTAG)] && ($::env(GEN_EXT_JTAG)==1)} {
   import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_ext_jtag.xdc
 }
 
+# Add the ext_jtag pins to block design
+if {[info exists ::env(GEN_AUX_JTAG)] && ($::env(GEN_AUX_JTAG)==1)} {
+  source scripts/carfield_bd_aux_jtag.tcl
+  import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_aux_jtag.xdc
+}
+
+
 # Add the hyperbus pins to block design
-if {![info exists ::env(GEN_NO_HYPERBUS)] || ($::env(GEN_NO_HYPERBUS)==0)} {
+if {[info exists ::env(GEN_NO_HYPERBUS)] && ($::env(GEN_NO_HYPERBUS)==0)} {
   import_files -fileset constrs_1 -norecurse constraints/$::env(XILINX_BOARD)_hyperbus.xdc
+
+  # Remove Xilinx DDR4 related block design objects
+  delete_bd_objs [get_bd_cells util_vector_logic_1]
+  delete_bd_objs [get_bd_cells axi_interconnect_0]
+  delete_bd_objs [get_bd_cells ddr4_0]
+  delete_bd_objs [get_bd_cells util_vector_logic_1]
+  delete_bd_objs [get_bd_cells proc_sys_reset_1]
+  delete_bd_objs [get_bd_intf_ports c1_ddr4]
+  delete_bd_objs [get_bd_intf_ports dram_sys]
+  
 } else {
+  # Remove HyperRam related block design objects
   delete_bd_objs [get_bd_ports pad_hyper*]
+}
+
+# Add the Hyperbus constraints
+if { [info exists ::env(GEN_NO_HYPERBUS)] && ($::env(GEN_NO_HYPERBUS)==0)} {
+    import_files -fileset constrs_1 -norecurse constraints/constr_hyperbus.xdc
 }
 
 make_wrapper -files [get_files $project/$project.srcs/sources_1/bd/design_1/design_1.bd] -top

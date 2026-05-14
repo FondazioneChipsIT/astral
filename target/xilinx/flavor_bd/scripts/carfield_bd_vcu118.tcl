@@ -216,6 +216,13 @@ proc create_root_design { parentCell } {
   set uart_rx_i [ create_bd_port -dir I uart_rx_i ]
   set uart_tx_o [ create_bd_port -dir O uart_tx_o ]
 
+  set pad_hyper_ck_0 [ create_bd_port -dir IO -from 1 -to 0 pad_hyper_ck_0 ]
+  set pad_hyper_ckn_0 [ create_bd_port -dir IO -from 1 -to 0 pad_hyper_ckn_0 ]
+  set pad_hyper_csn_0 [ create_bd_port -dir IO -from 3 -to 0 pad_hyper_csn_0 ]
+  set pad_hyper_dq_0 [ create_bd_port -dir IO -from 15 -to 0 pad_hyper_dq_0 ]
+  set pad_hyper_reset_0 [ create_bd_port -dir IO -from 1 -to 0 -type rst pad_hyper_reset_0 ]
+  set pad_hyper_rwds_0 [ create_bd_port -dir IO -from 1 -to 0 pad_hyper_rwds_0 ]
+
   # Create instance: axi_interconnect_0, and set properties
   set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0 ]
   set_property -dict [ list \
@@ -243,6 +250,10 @@ proc create_root_design { parentCell } {
    CONFIG.CLKOUT4_PHASE_ERROR {77.836} \
    CONFIG.CLKOUT4_REQUESTED_OUT_FREQ {10.000} \
    CONFIG.CLKOUT4_USED {true} \
+   CONFIG.CLKOUT5_JITTER {88.577} \
+   CONFIG.CLKOUT5_PHASE_ERROR {77.836} \
+   CONFIG.CLKOUT5_REQUESTED_OUT_FREQ {200.000} \
+   CONFIG.CLKOUT5_USED {true} \
    CONFIG.CLK_IN1_BOARD_INTERFACE {default_sysclk1_300} \
    CONFIG.MMCM_CLKFBOUT_MULT_F {4.000} \
    CONFIG.MMCM_CLKIN1_PERIOD {3.333} \
@@ -250,8 +261,9 @@ proc create_root_design { parentCell } {
    CONFIG.MMCM_CLKOUT1_DIVIDE {24} \
    CONFIG.MMCM_CLKOUT2_DIVIDE {60} \
    CONFIG.MMCM_CLKOUT3_DIVIDE {120} \
+   CONFIG.MMCM_CLKOUT4_DIVIDE {6} \
    CONFIG.MMCM_DIVCLK_DIVIDE {1} \
-   CONFIG.NUM_OUT_CLKS {4} \
+   CONFIG.NUM_OUT_CLKS {5} \
    CONFIG.PRIM_IN_FREQ {300.000} \
    CONFIG.PRIM_SOURCE {Differential_clock_capable_pin} \
    CONFIG.USE_LOCKED {false} \
@@ -313,6 +325,13 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net dram_sys_clk_1 [get_bd_intf_ports dram_sys] [get_bd_intf_pins ddr4_0/C0_SYS_CLK]
 
   # Create port connections
+  connect_bd_net -net Net [get_bd_ports pad_hyper_csn_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_csn]
+  connect_bd_net -net Net1 [get_bd_ports pad_hyper_ck_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_ck]
+  connect_bd_net -net Net2 [get_bd_ports pad_hyper_ckn_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_ckn]
+  connect_bd_net -net Net3 [get_bd_ports pad_hyper_rwds_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_rwds]
+  connect_bd_net -net Net4 [get_bd_ports pad_hyper_reset_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_reset]
+  connect_bd_net -net Net5 [get_bd_ports pad_hyper_dq_0] [get_bd_pins carfield_xilinx_ip_0/pad_hyper_dq]
+
   connect_bd_net -net Op2_0_1 [get_bd_ports cpu_reset] [get_bd_pins util_vector_logic_0/Op2]
   connect_bd_net -net carfield_xilinx_ip_0_dram_axi_m_aclk [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins carfield_xilinx_ip_0/dram_axi_m_aclk]
   connect_bd_net -net carfield_xilinx_ip_0_dram_axi_m_aresetn [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins carfield_xilinx_ip_0/dram_axi_m_aresetn]
@@ -321,6 +340,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins carfield_xilinx_ip_0/clk_50] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins vio_0/clk]
   connect_bd_net -net clk_wiz_0_clk_out3 [get_bd_pins carfield_xilinx_ip_0/clk_20] [get_bd_pins clk_wiz_0/clk_out3]
   connect_bd_net -net clk_wiz_0_clk_out4 [get_bd_pins carfield_xilinx_ip_0/clk_10] [get_bd_pins clk_wiz_0/clk_out4]
+  connect_bd_net -net clk_wiz_0_clk_out5 [get_bd_pins carfield_xilinx_ip_0/clk_200] [get_bd_pins clk_wiz_0/clk_out5]
   connect_bd_net -net ddr4_0_c0_ddr4_ui_clk [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins ddr4_0/c0_ddr4_ui_clk] [get_bd_pins proc_sys_reset_1/slowest_sync_clk]
   connect_bd_net -net ddr4_0_c0_ddr4_ui_clk_sync_rst [get_bd_pins ddr4_0/c0_ddr4_ui_clk_sync_rst] [get_bd_pins proc_sys_reset_1/ext_reset_in] [get_bd_pins util_vector_logic_1/Op1]
   connect_bd_net -net proc_sys_reset_1_peripheral_aresetn [get_bd_pins ddr4_0/c0_ddr4_aresetn] [get_bd_pins proc_sys_reset_1/peripheral_aresetn]
