@@ -2069,7 +2069,7 @@ to connect to external HyperRAM modules.</p>
 <li>An AXI interface that attaches to Cheshire's <a href="#partitionable-hybrid-llc-spm">partitionable hybrid LLC/SPM</a></li>
 <li>A configurable number of physical HyperRAM chips it can be attached to; by default, support for 2
   physical chips is provided</li>
-<li>Support for HyperRAM chips with different densities (from 8MiB to 64MiB per chip aligned with
+<li>Support for HyperRAM chips with different densities (from 8 MiB to 64 MiB per chip aligned with
   specs).</li>
 </ul>
 <h2 id="system-bus-interconnect">System bus interconnect</h2>
@@ -2174,7 +2174,8 @@ execution, and many others.</p>
 <p>PCRs provide basic system information, and control clock, reset and other functionalities of
 SCAR-V's <em>domains</em>.</p>
 <p>A more detailed overview of each PCR (register subfields and description) can be found
-<a href="../../hw/regs/pcr.md">here</a>. PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
+<a href="https://github.com/FondazioneChipsIT/astral/blob/glodi/githubio/hw/regs/pcr.md">here</a>.</p>
+<p>PCR base address is listed in the <a href="#memory-map">Memory Map</a> as for the
 other devices.</p>
 <table>
 <thead>
@@ -2446,7 +2447,7 @@ regulated by the input pin <code>secure_boot_i</code> according to the following
 </table>
 <p>Regardless of the value of <code>secure_boot_i</code>, since by default some domains are clock gated and
 isolated after POR, SW or external physical interfaces (JTAG/Serial Link) must handle their wake-up
-process. Routines are provided in the <a href="../../sw/include/car_util/">Software Stack</a>.</p>
+process. Routines are provided in the <a href="https://github.com/FondazioneChipsIT/astral/blob/glodi/githubio/sw/include/car_util.h">Software Stack</a>.</p>
 <h3 id="reset-distribution-scheme">Reset distribution scheme</h3>
 <p>SCAR-V is provided with one POR (active-low), <code>pwr_on_rst_ni</code>, responsible for the platform's
 <em>cold reset</em>.</p>

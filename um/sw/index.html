@@ -974,10 +974,8 @@ or supports also, standalone execution and has its own build flow.</p>
 supported by the platform, as described in <a href="../../tg/sim/">Simulation</a> or on FPGA as described in
 <a href="../../tg/xilinx/">Xilinx FPGAs</a>.</p>
 <hr />
-<p>As in Cheshire, SCAR-V programs can be created to be executed from several memory locations:</p>
+<p>As in Cheshire, SCAR-V programs can be created to be executed from these memory locations:</p>
 <ul>
-<li>Dynamic SPM (<code>*.l2.elf</code>): the linkerscript is provided in SCAR-V's <code>sw/link/</code> folder, since
-  Dynamic SPM is not integrated in the minimal Cheshire</li>
 <li>LLC SPM (<code>*.spm.elf</code>): valid when the LLC is configured as such. In SCAR-V, half of the LLC is
   configured as SPM from the boot ROM during system bringup, as this is the default behavior in
   Cheshire.</li>
@@ -985,7 +983,7 @@ supported by the platform, as described in <a href="../../tg/sim/">Simulation</a
 </ul>
 <p>For example, to build a specific BMP (here <code>sw/tests/bare-metal/hostd/helloworld.c</code> to be run on
 Cheshire) executing from the Dynamic SPM, run:</p>
-<pre><code>make sw/tests/bare-metal/hostd/helloworld.car.l2.elf
+<pre><code>make sw/tests/bare-metal/hostd/helloworld.car.spm.elf
 </code></pre>
 <p>To create the same program executing from DRAM, <code>sw/tests/bare-metal/hostd/helloworld.car.dram.elf</code>
 can instead be built from the same source. Depending on their assumptions and behavior, not all
