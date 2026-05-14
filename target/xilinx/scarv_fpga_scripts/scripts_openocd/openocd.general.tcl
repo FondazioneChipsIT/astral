@@ -9,7 +9,6 @@ telnet_port disabled
 tcl_port disabled
 reset_config none
 
-#set CoreNames {opentitan cheshire}
 
 set i 0
 foreach core $CoreNames {

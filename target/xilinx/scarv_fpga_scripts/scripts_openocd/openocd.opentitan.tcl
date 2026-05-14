@@ -1,4 +1,9 @@
-# Common OpenOCD script for Ibex.
+# Copyright lowRISC contributors.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+# Common OpenOCD script for Ibex. 
+# Adapted from the OpenTitan Earl Grey target configuration.
 
 set _CHIPNAME ibex
 

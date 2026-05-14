@@ -61,9 +61,6 @@ DEVICE 		?= xcvu9p_0
 
 COMMON_ARGS := -mode batch -nojournal -nolog -quiet
 
-setup_env:
-	./setup_env.sh
-
 # This targets prints the available jtag devices, so that the user can select the right one. It is not possible to know "a priori" which one is the usb connected to the desired FPGA.
 serial:
 	@echo "Scanning Olimex devices..."
