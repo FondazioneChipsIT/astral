@@ -6,9 +6,7 @@ core exposing the execution traces to a trace snooper; secure orchestration with
 
 SCAR-V is implemented on a reference architecture from [Pulp-Platform](https://github.com/pulp-platform) that features [OpenTitan](https://opentitan.org/) as embedded RoT and synthesized the system in Global Foundries 22 nm FD-SOI process.
 
-For a detailed description of the CFI theory and architecture see:
-
-* "ML-TitanCFI: an OpenTitan-driven Machine Learning–based Control Flow Integrity Framework for Secure Open-source RISC-V Platforms" by M. Ciani et altera
+For a detailed description of the CFI theory and architecture see: (TODO) add link to paper by M. Ciani et alt.
 
 
 ## Motivation
@@ -42,7 +40,7 @@ and then run a [simulation](https://fondazionechipsit.github.io/astral/tg/sim) w
 
 ```tcl
 make car-vsim-sim-build DEBUG=1 TECH_SIM=1
-make car-vsim-sim-run CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.l2.elf DEBUG=1 TECH_SIM=1
+make car-vsim-sim-run CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.spm.elf DEBUG=1 TECH_SIM=1
 ```
 
 ---

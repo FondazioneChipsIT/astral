@@ -156,33 +156,8 @@ Below, we focus on domains' parameterization within SCAR-V.
 
 ### [Host domain (Cheshire)](https://github.com/FondazioneChipsIT/cheshire)
 
-**(CHECK parts on safe domain)**
-
 The *host domain* (Cheshire) embeds all the necessary components required to run OSs such as
-embedded Linux. It has two orthogonal *operation modes*.
-
-1. *Untrusted mode*: in this operation mode, the host domain is tasked to run untrusted services,
-i.e. non time- and non safety-critical applications. For example, this could be the case of infotainment
-on a modern car. In this mode, as in traditional automotive platforms, safety and resiliency
-features are deferred to a dedicated 32-bit microcontroller-like system, called `safe domain` in
-SCAR-V.
-
-2. *Hybrid trusted/untrusted mode*: in this operation mode, the host domain is in charge of both
-critical and non-critical applications. Key features supported to achieve this are:
-  * A virtualization layer, which allows the system to accommodate the execution of multiple OSs,
-including rich, Unix-like OSs and Real-Time OSs (RTOS), coexisting on the same HW.
-  * Spatial and temporal partitioning of resources: AXI matrix crossbar
-	([AXI-REALM](https://arxiv.org/abs/2311.09662)), LLC, TLB, and a `physical tagger` in front of
-	the cores to mark partitions by acting directly on the physical address space
-  * Runtime configurable data/instruction cache and SPM
-  * Fast interrupt handling, with optional interrupt routing through the RISC-V fast interrupt
-controller CLIC,
-  * Configurable dual core setup between *lockstep* or *SMP* mode.
-
-  Hybrid operation mode is currently experimental, and mostly for research purposes. We advise of
-  relying on a combination of host ad safe domain for a more traditional approach.
-
-Cheshire is configured as follows:
+embedded Linux. Cheshire is configured as follows:
 
 * One 64-bit, RISC-V CVA6S+ superscalar core with Control Flow Integrity extensions (landing pad, shadow stack)
 * 2 external AXI manager ports (`AxiNumExtSlv`) added to the matrix crossbar:
@@ -279,7 +254,7 @@ It manages the following features:
 * An AXI interface that attaches to Cheshire's [partitionable hybrid LLC/SPM](#partitionable-hybrid-llc-spm)
 * A configurable number of physical HyperRAM chips it can be attached to; by default, support for 2
   physical chips is provided
-* Support for HyperRAM chips with different densities (from 8MiB to 64MiB per chip aligned with
+* Support for HyperRAM chips with different densities (from 8 MiB to 64 MiB per chip aligned with
   specs).
 
 ## System bus interconnect
@@ -336,7 +311,9 @@ PCRs provide basic system information, and control clock, reset and other functi
 SCAR-V's *domains*.
 
 A more detailed overview of each PCR (register subfields and description) can be found
-[here](../../hw/regs/pcr/). PCR base address is listed in the [Memory Map](#memory-map) as for the
+[here](https://github.com/FondazioneChipsIT/astral/blob/glodi/githubio/hw/regs/pcr.md).
+
+PCR base address is listed in the [Memory Map](#memory-map) as for the
 other devices.
 
 | **Name**                         | **Offset** | **Length** | **Description**                                                        |
@@ -488,7 +465,7 @@ regulated by the input pin `secure_boot_i` according to the following table:
 
 Regardless of the value of `secure_boot_i`, since by default some domains are clock gated and
 isolated after POR, SW or external physical interfaces (JTAG/Serial Link) must handle their wake-up
-process. Routines are provided in the [Software Stack](../../sw/include/car_util/).
+process. Routines are provided in the [Software Stack](https://github.com/FondazioneChipsIT/astral/blob/glodi/githubio/sw/include/car_util.h).
 
 ### Reset distribution scheme
 
