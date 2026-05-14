@@ -989,7 +989,6 @@ module astral_fixture;
   endtask
 
   task wait_fll_lock(input logic bypass_pll);
-    // tb_astral.fix.i_dut.i_top_padframe_wrapper.i_astral_padframe.i_botl.i_botl_pads.i_pwr_mng_west.int_io = 4'hF;
     set_bypass_pll(1);
   `ifndef ASTRAL_TOP_NETLIST
     if (~bypass_pll) begin
@@ -999,63 +998,12 @@ module astral_fixture;
     end
   `else
     if (~bypass_pll) begin
-      // @(posedge i_dut.i_fll_wrap.fll_lock_o[0]);
       wait (i_dut.i_fll_wrap.fll_lock_o[0]);
       @(posedge i_dut.i_fll_wrap.clk_fll_out_o[0]);
       set_bypass_pll(0);
     end
   `endif
   endtask: wait_fll_lock
-  /*
-  task automatic configure_sl_pad(ref bit jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_04_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_04_SEL_SERIAL_LINK_RCV_CLK_I, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_05_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_05_SEL_SERIAL_LINK_I_0, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_06_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_06_SEL_SERIAL_LINK_I_1, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_07_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_07_SEL_SERIAL_LINK_I_2, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_08_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_08_SEL_SERIAL_LINK_I_3, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_09_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_09_SEL_SERIAL_LINK_I_4, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_10_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_10_SEL_SERIAL_LINK_I_5, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_11_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_11_SEL_SERIAL_LINK_I_6, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_12_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_12_SEL_SERIAL_LINK_I_7, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_13_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_13_SEL_SERIAL_LINK_RCV_CLK_O, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_14_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_14_SEL_SERIAL_LINK_O_V_0, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_15_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_15_SEL_SERIAL_LINK_O_V_1, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_16_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_16_SEL_SERIAL_LINK_O_V_2, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_17_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_17_SEL_SERIAL_LINK_O_V_3, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_H_00_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_H_00_SEL_SERIAL_LINK_O_H_0, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_H_01_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_H_01_SEL_SERIAL_LINK_O_H_1, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_H_02_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_H_02_SEL_SERIAL_LINK_O_H_2, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_H_03_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_H_03_SEL_SERIAL_LINK_O_H_3, jtag_check_write);
-  endtask: configure_sl_pad
-
-  task automatic configure_spi_pad(ref bit jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_00_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_00_SEL_SPI_SCK, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_01_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_01_SEL_SPI_CSB_0, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_02_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_02_SEL_SPI_CSB_1, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_03_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_03_SEL_SPI_SD_0, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_04_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_04_SEL_SPI_SD_1, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_05_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_05_SEL_SPI_SD_2, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_06_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_06_SEL_SPI_SD_3, jtag_check_write);
-  endtask: configure_spi_pad
-
-  task automatic configure_i2c_pad(ref bit jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_00_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_00_SEL_I2C_SDA, jtag_check_write);
-    chs_vip.jtag_write_reg32(PAD_CFG_ADDR + ASTRAL_PADFRAME_PERIPH_CONFIG_MUXED_V_01_MUX_SEL_OFFSET, PAD_MUX_GROUP_MUXED_V_01_SEL_I2C_SCL, jtag_check_write);
-  endtask: configure_i2c_pad
-  */
-  /*
-  task automatic configure_sl_pad(ref bit jtag_check_write);
-    $display("[TB] configure_sl_pad: skipped (padframe mux removed)");
-  endtask
-
-  task automatic configure_spi_pad(ref bit jtag_check_write);
-    $display("[TB] configure_spi_pad: skipped (padframe mux removed)");
-  endtask
-
-  task automatic configure_i2c_pad(ref bit jtag_check_write);
-    $display("[TB] configure_i2c_pad: skipped (padframe mux removed)");
-  endtask
-  */
 
 task automatic select_phy_startup(input int unsigned sel);
   // Controllo validità
