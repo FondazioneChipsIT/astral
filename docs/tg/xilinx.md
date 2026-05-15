@@ -24,15 +24,23 @@ design flow to link SCAR-V with external IPs. This flow is less human readable b
 integrating more complex IPs as Xilinx Ethernet. *Note that this may require you to own the
 respective licenses.*
 
-## Building the vanilla bistream
+## Building the bistream
 
 Due to the structure of the Makefile flow. All the following commands are to be executed at the root
 of the SCAR-V repository. If you want to see the Makefiles that you will be using, you can find
 the generic FPGA rules in `target/xilinx/xilinx.mk` and the vanilla specific rules in
 `target/xilinx/flavor_vanilla/flavor_vanilla.mk`.
 
-First, make sure that you have fetch and generated all the RTL:
+The first step to build the SCAR-V design is to source the correct environment script:
+```bash
+source env/env-chips.sh
+```
+The script will set the environment variables which select hardware and software configuration of the SCAR-V design.
 
+Then, fetch and generate all the RTL:
+```bash
+make car-checkout
+```
 ```bash
 make car-hw-init
 ```
@@ -40,7 +48,7 @@ make car-hw-init
 Generate the bitstream in `target/xilinx/out/` by running:
 
 ```bash
-make car-xil-all XILINX_FLAVOR=vanilla [VIVADO=version]
+make car-xil-all [XILINX_FLAVOR={vanilla,bd}] [VIVADO=version]
 [VIVADO_MODE={batch,gui}] [XILINX_BOARD={vcu118}] [GEN_NO_HYPERBUS={0,1}]
 [GEN_EXT_JTAG={0,1}][GEN_AUX_JTAG={0,1}] [CARFIELD_CONFIG=carfield_secure_periph]
 ```
@@ -56,6 +64,9 @@ See the argument list below:
 | GEN_AUX_JTAG    | vcu118    | `0` Connect the debug modules of the 2 cores (Ibex and CVA6) in daisy-chain <br>`1` Create an auxiliary JTAG debug module for Ibex    |
 | CARFIELD_CONFIG | all       | Select the SCAR-V configuration to implement. See below for supported configs.                                                        |
 | VIVADO_MODE     | all       | `batch` Compile in Vivado shell<br>`gui` Compile in Vivado gui                                                                        |
+| XILINX_FLAVOR   | all       | `vanilla` The project will be created in flavour_vanilla mode<br> `bd` The project will be created in flavour_bd mode                                                                        |
+
+The SCAR-V configuration is [`carfield_secure_periph`](../../hw/configs/carfield_secure_periph.sv). This means that the design is composed of a security domain, controlled by Ibex, and peripheral domain, in addition to a host domain. Other configurations can be found under [hw/configs](../../hw/configs/).
 
 You can find which sources are used by looking at `Bender.yml` (target `all(xilinx, fpga,
 xilinx_vanilla)`). This file is used by bender to generate
@@ -66,74 +77,35 @@ added to the `add_sources.tcl`).
 Note that the `make` command above will first compile the Xilinx ips located in
 `target/xilinx/xilinx_ips` before compiling the bitstream.
 
-## Building the bd (block design) bistream
-
-Please read and try to compile a vanilla bitstream first to identify potential issues.
-
-You can find the bd specific rules in `target/xilinx/flavor_vanilla/flavor_bd.mk`.
-
-Again, make sure that you have fetched and generated all the RTL:
-
-```bash
-make car-hw-init
-```
-
-Generate the bitstream in `target/xilinx/out/` by running:
-
-```bash
-make car-xil-all XILINX_FLAVOR=bd [VIVADO=version] [VIVADO_MODE={batch,gui}]
-[XILINX_BOARD={vcu118}] [GEN_NO_HYPERBUS={0,1}] [GEN_EXT_JTAG={0,1}][GEN_AUX_JTAG={0,1}]
-[CARFIELD_CONFIG=carfield_secure_periph]
-```
-
-See the argument list below:
-
-| Argument        | Relevance | Description                                                                                                                           |
-|---------------- |-----------|---------------------------------------------------------------------------------------------------------------------------------------|
-| VIVADO          | all       | Vivado command to use                                                                                                                 |
-| XILINX_BOARD    | all       | `vcu118`                                                                                                                              |
-| GEN_NO_HYPERBUS | all       | `0` Use the hyperram controller inside `carfield.sv`<br>`1` Use the Xilinx DDR controller                                             |
-| GEN_EXT_JTAG    | vcu118    | `0` Connect the JTAG debugger to the board's JTAG (see [vcu118](#xilinx-vcu118)) <br>`1` Connect the JTAG debugger to an external JTAG chain |
-| GEN_AUX_JTAG    | vcu118    | `0` Connect the debug modules of the 2 cores (Ibex and CVA6) in daisy-chain <br>`1` Create an auxiliary JTAG debug module for Ibex    |
-| CARFIELD_CONFIG | all       | Select the SCAR-V configuration to implement. See below for supported configs.                                                      |
-| VIVADO_MODE     | all       | `batch` Compile in Vivado shell<br>`gui` Compile in Vivado gui                                                                        |
-
-You can find which sources are used by looking at `Bender.yml` (target `all(xilinx, fpga,
-xilinx_bd)`). This file is used by bender to generate
-`target/xilinx/flavor_bd/scripts/add_sources.tcl`. You can open this file to see all the file list
-of the project. (Note that even if you disable an IP, its files will still be needed by Vivado and
-added to the `add_sources.tcl`).
-
-Note that the `make` command above will first package a SCAR-V ip before compiling the bitstream.
 
 ## Board specificities
 
 ### Xilinx vcu118
-> #### Bootmodes and VIOs
->
-> As there are no switches on this board, the CVA6 bootmode (see [Cheshire
+#### Bootmodes and VIOs
+
+As there are no switches on this board, the CVA6 bootmode (see [Cheshire
 bootrom](https://pulp-platform.github.io/cheshire/um/sw/#boot-rom)) is selected by Xilinx VIOs that
 can be set in the Vivado GUI (see [Using Vivado GUI](#bringup_vivado_gui)).
->
-> #### External JTAG chain
->
-> The vcu118 development board only provides one JTAG chain, used by Vivado to program the
+
+#### External JTAG chain
+
+The vcu118 development board only provides one JTAG chain, used by Vivado to program the
 bitstream, and interact with certain Xilinx IPs (ILAs, VIOs, ...). The RV64 requires access to a
 JTAG chain to connect GDB to the debug-module in the bitstream.
 
-> When using `EXT_JTAG=0` it is possible to connect the debug module to the internal FPGA's JTAG by
+When using `EXT_JTAG=0` it is possible to connect the debug module to the internal FPGA's JTAG by
 using the Xilinx BSCANE macro. With this, you will only need the normal Xilinx USB cable to interact
 with CVA6. Note that it means that
 Vivado and OpenOCD can not use the same cable at the same time.
->**WARNING: this setup (with `EXT_JTAG=0`) will only work for designs containing the host only** as
+**WARNING: this setup (with `EXT_JTAG=0`) will only work for designs containing the host only** as
 it is not possible to chain multiple devices on the BSCANE macro. If you need to use `EXT_JTAG=0`
 consider modifying the RTL to remove the debug modules of the IPs.
 
-> When using `EXT_JTAG=1` we add an external JTAG chain for the RV64 host and other island through
+When using `EXT_JTAG=1` we add an external JTAG chain for the RV64 host and other island through
 the FPGA's GPIOs. Since the vcu118 does not have GPIOs we use we use a Digilent JTAG-HS2 cable
 connected to the Xilinx XM105 FMC debug card. See the connections in `vcu118.xdc`.
 
-## Bare-metal bringup
+## SCAR-V bringup
 
 ### Programming the FPGA
 
@@ -145,7 +117,7 @@ If you have closed Vivado, or compiled in batch mode, you can open the Vivado GU
 # Find your project
 find . -name "*.xpr"
 # Open it in gui
-vitis-2020.2 vivado project.xpr
+vivado project.xpr
 ```
 
 You can now open the Hardware Manager and program the FPGA. Once done, Vivado will give you access
@@ -174,17 +146,35 @@ program the board:
 make chs-xil-program VIVADO_MODE=batch XILINX_BOARD=vcu118 XILINX_FLAVOR=flavor
 ```
 
-### Loading binary and debugging with OpenOCD
+### SCAR-V Control Scripts
 
-Tbd
+Besides the commands introduced in the previous section, SCAR-V FPGA bitstream can be controlled by means of ad-hoc [scripts](./../../target/xilinx/scarv_fpga_scripts/).
 
-## Running Baremetal Code
+The scripts support:
+- FPGA programming through Viviado
+- OpenOCD launch and JTAG debug configuration
+- Multi-code JTAG daisy-chain setups
+- VIO-based control (boot mdoe, reset, status)
+- HyperRam configuration
 
-Tbd
+Some essential commands required to program and configure the FPGA, as well as run a simple bare-metal application, are the following:
 
-### JTAG Preloading
+```bash
+make program DEVICE=<device> PROJECT_NAME=<path> USB_SERIAL=<serial>
+```
 
-Tbd
+```bash
+make set_vio USB_SERIAL=<serial> DEVICE=<device> PROJECT_NAME=<path> VIO_COMMAND=<cmd> VIO_PROBE=<probe>
+```
+
+```bash
+make openocd USB_SERIAL=<serial> CORES="cheshire opentitan"
+```
+
+The above commands are expected to be executed from the [directory](./../../target/xilinx/scarv_fpga_scripts/) in which the scripts are located.
+
+More information on how to use the scripts can be found directly in the directory.
+
 
 ## Booting Linux
 
@@ -219,25 +209,24 @@ make CAR_ROOT=. sw/boot/linux_carfield_bd_vcu128.gpt.bin
 You can now recompile the board, it should start booting automatically!
 
 ### Xilinx vcu118
->
-> This board does not offer a SD card reader. We need to load the image in the
+
+This board does not offer a SD card reader. We need to load the image in the
 integrated flash:
->
-> ```
-> make chs-xil-flash VIVADO_MODE=batch XILINX_BOARD=vcu118 XILINX_FLAVOR=flavor
-> ```
->
-> Use the parameters defined in [Using command line](#bringup_vivado_cli)
+
+```
+make chs-xil-flash VIVADO_MODE=batch XILINX_BOARD=vcu118 XILINX_FLAVOR=flavor
+```
+
+Use the parameters defined in [Using command line](#bringup_vivado_cli)
 (defaults are in `target/xilinx/xilinx.mk`) to select your board:
->
-> This script will erase your bitstream, once the flash has been written (c.a.
+
+This script will erase your bitstream, once the flash has been written (c.a.
 10min) you will need to re-program the bitstream on the board.
 
 ## Add your own board
 
 If you wish to add a flow for a new FPGA board, please do the following steps:
-_Please consider opening a pull request containing the necessary changes to integrate your new board
-(:_
+Please consider opening a pull request containing the necessary changes to integrate your new board.
 
 ### Makefile
 
@@ -247,57 +236,57 @@ parameters identifying your personal device `XILINX_PORT`, `XILINX_FPGA_PATH`, `
 left empty for now.
 
 ### Vanilla flow
->
-> #### Re-arametrize existing IPs
->
-> SCAR-V's emulation requires a few Vivado IPs to work properly. They are
+
+#### Re-arametrize existing IPs
+
+SCAR-V's emulation requires a few Vivado IPs to work properly. They are
 defined and pre-compiled in `target/xilinx/xilinx_ips/*`.
-> If you add a new board, you will need to reconfigure your IPs for this board. For instance, to use
+If you add a new board, you will need to reconfigure your IPs for this board. For instance, to use
 the _Vivado MIG DDR4 controller_, modify `target/xilinx/xilinx_ips/xlnx_mig_ddr4/run.tcl`. There,
 add the relevant
 `$::env(XILINX_BOARD)` entry with your configuration.
-> To know which configuration to use your board, you can open a blank project in Vivado GUI, create
+To know which configuration to use your board, you can open a blank project in Vivado GUI, create
 a blank block design, and instanciate the MIG DDR4 IP there. The Vivado TCL console should write the
 default parameters for your FPGA. You can later re-configure the IP in the block design and Vivado
 will print to the tcl console the modified parameters. Then you can copy these tcl lines to the
 `run.tcl` file. Make sure that you added your ip to `target/xilinx/flavor_vanilla/flavor_vanilla.mk`
 under "xilinx_ips_names_vanilla_**your_board**".
->
-> #### Add a new IP
->
-> If your board require a new IP that has not been integrated already do the
+
+#### Add a new IP
+
+If your board require a new IP that has not been integrated already do the
 following :
->
-> - Add a new folder `target/xilinx/xilinx_ips/[your_ip]` taking the example of the `xlnx_mig_ddr4`.
-> - Modify `target/xilinx/xilinx_ips/[your_ip]/tcl/run.tcl` and
+
+- Add a new folder `target/xilinx/xilinx_ips/[your_ip]` taking the example of the `xlnx_mig_ddr4`.
+- Modify `target/xilinx/xilinx_ips/[your_ip]/tcl/run.tcl` and
 `target/xilinx/xilinx_ips/[your_ip]/Makefile` accordingly. > - Add your IP to
 `target/flavor_vanilla/flavor_vanilla.mk` under "xilinx_ips_names_vanilla_**your_board**".
->
-> #### Instantiate your IP
->
-> Connect it's top module in the top-level:
+
+#### Instantiate your IP
+
+Connect it's top module in the top-level:
 `target/xilinx/flavor_vanilla/src/cheshire_top_xilinx.sv`. If your IP is a DDR controller, please
 add it to `target/xilinx/src/dram_wrapper_xilinx.sv`. Note that this file contains a pipeline to
 resize AXI transactions from Cheshire to your controller.
->
-> Add the relevant macro parameters to `target/xilinx/flavor_vanilla/src/phy_definitions.sv` in
+
+Add the relevant macro parameters to `target/xilinx/flavor_vanilla/src/phy_definitions.sv` in
 order to disable your IP for non-relevant boards.
->
-> #### Add a new device tree
->
-> Each board is defined by a device-tree, when adding a new board, please add a device tree in
+
+#### Add a new device tree
+
+Each board is defined by a device-tree, when adding a new board, please add a device tree in
 `sw/boot` for each supported flavors.
->
-> #### Debug
->
-> It is possible to use ILA (Integrated Logic Analyzers) in order to debug some signals on the
+
+## Debug
+
+It is possible to use ILA (Integrated Logic Analyzers) in order to debug some signals on the
 running FPGA. Add the following before declaring your signals:
->
+
 ```verilog
 // Indicate that you need to debug a signal
 (* dont_touch = "yes" *) (* mark_debug = "true" *) logic signal_d0;
 // You can also use the following macro from phy_definitions.svh
 `ila(ila_signal_d0, signal_d0)
 ```
->
-> Then, re-build your bitstream.
+
+Then, re-build your bitstream.
