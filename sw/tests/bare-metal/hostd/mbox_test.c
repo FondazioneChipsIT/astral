@@ -1,4 +1,4 @@
-// Copyright 2023 ETH Zurich and University of Bologna.
+// Copyright 2023 ETH Zurich, University of Bologna and and Fondazione Chips-IT.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -29,17 +29,13 @@
 
 int main(int argc, char const *argv[]) {
 
-    // Put SMP Hart to sleep
-    // if (hart_id() != 0) wfi();
-        // Init the HW (this also includes UART)
-    int err = 0;
-
+    // Init the HW (this also includes UART)
     car_init_start();
 
-    int a;
+    int mbox_msg;
     unsigned global_irq_en   = 0x00001808;
     unsigned external_irq_en = 0x00000800;
-    LOG("hello cheshire\n\r");
+    LOG("Hello cheshire\n\r");
 
     asm volatile("csrw  mstatus, %0\n" : : "r"(global_irq_en  ));     // Set global interrupt enable in CVA6 csr
     asm volatile("csrw  mie, %0\n"     : : "r"(external_irq_en));     // Set external interrupt enable in CVA6 csr
@@ -52,8 +48,8 @@ int main(int argc, char const *argv[]) {
         ;
 
     writew(0xBAADC0DE, MBOX_CAR_LETTER0(0x1));
-    a = readw(MBOX_CAR_LETTER0(1));
-    if( a == 0xBAADC0DE ) {
+    mbox_msg = readw(MBOX_CAR_LETTER0(1));
+    if (mbox_msg == 0xBAADC0DE) {
       writew(0x00000001, MBOX_CAR_INT_SND_SET(0x1)); // ring doorbell if mailbox is accessible
       writew(0x00000001, MBOX_CAR_INT_SND_EN(0x1));
     }
