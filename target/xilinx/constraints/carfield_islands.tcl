@@ -5,7 +5,7 @@
 # Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 
 ####################
-# Clock generators #
+#     Clock Mux    #
 ####################
 
 set SOC_TCK 20
@@ -30,12 +30,36 @@ proc handle_domain_clock_mux { clk_sel_path clk_sel_val clk_name } {
   }
 }
 
-handle_domain_clock_mux [get_cells -hier u_periph_clk_sel] 2 periph_domain_clk
-handle_domain_clock_mux [get_cells -hier u_safety_island_clk_sel] 1 safety_domain_clk
-handle_domain_clock_mux [get_cells -hier u_security_island_clk_sel] 1 security_domain_clk
-handle_domain_clock_mux [get_cells -hier u_pulp_cluster_clk_sel] 1 pulp_domain_clk
-handle_domain_clock_mux [get_cells -hier u_spatz_cluster_clk_sel] 1 spatz_domain_clk
-handle_domain_clock_mux [get_cells -hier u_l2_clk_sel] 0 l2_domain_clk
+handle_domain_clock_mux [get_cells -hier u_periph_clk_sel] 1 periph_domain_clk
+handle_domain_clock_mux [get_cells -hier u_security_island_clk_sel] 2 security_domain_clk
+
+
+proc handle_multiple_clks { clk_sel_path clk_name } {
+  set clocks [list clk_50 clk_10 clk_20]
+  # Start from a known clk_sel register and get fanout to find the clk_mux
+  set domain_clk_mux [lindex [regexp -inline {[^ ]*gen_domain_clock_mux\[[0-9]*\]} [filter [all_fanout -flat [get_pins $clk_sel_path/q[*]]] -filter {NAME=~*gen_domain_clock_mux*}]] 0]
+  # This domain_clk_mux not be here if the island is not activated
+  if { $domain_clk_mux != "" } {
+      set gen_clks {}
+      # Generate a different clock for every input of the clock mux
+      for {set i 0} {$i < [llength $clocks]} {incr i} {
+            create_generated_clock -source [get_pins [concat i_xlnx_clk_wiz/[lindex $clocks $i]]] \
+                                   -divide_by 1  \
+                                   -name clk$i\_$clk_name \
+                                   [get_pins $domain_clk_mux.i_clk_mux/clks_i[$i]]
+            lappend gen_clks -group clk$i\_$clk_name
+      }
+    # Telling Vivado that the clocks are logically exclusive
+    set_clock_groups -logically_exclusive {*}$gen_clks
+    puts "$gen_clks"
+    puts "Generated domain clock $clk_name"
+  }
+}
+
+#handle_multiple_clks [get_cells -hier u_periph_clk_sel] periph_domain_clk
+#handle_multiple_clks [get_cells -hier u_security_island_clk_sel] security_domain_clk
+
+
 
 #################
 # Carfield CDCs #
@@ -106,3 +130,4 @@ proc handle_mst_cdc { mst_cdc_path } {
 handle_mst_cdc [get_cells -hier gen_safety_island.i_safety_island_wrap]/i_cdc_out
 handle_mst_cdc [get_cells -hier gen_spatz_cluster.i_fp_cluster_wrapper]/i_spatz_cluster_cdc_src
 handle_mst_cdc [get_cells -hier gen_pulp_cluster.i_integer_cluster]/axi_master_cdc_i
+handle_mst_cdc [get_cells -hier gen_secure_subsystem.i_security_island]/i_cdc_out_tlul2axi

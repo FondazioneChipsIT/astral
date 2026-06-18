@@ -44,6 +44,20 @@ module carfield_top_xilinx
 `endif
 `endif // USE_JTAG
 
+`ifdef GEN_AUX_JTAG
+  input logic         jtag_aux_tck_i,
+  input logic         jtag_aux_tms_i,
+  input logic         jtag_aux_tdi_i,
+  output logic        jtag_aux_tdo_o,
+`ifdef USE_JTAG_TRSTN
+  input logic         jtag_aux_trst_ni,
+`endif
+`ifdef USE_JTAG_VDDGND
+  output logic        jtag_aux_vdd_o,
+  output logic        jtag_aux_gnd_o,
+`endif
+`endif // GEN_AUX_JTAG
+
 `ifdef USE_I2C
   inout wire          i2c_scl_io,
   inout wire          i2c_sda_io,
@@ -101,7 +115,7 @@ module carfield_top_xilinx
   inout  [`HypNumPhys-1:0]                   pad_hyper_ck,
   inout  [`HypNumPhys-1:0]                   pad_hyper_ckn,
   inout  [`HypNumPhys-1:0]                   pad_hyper_rwds,
-  // inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
+  inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
   inout  [`HypNumPhys-1:0][7:0]              pad_hyper_dq,
 `endif
 
@@ -125,7 +139,7 @@ module carfield_top_xilinx
 
   wire clk_100, clk_50, clk_20;
   (* dont_touch = "yes" *) wire clk_10;
-  wire soc_clk, host_clk, alt_clk, periph_clk;
+ // wire soc_clk, host_clk, alt_clk, periph_clk;
   (* dont_touch = "yes" *) wire rst_n;
 
   ///////////////////
@@ -135,20 +149,28 @@ module carfield_top_xilinx
   // Tie off signals if no switches on the board
 `ifndef USE_SWITCHES
   logic         testmode_i;
-  logic [1:0]   boot_mode_i, boot_mode_safety_i;
+  logic [1:0]   boot_mode_i, boot_mode_security_i;
   assign testmode_i  = '0;
   assign boot_mode_i = 2'b00;
-  assign boot_mode_safety_i = 2'b00;
+  assign boot_mode_security_i = 2'b00;
 `endif
 
   // Give VDD and GND to JTAG
 `ifdef USE_JTAG_VDDGND
   assign jtag_vdd_o  = '1;
   assign jtag_gnd_o  = '0;
+`ifdef GEN_AUX_JTAG
+  assign jtag_aux_vdd_o = '1;
+  assign jtag_aux_gnd_o = '0;
+`endif
 `endif
 `ifndef USE_JTAG_TRSTN
   logic jtag_trst_ni;
   assign jtag_trst_ni = '1;
+`ifdef GEN_AUX_JTAG
+  logic jtag_aux_trst_ni;
+  assign jtag_aux_trst_ni = '1;
+`endif
 `endif
 
   //////////////////
@@ -178,13 +200,20 @@ module carfield_top_xilinx
     .clk_100 ( clk_100  ),
     .clk_50  ( clk_50   ),
     .clk_20  ( clk_20   ),
-    .clk_10  ( clk_10   )
+    .clk_10  ( clk_10   ),
+    .clk_200 ( clk_200  ) //For the hyperbus
   );
+  
   localparam rtc_clk_divider = 4;
+  logic[carfield_pkg::NumFll-1:0] domain_clk;
+
   assign soc_clk = clk_50;
-  assign alt_clk = clk_20;
-  assign host_clk = soc_clk;
-  assign periph_clk = soc_clk;
+  //assign domain_clk[carfield_pkg::CarfieldClockIdx.AltClockIdx] = clk_20;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.SecureClockIdx] = clk_20;
+  assign domain_clk[carfield_pkg::HostClockIdx] = clk_50;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.PeriphClockIdx] = clk_10;
+  assign domain_clk[carfield_pkg::RtClockIdx] = rtc_clk_q;
+
 
   /////////////////////
   // Reset Generator //
@@ -202,25 +231,31 @@ module carfield_top_xilinx
   // VIOs          //
   ///////////////////
 
-  logic [1:0] boot_mode, boot_mode_safety;
+  logic [1:0] boot_mode, boot_mode_security;
+
+  logic [31:0] git_hash;
+
+  assign git_hash = `GIT_HASH;
 
 `ifdef USE_VIO
   logic       vio_reset;
-  logic [1:0] vio_boot_mode, vio_boot_mode_safety;
+  logic [1:0] vio_boot_mode, vio_boot_mode_security;
 
   xlnx_vio (
     .clk(soc_clk),
     .probe_out0(vio_reset),
     .probe_out1(vio_boot_mode),
-    .probe_out2(vio_boot_mode_safety)
+    .probe_out2(vio_boot_mode_security),
+    .probe_in0(git_hash)
   );
+  
   assign sys_rst = cpu_reset | vio_reset;
   assign boot_mode = boot_mode_i | vio_boot_mode;
-  assign boot_mode_safety = boot_mode_safety_i | vio_boot_mode_safety;
+  assign boot_mode_security = boot_mode_security_i | vio_boot_mode_security;
 `else
   assign sys_rst = cpu_reset;
   assign boot_mode = boot_mode_i;
-  assign boot_mode_safety = boot_mode_safety_i;
+  assign boot_mode_security = boot_mode_security_i;
 `endif
 
   //////////////////
@@ -471,7 +506,7 @@ module carfield_top_xilinx
   // Carfield SoC //
   //////////////////
 
-  logic jtag_host_to_safety, jtag_safety_to_ot;
+  logic jtag_host_to_security, jtag_safety_to_ot;
 
   carfield #(
       .Cfg       (carfield_pkg::CarfieldCfgDefault),
@@ -488,10 +523,7 @@ module carfield_top_xilinx
       .HypNumPhys   (`HypNumPhys),
       .HypNumChips  (`HypNumChips)
   ) i_carfield (
-      .host_clk_i    (host_clk),
-      .periph_clk_i  (periph_clk),
-      .alt_clk_i     (alt_clk),
-      .rt_clk_i      (rtc_clk_q),
+      .domain_clk_i               (domain_clk[carfield_pkg::NumFll-1:0]),
       .pwr_on_rst_ni (rst_n),
       .test_mode_i   (testmode_i),
       // Boot mode selection
@@ -501,22 +533,35 @@ module carfield_top_xilinx
       .jtag_trst_ni              (jtag_trst_ni),
       .jtag_tms_i                (jtag_tms_i),
       .jtag_tdi_i                (jtag_tdi_i),
-      .jtag_tdo_o                (jtag_host_to_safety),
+`ifdef GEN_AUX_JTAG
+      .jtag_tdo_o                (jtag_tdo_o),
       .jtag_tdo_oe_o             (),
       // Secure Subsystem JTAG Interface
+
+      .jtag_ot_tck_i             (jtag_aux_tck_i),
+      .jtag_ot_trst_ni           (jtag_aux_trst_ni),
+      .jtag_ot_tms_i             (jtag_aux_tms_i),
+      .jtag_ot_tdi_i             (jtag_aux_tdi_i),
+      .jtag_ot_tdo_o             (jtag_aux_tdo_o),
+      .jtag_ot_tdo_oe_o          (),
+`else //DAISY CHAIN
+      .jtag_tdo_o                (jtag_host_to_security),
+      .jtag_tdo_oe_o             (),
+      
       .jtag_ot_tck_i             (jtag_tck_i),
       .jtag_ot_trst_ni           (jtag_trst_ni),
       .jtag_ot_tms_i             (jtag_tms_i),
-      .jtag_ot_tdi_i             (jtag_safety_to_ot),
-      .jtag_ot_tdo_o             (jtag_tdo_o), // Take in account when they are unactivated
-      .jtag_ot_tdo_oe_o          (),
+      .jtag_ot_tdi_i             (jtag_host_to_security),
+      .jtag_ot_tdo_o             (jtag_tdo_o),
+`endif
+      .bootmode_ot_i             (boot_mode_security),
       // Safety Island JTAG Interface
       .jtag_safety_island_tck_i  (jtag_tck_i),
       .jtag_safety_island_trst_ni(jtag_trst_ni),
       .jtag_safety_island_tms_i  (jtag_tms_i),
-      .jtag_safety_island_tdi_i  (jtag_host_to_safety),
-      .jtag_safety_island_tdo_o  (jtag_safety_to_ot),
-      .bootmode_safe_isln_i      (boot_mode_safety),
+      .jtag_safety_island_tdi_i  (jtag_tdi_i),
+      .jtag_safety_island_tdo_o  (),
+      .bootmode_safe_isln_i      (),
       // UART Interface
       .uart_tx_o,
       .uart_rx_i,
@@ -566,6 +611,14 @@ module carfield_top_xilinx
       .llc_w_data,
       .llc_w_wptr,
       .llc_w_rptr,
+  `else
+      .clk_ref200_i(clk_200),
+      .pad_hyper_csn,
+      .pad_hyper_ck,
+      .pad_hyper_ckn,
+      .pad_hyper_rwds,
+      .pad_hyper_dq,
+      .pad_hyper_reset,
 `endif
       // Serial link interface
       .slink_rcv_clk_i           (),

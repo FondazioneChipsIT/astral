@@ -6,7 +6,7 @@
 // Just a verilog wrapper to accomodate Vivado
 
 `define HypNumChips 2
-`define HypNumPhys 1
+`define HypNumPhys 2
 
 module carfield_xilinx_ip
 (
@@ -20,6 +20,8 @@ module carfield_xilinx_ip
   input  wire         clk_50             ,
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock_rtl:1.0 clock clk_100" *) (* X_INTERFACE_PARAMETER = "FREQ_HZ 100000000" *)
   input  wire         clk_100            ,
+(* X_INTERFACE_INFO = "xilinx.com:signal:clock_rtl:1.0 clock clk_200" *) (* X_INTERFACE_PARAMETER = "FREQ_HZ 200000000" *)
+  input  wire         clk_200            ,
 
   input  wire         testmode_i         ,
   input  wire [1:0]   boot_mode_i        ,
@@ -35,16 +37,23 @@ module carfield_xilinx_ip
   output wire         jtag_vdd_o         ,
   output wire         jtag_gnd_o         ,
 
+  input  wire         jtag_aux_tck_i     ,
+  input  wire         jtag_aux_tms_i     ,
+  input  wire         jtag_aux_tdi_i     ,
+  output wire         jtag_aux_tdo_o     ,
+  input  wire         jtag_aux_trst_ni   ,
+  output wire         jtag_aux_vdd_o     ,
+  output wire         jtag_aux_gnd_o     ,
+
   output wire         uart_tx_o          ,
   input  wire         uart_rx_i          ,
 
   // Physical interface: HyperBus PADs
-  // Attention CS0 correspond to CS1 on the FMC (see constraints)
   inout  [`HypNumPhys-1:0][`HypNumChips-1:0] pad_hyper_csn,
   inout  [`HypNumPhys-1:0]                   pad_hyper_ck,
   inout  [`HypNumPhys-1:0]                   pad_hyper_ckn,
   inout  [`HypNumPhys-1:0]                   pad_hyper_rwds,
-  // inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
+  inout  [`HypNumPhys-1:0]                   pad_hyper_reset,
   inout  [`HypNumPhys-1:0][7:0]              pad_hyper_dq,
 
   // MASTER AXI DRAM
@@ -297,6 +306,7 @@ module carfield_xilinx_ip
     .clk_20(clk_20),
     .clk_50(clk_50),
     .clk_100(clk_100),
+    .clk_200(clk_200),
 
     .testmode_i        (testmode_i        ) ,
     .boot_mode_i       (boot_mode_i       ) ,
@@ -312,6 +322,14 @@ module carfield_xilinx_ip
     .jtag_vdd_o  (jtag_vdd_o   ),
     .jtag_gnd_o  (jtag_gnd_o   ),
 
+    .jtag_aux_tck_i  (jtag_aux_tck_i   ),
+    .jtag_aux_tms_i  (jtag_aux_tms_i   ),
+    .jtag_aux_tdi_i  (jtag_aux_tdi_i   ),
+    .jtag_aux_tdo_o  (jtag_aux_tdo_o   ),
+    .jtag_aux_trst_ni(jtag_aux_trst_ni ),
+    .jtag_aux_vdd_o  (jtag_aux_vdd_o   ),
+    .jtag_aux_gnd_o  (jtag_aux_gnd_o   ),
+
     .uart_tx_o(uart_tx_o),
     .uart_rx_i(uart_rx_i),
 
@@ -324,7 +342,7 @@ module carfield_xilinx_ip
     .pad_hyper_ck,
     .pad_hyper_ckn,
     .pad_hyper_rwds,
-    // .pad_hyper_reset,
+    .pad_hyper_reset,
     .pad_hyper_dq,
 
     // Dram axi

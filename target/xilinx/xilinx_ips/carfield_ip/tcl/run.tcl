@@ -4,6 +4,8 @@
 #
 # Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 
+set_param project.hsv.draftModeDefault only
+
 # Create project
 set project carfield_ip
 
@@ -28,6 +30,10 @@ set_property processing_order LATE [get_files carfield.xdc]
 # Package IP
 set_property top carfield_xilinx_ip [current_fileset]
 
+# The Security Island requires some Xilinx IPs.
+set ips $::env(XILINX_IP_PATHS_CARFIELD)
+read_ip $ips
+
 # Attention SFCU is only used because of Carfield's structure
 update_compile_order -fileset sources_1
 synth_design -rtl -name rtl_1 -sfcu
@@ -35,10 +41,10 @@ synth_design -rtl -name rtl_1 -sfcu
 ipx::package_project -root_dir . -vendor ethz.ch -library user -taxonomy /UserIP -set_current false
 
 # If we don't reopen project, Vivado does not find the newly created ip_repo
-close_project
-open_project $project.xpr
+#close_project
+#open_project $project.xpr
 # Export this IP as a .xci too for coherence with Xilinx IPs
-set_property ip_repo_paths . [current_project]
-create_ip -verbose -module_name $project -vlnv ethz.ch:user:carfield_xilinx_ip
+#set_property ip_repo_paths . [current_project]
+#create_ip -verbose -module_name $project -vlnv ethz.ch:user:carfield_xilinx_ip
 
 exit

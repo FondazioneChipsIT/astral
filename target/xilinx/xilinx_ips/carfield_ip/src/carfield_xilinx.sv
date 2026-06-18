@@ -23,6 +23,7 @@ module carfield_xilinx
   input  logic         clk_20,
   input  logic         clk_50,
   input  logic         clk_100,
+  input  logic         clk_200,
 
   input  logic         testmode_i,
   input  logic [1:0]   boot_mode_i,
@@ -35,6 +36,14 @@ module carfield_xilinx
   input  logic         jtag_trst_ni,
   output logic         jtag_vdd_o,
   output logic         jtag_gnd_o,
+
+  input  logic         jtag_aux_tck_i,
+  input  logic         jtag_aux_tms_i,
+  input  logic         jtag_aux_tdi_i,
+  output logic         jtag_aux_tdo_o,
+  input  logic         jtag_aux_trst_ni,
+  output logic         jtag_aux_vdd_o,
+  output logic         jtag_aux_gnd_o,
 
   output logic         uart_tx_o,
   input  logic         uart_rx_i,
@@ -51,7 +60,7 @@ module carfield_xilinx
   inout  [HypNumPhys-1:0]                   pad_hyper_ck,
   inout  [HypNumPhys-1:0]                   pad_hyper_ckn,
   inout  [HypNumPhys-1:0]                   pad_hyper_rwds,
-  // inout  [HypNumPhys-1:0]                pad_hyper_reset,
+  inout  [HypNumPhys-1:0]                   pad_hyper_reset,
   inout  [HypNumPhys-1:0][7:0]              pad_hyper_dq,
 
   // Dram axi
@@ -216,13 +225,14 @@ module carfield_xilinx
   //////////////////
   // Clock Wizard //
   //////////////////
-
+  logic[carfield_pkg::NumFll-1:0] domain_clk;
   localparam rtc_clk_divider = 4;
-  assign soc_clk = clk_50;
-  assign alt_clk = clk_20;
-  assign host_clk = soc_clk;
-  assign periph_clk = soc_clk;
 
+  assign soc_clk = clk_50;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.SecureClockIdx] = clk_20;
+  assign domain_clk[carfield_pkg::HostClockIdx] = clk_50;
+  assign domain_clk[carfield_pkg::CarfieldClockIdx.PeriphClockIdx] = clk_10;
+  assign domain_clk[carfield_pkg::RtClockIdx] = rtc_clk_q;
   /////////////////////
   // Reset Generator //
   /////////////////////
@@ -284,6 +294,7 @@ module carfield_xilinx
   // LLC interface //
   ///////////////////
 
+`ifdef GEN_NO_HYPERBUS // bender-xilinx.mk
   localparam axi_in_t   AxiIn   = gen_axi_in(Cfg);
   localparam int unsigned LlcIdWidth = Cfg.AxiMstIdWidth+$clog2(AxiIn.num_in)+Cfg.LlcNotBypass;
   localparam int unsigned LlcArWidth = (2**LogDepth)*axi_pkg::ar_width(Cfg.AddrWidth,LlcIdWidth,Cfg.AxiUserWidth);
@@ -387,6 +398,7 @@ module carfield_xilinx
   assign llc_rsp.r.resp              = dram_axi_m_axi_rresp;
   assign llc_rsp.r.last              = dram_axi_m_axi_rlast;
   assign llc_rsp.r_valid             = dram_axi_m_axi_rvalid;
+`endif // GEN_NO_HYPERBUS
 
   /////////////////////////////////
   // Serial Link to block design //
@@ -594,99 +606,12 @@ module carfield_xilinx
      .USRDONETS (1'b1)
   );
 
-  ///////////////////
-  // Hyperram PADS //
-  ///////////////////
-
-  logic [HypNumPhys-1:0][HypNumChips-1:0]  hyper_cs_n_wire;
-  logic [HypNumPhys-1:0][HypNumChips-1:0]  hyper_cs_pad_out;
-  logic [HypNumPhys-1:0]                   hyper_ck_wire;
-  logic [HypNumPhys-1:0]                   hyper_ck_out_wire;
-  logic [HypNumPhys-1:0]                   hyper_ck_n_wire;
-  logic [HypNumPhys-1:0]                   hyper_ck_n_out_wire;
-  logic [HypNumPhys-1:0]                   hyper_rwds_o;
-  logic [HypNumPhys-1:0]                   hyper_rwds_i;
-  logic [HypNumPhys-1:0]                   hyper_rwds_oe;
-  logic [HypNumPhys-1:0][7:0]              hyper_dq_i;
-  logic [HypNumPhys-1:0][7:0]              hyper_dq_o;
-  logic [HypNumPhys-1:0]                   hyper_dq_oe;
-  logic [HypNumPhys-1:0]                   hyper_reset_n_wire;
-  logic [HypNumPhys-1:0]                   hyper_rst_n_out_wire;
-
-`ifndef GEN_NO_HYPERBUS 
-  for (genvar i = 0 ; i<HypNumPhys; i++) begin : gen_hyper_phy
-    for (genvar j = 0; j<HypNumChips; j++) begin : gen_hyper_cs
-      pad_functional_pd padinst_hyper_csno (
-        .OEN ( 1'b0                    ),
-        .I   ( hyper_cs_n_wire[i][j]   ),
-        .O   ( hyper_cs_pad_out[i][j]  ),
-        .PEN (                         ),
-        .PAD ( pad_hyper_csn[i][j]     )
-      );
-    end
-    pad_functional_pd padinst_hyper_ck (
-      .OEN ( 1'b0                 ),
-      .I   ( hyper_ck_wire[i]     ),
-      .O   ( hyper_ck_out_wire[i] ),
-      .PEN (                      ),
-      .PAD ( pad_hyper_ck[i]      )
-    );
-    pad_functional_pd padinst_hyper_ckno   (
-      .OEN ( 1'b0                   ),
-      .I   ( hyper_ck_n_wire[i]     ),
-      .O   ( hyper_ck_n_out_wire[i] ),
-      .PEN (                        ),
-      .PAD ( pad_hyper_ckn[i]       )
-    );
-    pad_functional_pd padinst_hyper_rwds0  (
-      .OEN ( ~hyper_rwds_oe[i]   ),
-      .I   ( hyper_rwds_o[i]     ),
-      .O   ( hyper_rwds_i[i]     ),
-      .PEN (                     ),
-      .PAD ( pad_hyper_rwds[i]   )
-    );
-    for (genvar j = 0; j < 8; j++) begin : gen_hyper_dq
-      pad_functional_pd padinst_hyper_dqio0  (
-        .OEN ( ~hyper_dq_oe[i]    ),
-        .I   ( hyper_dq_o[i][j]   ),
-        .O   ( hyper_dq_i[i][j]   ),
-        .PEN (                    ),
-        .PAD ( pad_hyper_dq[i][j] )
-      );
-    end
-  end
-`endif // GEN_NO_HYERBUS
-
-  ////////////////////////////
-  // Hyperram Clock Divider //
-  ////////////////////////////
-
-  logic hyp_clk_phy;
-  logic hyp_rst_phy_n;
-
-  clk_int_div #(
-    .DIV_VALUE_WIDTH       ( 4                     ),
-    .DEFAULT_DIV_VALUE     ( HYPERRAM_CLK_DIVIDER ),
-    .ENABLE_CLOCK_IN_RESET ( 1'b0                  )
-  ) i_hyper_clk_div (
-    .clk_i                 ( soc_clk ),
-    .rst_ni                ( rst_n      ),
-    .en_i                  ( 1'b1              ),
-    .test_mode_en_i        ( testmode_i        ),
-    .div_i                 ( HYPERRAM_CLK_DIVIDER  ),
-    .div_valid_i           ( 1'b0              ),
-    .div_ready_o           (                   ),
-    .clk_o                 ( hyp_clk_phy       ),
-    .cycl_count_o          (                   )
-  );
-
-  assign hyp_rst_phy_n = rst_n;
 
   //////////////////
   // Carfield SoC //
   //////////////////
 
-  logic jtag_host_to_safety, jtag_safety_to_ot;
+  logic jtag_host_to_security;
 
   carfield #(
       .Cfg (carfield_pkg::CarfieldCfgDefault),
@@ -703,34 +628,36 @@ module carfield_xilinx
       .HypNumPhys   ( HypNumPhys ),
       .HypNumChips  ( HypNumChips)
   ) i_carfield (
-      .host_clk_i    (host_clk),
-      .periph_clk_i  (periph_clk),
-      .alt_clk_i     (alt_clk),
-      .rt_clk_i      (rtc_clk_q),
+      .domain_clk_i               (domain_clk[carfield_pkg::NumFll-1:0]),
       .pwr_on_rst_ni (rst_n),
       .test_mode_i   (testmode_i),
       // Boot mode selection
       .boot_mode_i   (boot_mode),
       // Cheshire JTAG Interface
       .jtag_tck_i                (jtag_tck_i),
-      .jtag_trst_ni              (jtag_trst_ni),
+      .jtag_trst_ni              ('1),
       .jtag_tms_i                (jtag_tms_i),
       .jtag_tdi_i                (jtag_tdi_i),
-      .jtag_tdo_o                (jtag_host_to_safety),
+`ifdef GEN_AUX_JTAG
+      .jtag_tdo_o                (jtag_tdo_o),
       .jtag_tdo_oe_o             (),
       // Secure Subsystem JTAG Interface
-      .jtag_ot_tck_i             (jtag_tck_i),
-      .jtag_ot_trst_ni           (jtag_trst_ni),
-      .jtag_ot_tms_i             (jtag_tms_i),
-      .jtag_ot_tdi_i             (jtag_safety_to_ot),
-      .jtag_ot_tdo_o             (jtag_tdo_o), // Take in account when they are unactivated
+      .jtag_ot_tck_i             (jtag_aux_tck_i),
+      .jtag_ot_trst_ni           ('1),
+      .jtag_ot_tms_i             (jtag_aux_tms_i),
+      .jtag_ot_tdi_i             (jtag_aux_tdi_i),
+      .jtag_ot_tdo_o             (jtag_aux_tdo_o),
       .jtag_ot_tdo_oe_o          (),
-      // Safety Island JTAG Interface
-      .jtag_safety_island_tck_i  (jtag_tck_i),
-      .jtag_safety_island_trst_ni(jtag_trst_ni),
-      .jtag_safety_island_tms_i  (jtag_tms_i),
-      .jtag_safety_island_tdi_i  (jtag_host_to_safety),
-      .jtag_safety_island_tdo_o  (jtag_safety_to_ot),
+`else //DAISY CHAIN
+      .jtag_tdo_o                (jtag_host_to_security),
+      .jtag_tdo_oe_o             (),
+      
+      .jtag_ot_tck_i             (jtag_tck_i),
+      .jtag_ot_trst_ni           ('1),
+      .jtag_ot_tms_i             (jtag_tms_i),
+      .jtag_ot_tdi_i             (jtag_host_to_security),
+      .jtag_ot_tdo_o             (jtag_tdo_o),
+`endif
       .bootmode_safe_isln_i      (boot_mode_safety),
       // UART Interface
       .uart_tx_o,
@@ -781,20 +708,15 @@ module carfield_xilinx
       .llc_w_data,
       .llc_w_wptr,
       .llc_w_rptr,
-`endif // GEN_NO_HYPERBUS
-
-      // Hyperbus interface
-      .hyper_cs_no          ( hyper_cs_n_wire     ),
-      .hyper_ck_o           ( hyper_ck_wire       ),
-      .hyper_ck_no          ( hyper_ck_n_wire     ),
-      .hyper_rwds_o         ( hyper_rwds_o        ),
-      .hyper_rwds_i         ( hyper_rwds_i        ),
-      .hyper_rwds_oe_o      ( hyper_rwds_oe       ),
-      .hyper_dq_i           ( hyper_dq_i          ),
-      .hyper_dq_o           ( hyper_dq_o          ),
-      .hyper_dq_oe_o        ( hyper_dq_oe         ),
-      .hyper_reset_no       ( hyper_reset_n_wire  ),
-
+`else
+      .clk_ref200_i(clk_200),
+      .pad_hyper_csn,
+      .pad_hyper_ck,
+      .pad_hyper_ckn,
+      .pad_hyper_rwds,
+      .pad_hyper_dq,
+      .pad_hyper_reset,
+`endif
       // Serial link interface
       .slink_rcv_clk_i(slink_clk_periph_soc),
       .slink_rcv_clk_o(slink_clk_soc_periph),

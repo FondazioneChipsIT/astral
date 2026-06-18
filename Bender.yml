@@ -211,6 +211,7 @@ sources:
       - target/xilinx/flavor_vanilla/src/carfield_top_xilinx.sv
       - target/xilinx/flavor_vanilla/src/dram_wrapper_xilinx.sv
       - target/xilinx/src/overrides/tc_clk_xilinx.sv
+      - target/xilinx/src/pad_functional_xilinx.sv
 
   - target: all(xilinx, fpga, xilinx_bd)
     files:

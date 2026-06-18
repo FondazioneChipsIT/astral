@@ -15,6 +15,15 @@ set UART_IO_SPEED 200.0
 # The output of the reset synchronizer
 set_false_path -from [get_ports cpu_reset*]
 
+###################
+# Top level reset #
+###################
+
+# The output of the top level reset synchronizer
+set SOC_RST_SRC [get_pins -filter {DIRECTION == OUT} -leaf -of_objects [get_nets i_carfield_xilinx/rst_n]]
+set_max_delay -through $SOC_RST_SRC $SOC_TCK
+set_false_path -hold -through $SOC_RST_SRC
+
 ##########
 # Clocks #
 ##########

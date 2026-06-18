@@ -138,6 +138,7 @@ module carfield
   output logic [SlinkNumChan-1:0][SlinkNumLanes-1:0]  slink_o,
   // HyperBus interface
   // verilog_lint: waive-start line-length
+`ifndef PULP_FPGA_EMUL
   inout wire logic pad_config_tc_pad_internal_signals_0,
   inout wire logic pad_config_tc_pad_internal_signals_1,
   inout wire logic pad_config_tc_pad_internal_signals_2,
@@ -170,6 +171,16 @@ module carfield
   inout wire logic pad_hyper_phy1_dq_b6_pad,
   inout wire logic pad_hyper_phy1_dq_b7_pad,
   inout wire logic pad_hyper_phy1_reset_n_pad,
+`else
+  input  clk_ref200_i,
+  inout  [HypNumPhys-1:0][HypNumChips-1:0] pad_hyper_csn,
+  inout  [HypNumPhys-1:0]               pad_hyper_ck,
+  inout  [HypNumPhys-1:0]               pad_hyper_ckn,
+  inout  [HypNumPhys-1:0]               pad_hyper_rwds,
+  inout  [HypNumPhys-1:0]               pad_hyper_reset,
+  inout  [HypNumPhys-1:0][7:0]          pad_hyper_dq,
+`endif
+
   // verilog_lint: waive-stop line-length
 `ifdef GEN_NO_HYPERBUS
   // LLC interface
@@ -1061,6 +1072,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .reg_async_mst_req_o ( ext_reg_async_slv_req_in  [HyperBusAsyncIdx] ),
     .reg_async_mst_ack_i ( ext_reg_async_slv_ack_out [HyperBusAsyncIdx] ),
     .reg_async_mst_data_o( ext_reg_async_slv_data_in [HyperBusAsyncIdx] ),
+`ifndef PULP_FPGA_EMUL
     .pad_config_tc_pad_internal_signals_0,
     .pad_config_tc_pad_internal_signals_1,
     .pad_config_tc_pad_internal_signals_2,
@@ -1093,6 +1105,15 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .pad_hyper_phy1_dq_b6_pad,
     .pad_hyper_phy1_dq_b7_pad,
     .pad_hyper_phy1_reset_n_pad
+  `else
+    .clk_ref200_i,
+    .pad_hyper_csn,
+    .pad_hyper_ck,
+    .pad_hyper_ckn,
+    .pad_hyper_rwds,
+    .pad_hyper_dq,
+    .pad_hyper_reset
+  `endif
 );
 `endif // GEN_NO_HYPERBUS
 
@@ -1420,6 +1441,83 @@ end
 logic pulpcl_mbox_intr;
 assign pulpcl_eoc = car_regs_hw2reg.pulp_cluster_eoc.d;
 
+`ifdef PULPD_ENABLE
+  localparam pulp_cluster_package::pulp_cluster_cfg_t PulpClusterCfg = '{
+    CoreType: pulp_cluster_package::RI5CY,
+    NumCores: IntClusterNumCores,
+    DmaNumPlugs: 4,
+    DmaNumOutstandingBursts: 8,
+    DmaBurstLength: 256,
+    NumMstPeriphs: 1,
+    NumSlvPeriphs: 12,
+    ClusterAlias: 1,
+    ClusterAliasBase: 'h0,
+    NumSyncStages: 3,
+    UseHci: 1,
+    TcdmSize: 128*1024,
+    TcdmNumBank: 16,
+    HwpePresent: 1,
+    HwpeCfg: '{NumHwpes: 3,
+              HwpeList: {pulp_cluster_package::SOFTEX,
+                          pulp_cluster_package::NEUREKA,
+                          pulp_cluster_package::REDMULE}
+              },
+    HwpeNumPorts: 9,
+    HMRPresent: 1,
+    HMRDmrEnabled: 1,
+    HMRTmrEnabled: 1,
+    HMRDmrFIxed: 0,
+    HMRTmrFIxed: 0,
+    HMRInterleaveGrps: 1,
+    HMREnableRapidRecovery: 1,
+    HMRSeparateDataVoters: 1,
+    HMRSeparateAxiBus: 0,
+    HMRNumBusVoters: 1,
+    EnableECC: 1,
+    ECCInterco: 1,
+    iCacheNumBanks: 2,
+    iCacheNumLines: 1,
+    iCacheNumWays: 4,
+    iCacheSharedSize: 4*1024,
+    iCachePrivateSize: 512,
+    iCachePrivateDataWidth: 32,
+    EnableReducedTag: 1,
+    L2Size: L2MemSize,
+    DmBaseAddr: carfield_pkg::CarfieldIslandsCfg.safed.base+
+                carfield_pkg::SafetyIslandPerOffset +
+                carfield_pkg::SafedDebugOffs,
+    BootRomBaseAddr: carfield_pkg::CarfieldIslandsCfg.l2_port0.base + 'h8080,
+    BootAddr: carfield_pkg::CarfieldIslandsCfg.l2_port0.base + 'h8080,
+    EnablePrivateFpu: 1,
+    EnablePrivateFpDivSqrt: 0,
+    EnableSharedFpu: 0,
+    EnableSharedFpDivSqrt: 0,
+    NumSharedFpu: 0,
+    NumAxiIn: 4,
+    NumAxiOut: 3,
+    AxiIdInWidth: AxiSlvIdWidth,
+    AxiIdOutWidth: Cfg.AxiMstIdWidth,
+    AxiAddrWidth: Cfg.AddrWidth,
+    AxiDataInWidth:  Cfg.AxiDataWidth,
+    AxiDataOutWidth: Cfg.AxiDataWidth,
+    AxiUserWidth: Cfg.AxiUserWidth,
+    AxiMaxInTrans: Cfg.AxiMaxSlvTrans,
+    AxiMaxOutTrans: Cfg.AxiMaxMstTrans,
+    AxiCdcLogDepth: 3,
+    AxiCdcSyncStages: carfield_pkg::SyncStages,
+    SyncStages: carfield_pkg::SyncStages,
+    ClusterBaseAddr: carfield_pkg::CarfieldAxiMap.AxiStart[CarfieldAxiSlvIdx.pulp]
+                    - (carfield_pkg::IntClusterIndex << 22),
+    ClusterPeriphOffs: carfield_pkg::PulpClustPeriphOffs,
+    ClusterExternalOffs: carfield_pkg::PulpClustExtOffs,
+    EnableRemapAddress: 0,
+    SnitchICache: 0,
+    default: '0
+  };
+`else
+  localparam int unsigned PulpClusterCfg = 0;
+`endif
+
 if (CarfieldIslandsCfg.pulp.enable) begin : gen_pulp_cluster
   assign pulp_rst_n = rsts_n[CarfieldDomainIdx.pulp];
   assign pulp_pwr_on_rst_n = pwr_on_rsts_n[CarfieldDomainIdx.pulp];
@@ -1450,9 +1548,10 @@ if (CarfieldIslandsCfg.pulp.enable) begin : gen_pulp_cluster
   assign debug_clock_div_valid[CarfieldDomainIdx.pulp]
          = car_regs_reg2hw.pulpd_debug_clk_div_value.qe;
 
+
 `ifndef INT_CLUSTER_NETLIST
   pulp_cluster #(
-   .Cfg( carfield_pkg::PulpClusterCfg )
+   .Cfg( PulpClusterCfg )
   ) i_integer_cluster               (
 `else
   pulp_cluster i_integer_cluster     (
