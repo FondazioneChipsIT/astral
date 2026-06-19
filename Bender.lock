@@ -124,7 +124,7 @@ packages:
       Git: https://github.com/AlSaqr-platform/can_bus.git
     dependencies: []
   cheshire:
-    revision: 77fa77e81c4d4dd93c7d96f6c161a79995c496fb
+    revision: e054df1d98ac9b9104bce3898a0d4d1913e4377b
     version: null
     source:
       Git: https://github.com/FondazioneChipsIT/cheshire.git
