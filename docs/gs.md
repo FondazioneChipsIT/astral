@@ -1,6 +1,6 @@
 # Getting Started
 
-We first discuss the Carfield's project structure, its dependencies, and how to build it.
+We first discuss the SCAR-V's project structure, its dependencies, and how to build it.
 
 ## Repository structure
 
@@ -17,7 +17,7 @@ The project is structured as follows:
 
 ## Dependencies
 
-To *build* Carfield, you will need:
+To *build* SCAR-V, you will need:
 
 - GNU Make `>= 3.82`
 - Python `>= 3.6`
@@ -35,9 +35,9 @@ cargo install bender
 
 Depending on your desired target, additional dependencies may be needed.
 
-## Building Carfield
+## Building SCAR-V
 
-To build different parts of Carfield, the `carfield.mk` run `make` followed by these targets:
+To build different parts of SCAR-V, the `carfield.mk` run `make` followed by these targets:
 
 - `car-hw-init`: generated hardware, including IPs and boot ROM
 - `car-sim-init`(†):  scripts and external models for simulation
@@ -65,15 +65,15 @@ The following additional targets are not invoked by the above, but also availabl
 builds (as checked by CI) can only be guaranteed for fixed compiler versions.
 - `car-nonfree-init` - clones our internal repository with nonfree resources we cannot release,
 including our internal CI or technology-specific standard cells, scripts and tools. *This is not
-necessary to use Carfield*.
+necessary to use SCAR-V*.
 
 ### Note
-Carfield uses [`Cheshire`](https://github.com/pulp-platform/cheshire) as main dependency. Compared
-to the other dependencies, Cheshire provides most of the HW/SW infrastructure used by Carfield. All
-Cheshire's `make` targets, described in the dedicated documentation, are available in Carfield
+SCAR-V uses [`Cheshire`](https://github.com/FondazioneChipsIT/cheshire) as main dependency. Compared
+to the other dependencies, Cheshire provides most of the HW/SW infrastructure used by SCAR-V. All
+Cheshire's `make` targets, described in the dedicated documentation, are available in SCAR-V
 through the inclusion of the makefrag `cheshire.mk` in `carfield.mk`.
 
 ## Targets
 
-A *target* is an end use for Carfield. Each target requires different steps from here; read the page
+A *target* is an end use for SCAR-V. Each target requires different steps from here; read the page
 for your desired target in the following [Targets](tg/index.md) chapter.

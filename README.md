@@ -1,55 +1,46 @@
-# Carfield
+# SCAR-V
 
-Carfield is an open-research heterogeneous platform for safety, resilient and time-predictable systems. Originally conceived as automotive-oriented SoC, the high configurability of the platform makes it tunable to target a broader class of mixed-criticality applications' domains, such as automotive, space or industry.
+**SCAR-V** (**S**uperscalar **C**FI **A**ccelerated **R**ISC **-V** Processor) is developed by Fondazione Chips-IT as a fully open-source framework that exploits the RoT to implement runtime-adaptable machine learning-based CFI enforcement in heterogeneous RISC-V SoCs.
+SCAR-V integrates a zero-overhead Control-Transfer Record Unit in the application
+core exposing the execution traces to a trace snooper; secure orchestration within the OpenTitan Root of Trust; low-latency AI-based CFI anomaly detection deployed on an 8-core cluster executing in a secure environment within the RoT perimeter.
 
-Carfield is developed as part of the PULP project, a joint effort between ETH Zurich and the
-University of Bologna.
+SCAR-V is implemented on a reference architecture from [Pulp-Platform](https://github.com/pulp-platform) that features [OpenTitan](https://opentitan.org/) as embedded RoT and synthesized the system in Global Foundries 22 nm FD-SOI process.
+
+For a detailed description of the CFI theory and architecture see: (TODO) add link to paper by M. Ciani et alt.
+
 
 ## Motivation
 
-The rapid evolution of AI algorithms and the massive amount of sensed data across
-application-domains such as Automotive, Space and Cyber-Physical embedded systems (CPSs), call for a
-*paradigm shift* in the design of **next generation of mixed-criticality systems (MCSs)**, from
-simple micro-controllers towards powerful and heterogeneous edge computers.
-
-These must not only deliver outstanding performance and energy efficiency but also ensure steadfast
-safety, resilience, and security.
-
-The Carfield platform aims to tackle these architectural challenges establishing itself as a
-pre-competitive heterogeneous platform for MCSs, underpinned by **fully open-source Intellectual
-Properties (IPs)**.
-
-Carfield showcases pioneering hardware solutions, addressing challenges related to time-predictable
-on/off-chip communication, robust fault recovery mechanisms, secure boot processes, cryptographic
-acceleration services, hardware-assisted virtualization, and accelerated computation for both
-floating-point and integer workloads.
+Modern embedded systems, such as IoT devices and safety-critical cyber-physical platforms deployed in the field,
+are exposed to control-flow hijacking attacks, where techniques like Return-Oriented Programming and Jump-Oriented Programming can bypass safety checks and compromise system integrity. Control-Flow Integrity has long been recognized as a
+security countermeasure. However, existing solutions either rely on pure-software mechanisms incurring high latency overheads, or hardware solutions which are either based on fixed hardware monitors that prevents runtime adapatbility, or on proprietary ISA extensions and compiling toolchains, limiting flexibility.
+Moreover, most of existing solutions are not anchored to a hardware Root-of-Trust (RoT).
 
 ## Quick Start
 
-* To learn how to build and use Carfield, see [Getting
-  Started](https://pulp-platform.github.io/carfield/gs/).
+* To learn how to build and use SCAR-V, see [Getting
+  Started](https://fondazionechipsit.github.io/astral/gs/).
 * To learn about available simulation, FPGA, and ASIC targets, see
-  [Targets](https://pulp-platform.github.io/carfield/tg).
-* For detailed information on Carfield's inner workings, consult the [User
-  Manual](https://pulp-platform.github.io/carfield/um/).
-  
+  [Targets](https://fondazionechipsit.github.io/astral/tg).
+* For detailed information on SCAR-V's inner workings, consult the [User
+  Manual](https://fondazionechipsit.github.io/astral/um/).
+
 
 If you are impatient and have all needed
-[dependencies](https://pulp-platform.github.io/carfield/gs/#dependencies), type:
+[dependencies](https://fondazionechipsit.github.io/astral/gs/#dependencies), type:
 
 ```
-source env/env-iis.sh
+source env/env-chips.sh
 bender update
 make car-all PYTHON=python3
 make tech-init
 ```
 
-and then run a [simulation](https://pulp-platform.github.io/carfield/tg/sim) with Questasim by
-typing:
+and then run a [simulation](https://fondazionechipsit.github.io/astral/tg/sim) with Questasim by typing:
 
 ```tcl
 make car-vsim-sim-build DEBUG=1 TECH_SIM=1
-make car-vsim-sim-run CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.l2.elf DEBUG=1 TECH_SIM=1
+make car-vsim-sim-run CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.spm.elf DEBUG=1 TECH_SIM=1
 ```
 
 ---

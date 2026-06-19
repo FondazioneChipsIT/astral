@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-site_name: Carfield
+site_name: SCAR-V
 theme:
   name: material
   icon:
@@ -29,8 +29,8 @@ plugins:
       auto_caption: false
       caption_position: bottom
 
-repo_url: https://github.com/pulp-platform/carfield
-repo_name: pulp-platform/carfield
+repo_url: https://github.com/FondazioneChipsIT/astral
+repo_name: FondazioneChipsIT/astral
 
 nav:
 - Home:
@@ -41,7 +41,6 @@ nav:
   - Simulation: tg/sim.md
   - Synthesis and physical implementation: tg/synth.md
   - Xilinx FPGAs: tg/xilinx.md
-  - Integration: tg/integr.md
 - User Manual:
   - um/index.md
   - Architecture: um/arch.md

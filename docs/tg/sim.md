@@ -37,7 +37,7 @@ execution.
 
 As for Cheshire, Carfield testbench employs physical interfaces (JTAG or Serial Link) for memory
 preload by default. This could increase the memory preload time (independently from the target
-memory: dynamic SPM, LLC-SPM, or DRAM), significantly based on the ELF size. 
+memory: dynamic SPM, LLC-SPM, or DRAM), significantly based on the ELF size.
 
 Since by default all domains are clock gated and isolated after POR except for the *host domain*
 (Cheshire), as described in [Architecture](../um/arch.md), the testbench handles the wake-up
@@ -51,10 +51,9 @@ hide bugs in the physical interfaces.
 
 ### Passive boot
 
-| `X`                                       | `X_BOOTMODE` | `X_PRELMODE` | Action                  |
+| `X`            | `X_BOOTMODE` | `X_PRELMODE` | Action                  |
 | ----------------------------------------- | ---------- | ---------- | --------------------------- |
-| `CHS`, `SAFED`, `SECD`, `PULPD`, `SPATZD` | 0          | 0          | Preload through JTAG        |
-| `CHS`, `SAFED`, `SECD`, `PULPD`, `SPATZD` | 0          | 1          | Preload through serial link |
+| `CHS`, `SECD`, | 0          | 0          | Preload through JTAG        |
 
 Preloading boot modes expect an ELF executable to be passed through `X_BINARY`.
 
@@ -75,7 +74,7 @@ we provide the module `carfield_vip` encapsulating all verification IPs and thei
 ## QuestaSim
 
 After building Carfield, the design can be compiled and simulated with QuestaSim. Below, we provide
-an example with `Serial Link` passive preload of a baremetal program `helloworld.car.l2.elf` to be
+an example with `JTAG` passive preload of a baremetal program `helloworld.car.l2.elf` to be
 executed on the *host domain* (Cheshire, i.e., `X=CHS`):
 
 ```tcl
@@ -83,18 +82,18 @@ executed on the *host domain* (Cheshire, i.e., `X=CHS`):
 make car-init-all
 
 # Compile the design
-make car-vsim-sim-build
+make car-qsim-sim-build
 
-# Preload `helloworld.car.l2.elf` in passive bootmode through serial link, then start the simulation
-make car-vsim-sim-run CHS_BOOTMODE=0 CHS_PRELMODE=1 CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.l2.elf
+# Preload `helloworld.car.l2.elf` in passive bootmode through jtag, then start the simulation
+make car-qsim-sim-run CHS_BOOTMODE=0 CHS_PRELMODE=0 CHS_BINARY=./sw/tests/bare-metal/hostd/helloworld.car.spm.elf
 ```
 
 The design needs to be recompiled only when hardware is changed.
 
-To clean simulation builds, from the `vsim` folder run
+To clean simulation builds, from the `qsim` folder run
 
 ```tcl
-make car-vsim-sim-clean
+make car-qsim-sim-clean
 ```
 
 To display general help for each *Make* target, type
