@@ -329,11 +329,6 @@ module tb_astral;
         // Initialize JTAG at first
         fix.chs_vip.jtag_init();
 
-        // Writing max burst length in Hyperbus configuration registers to
-        // prevent the Verification IPs from triggering timing checks.
-        //$display("[TB] INFO: Configuring Hyperbus through JTAG.");
-        //fix.chs_vip.jtag_write_reg32(HyperbusTburstMax, 32'd128, 1);
-
         case(secd_boot_mode)
           0: begin
             // Wait before security island HW is initialized
