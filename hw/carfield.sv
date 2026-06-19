@@ -843,7 +843,7 @@ cheshire_wrap #(
   .AxiOut                         ( AxiOut                       )
 ) i_cheshire_wrap                 (
 `else
-cheshire i_cheshire_wrap                 (
+cheshire_wrap i_cheshire_wrap                 (
 `endif
   .clk_i              ( host_clk           ),
   .rst_ni             ( host_pwr_on_rst_n  ),
@@ -1015,6 +1015,7 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
   );
 
   // Hyperbus
+  `ifndef HYPERBUS_NETLIST
   hyperbus_wrap      #(
     .NumChips         ( HypNumChips                           ),
     .NumPhys          ( HypNumPhys                            ),
@@ -1048,24 +1049,27 @@ assign hyper_isolate_req = car_regs_reg2hw.periph_isolate.q;
     .AxiMaxTrans      ( Cfg.AxiMaxSlvTrans                    ),
     .CdcSyncStages    ( SyncStages                            )
   ) i_hyperbus_wrap   (
+  `else
+  hyperbus_wrap i_hyperbus_wrap (
+  `endif
     .clk_i               ( hyp_clk            ),
-    .rst_ni              ( periph_rst_n       ),
-    .test_mode_i         ( test_mode_i        ),
-    .axi_slave_ar_data_i ( llc_ar_data        ),
-    .axi_slave_ar_wptr_i ( llc_ar_wptr        ),
-    .axi_slave_ar_rptr_o ( llc_ar_rptr        ),
-    .axi_slave_aw_data_i ( llc_aw_data        ),
-    .axi_slave_aw_wptr_i ( llc_aw_wptr        ),
-    .axi_slave_aw_rptr_o ( llc_aw_rptr        ),
-    .axi_slave_b_data_o  ( llc_b_data         ),
-    .axi_slave_b_wptr_o  ( llc_b_wptr         ),
-    .axi_slave_b_rptr_i  ( llc_b_rptr         ),
-    .axi_slave_r_data_o  ( llc_r_data         ),
-    .axi_slave_r_wptr_o  ( llc_r_wptr         ),
-    .axi_slave_r_rptr_i  ( llc_r_rptr         ),
-    .axi_slave_w_data_i  ( llc_w_data         ),
-    .axi_slave_w_wptr_i  ( llc_w_wptr         ),
-    .axi_slave_w_rptr_o  ( llc_w_rptr         ),
+    .rst_ni              ( periph_rst_n        ),
+    .test_mode_i         ( test_mode_i         ),
+    .axi_slave_ar_data_i ( llc_ar_data         ),
+    .axi_slave_ar_wptr_i ( llc_ar_wptr         ),
+    .axi_slave_ar_rptr_o ( llc_ar_rptr         ),
+    .axi_slave_aw_data_i ( llc_aw_data         ),
+    .axi_slave_aw_wptr_i ( llc_aw_wptr         ),
+    .axi_slave_aw_rptr_o ( llc_aw_rptr         ),
+    .axi_slave_b_data_o  ( llc_b_data          ),
+    .axi_slave_b_wptr_o  ( llc_b_wptr          ),
+    .axi_slave_b_rptr_i  ( llc_b_rptr          ),
+    .axi_slave_r_data_o  ( llc_r_data          ),
+    .axi_slave_r_wptr_o  ( llc_r_wptr          ),
+    .axi_slave_r_rptr_i  ( llc_r_rptr          ),
+    .axi_slave_w_data_i  ( llc_w_data          ),
+    .axi_slave_w_wptr_i  ( llc_w_wptr          ),
+    .axi_slave_w_rptr_o  ( llc_w_rptr          ),
     .reg_async_mst_req_i ( ext_reg_async_slv_req_out [HyperBusAsyncIdx] ),
     .reg_async_mst_ack_o ( ext_reg_async_slv_ack_in  [HyperBusAsyncIdx] ),
     .reg_async_mst_data_i( ext_reg_async_slv_data_out[HyperBusAsyncIdx] ),
