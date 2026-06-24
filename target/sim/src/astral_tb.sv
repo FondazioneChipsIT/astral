@@ -20,6 +20,12 @@ module tb_astral;
   import carfield_configuration::*;
   import astral_padframe_botl_config_reg_pkg::*;
 
+  `ifdef ASTRAL_TOP_NETLIST
+    `define FLL_PRESENT
+  `elsif GF22_FLL
+    `define FLL_PRESENT
+  `endif
+
   astral_fixture fix();
   bit jtag_check_write = 1'b0;
 
@@ -140,10 +146,10 @@ module tb_astral;
             if(~is_dram) begin
               $display("[TB] %t - Wait for HyperRAM", $realtime);
               repeat(HyperRstCycles)
-`ifndef ASTRAL_TOP_NETLIST
-                @(posedge fix.i_dut.clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx]);
+`ifdef FLL_PRESENT
+                #(fix.ClkPeriodRef);
 `else
-                #60ns;
+                @(posedge fix.i_dut.clk_fll_out[carfield_pkg::CarfieldClockIdx.PeriphClockIdx]);
 `endif
             end
             $display("[TB] %t - Loading '%s' through JTAG", $realtime, chs_preload_elf);
@@ -307,8 +313,8 @@ module tb_astral;
             fix.gen_secured_vip.secd_vip.debug_secd_module_init();
             fix.gen_secured_vip.secd_vip.load_secd_binary(secd_preload_elf);
             if(secd_pulp_cl_bin != "") begin
-              fix.gen_secured_vip.secd_vip.load_secd_binary(secd_pulp_cl_bin);
               $display("Loading cluster binary: %s", secd_pulp_cl_bin);
+              fix.gen_secured_vip.secd_vip.load_secd_binary(secd_pulp_cl_bin);
             end
             fix.gen_secured_vip.secd_vip.jtag_secd_data_preload();
             fix.gen_secured_vip.secd_vip.jtag_secd_wakeup(32'hE0000080);
