@@ -430,7 +430,7 @@ car-check-litmus-tests: $(LITMUS_WORK_DIR)/litmus.log
 ##############
 tech-repo := git@gitlab.chips.it:digitalresearchline/scar-v/$(TECHNOLOGY).git
 # no commit by default, change during development
-tech-commit := 5950d184bedc878a3834e82b57d52e970a944d10 # branch: main
+tech-commit := 6b0e62a53d974f7794032aa9e66e650bace49f57 # branch: main
 
 tech-clone:
 	git clone $(tech-repo) $(CAR_TECH_DIR)

@@ -318,8 +318,8 @@ packages:
     dependencies:
     - tech_cells_generic
   hyperbus:
-    revision: 48505c149adb37693d2b94d04afada2a1fac5aad
-    version: 1.1.0
+    revision: 1871c7a0cd33d71a80f38edb6759ab623c7f9f0a
+    version: null
     source:
       Git: https://github.com/FondazioneChipsIt/hyperbus.git
     dependencies:

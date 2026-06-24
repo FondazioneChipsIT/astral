@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: SHL-0.51
 
 overrides:
-  hyperbus:             { git: "https://github.com/FondazioneChipsIt/hyperbus.git"        , version: =1.1.0 }
+  #hyperbus:             { git: "https://github.com/FondazioneChipsIt/hyperbus.git"        , version: =1.1.1 }
+  hyperbus:             { git: "https://github.com/FondazioneChipsIt/hyperbus.git"        , rev: 1871c7a0cd33d71a80f38edb6759ab623c7f9f0a }
   axi:                  { git: "https://github.com/pulp-platform/axi.git"                 , version: =0.39.8 }
   axi_riscv_atomics:    { git: "https://github.com/pulp-platform/axi_riscv_atomics.git"   , rev: 062bc36cbcca25629384e7f12efa6693273b3e07 } # branch: main
   apb:                  { git: "https://github.com/pulp-platform/apb.git"                 , version: =0.2.4 }
