@@ -136,6 +136,9 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
     write_debug_probes -force probes.ltx
   }
   
+  set_property STEPS.PLACE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]
+  set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]
+
   # Implementation
   launch_runs impl_1 -jobs 12
   wait_on_run impl_1
