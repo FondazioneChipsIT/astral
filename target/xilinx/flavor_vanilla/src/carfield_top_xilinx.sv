@@ -232,13 +232,14 @@ module carfield_top_xilinx
   ///////////////////
 
   logic [1:0] boot_mode, boot_mode_security;
+  logic secure_boot;
 
   logic [31:0] git_hash;
 
   assign git_hash = `GIT_HASH;
 
 `ifdef USE_VIO
-  logic       vio_reset;
+  logic       vio_reset, vio_secure_boot;
   logic [1:0] vio_boot_mode, vio_boot_mode_security;
 
   xlnx_vio (
@@ -246,12 +247,14 @@ module carfield_top_xilinx
     .probe_out0(vio_reset),
     .probe_out1(vio_boot_mode),
     .probe_out2(vio_boot_mode_security),
+    .probe_out3(vio_secure_boot),
     .probe_in0(git_hash)
   );
   
   assign sys_rst = cpu_reset | vio_reset;
   assign boot_mode = boot_mode_i | vio_boot_mode;
   assign boot_mode_security = boot_mode_security_i | vio_boot_mode_security;
+  assign secure_boot = vio_secure_boot;
 `else
   assign sys_rst = cpu_reset;
   assign boot_mode = boot_mode_i;
@@ -555,6 +558,7 @@ module carfield_top_xilinx
       .jtag_ot_tdo_o             (jtag_tdo_o),
 `endif
       .bootmode_ot_i             (boot_mode_security),
+      .secure_boot_i             (secure_boot),
       // Safety Island JTAG Interface
       .jtag_safety_island_tck_i  (jtag_tck_i),
       .jtag_safety_island_trst_ni(jtag_trst_ni),

@@ -318,7 +318,7 @@ packages:
     dependencies:
     - tech_cells_generic
   hyperbus:
-    revision: e51bca81ea908b695808e32cdabbb4d9cd0b5d2d
+    revision: 9ac0e94354aff9a7a8f573538b2e1e02858d689b
     version: null
     source:
       Git: https://github.com/FondazioneChipsIt/hyperbus.git
@@ -384,10 +384,10 @@ packages:
     dependencies:
     - common_cells
   neureka:
-    revision: c4c2b5f0d7c431938f16acf0969208d8077f8e69
+    revision: 16c36c45e55d33ed8e8e15f9a4ad4d1091fd201f
     version: null
     source:
-      Git: https://github.com/LuigiGhionda/neureka.git
+      Git: https://github.com/FondazioneChipsIT/neureka.git
     dependencies:
     - common_cells
     - hci
@@ -413,7 +413,7 @@ packages:
     - common_cells
     - obi
   opentitan:
-    revision: d017bc599422ac5176e7b2827c8c2d74e0023d7d
+    revision: 9c7296b8cd4107497ace82895b44acb2bd360265
     version: null
     source:
       Git: https://github.com/AlSaqr-platform/opentitan.git
