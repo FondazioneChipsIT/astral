@@ -384,10 +384,10 @@ packages:
     dependencies:
     - common_cells
   neureka:
-    revision: c4c2b5f0d7c431938f16acf0969208d8077f8e69
+    revision: 16c36c45e55d33ed8e8e15f9a4ad4d1091fd201f
     version: null
     source:
-      Git: https://github.com/LuigiGhionda/neureka.git
+      Git: https://github.com/FondazioneChipsIT/neureka.git
     dependencies:
     - common_cells
     - hci
