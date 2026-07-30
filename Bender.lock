@@ -318,7 +318,7 @@ packages:
     dependencies:
     - tech_cells_generic
   hyperbus:
-    revision: e51bca81ea908b695808e32cdabbb4d9cd0b5d2d
+    revision: 1871c7a0cd33d71a80f38edb6759ab623c7f9f0a
     version: null
     source:
       Git: https://github.com/FondazioneChipsIt/hyperbus.git
@@ -611,10 +611,10 @@ packages:
     dependencies:
     - common_cells
   tech_cells_generic:
-    revision: 7968dd6e6180df2c644636bc6d2908a49f2190cf
-    version: 0.2.13
+    revision: 9e1f4315f6296e1aee02614b52655bd49d2be0e7
+    version: 0.3.0
     source:
-      Git: https://github.com/pulp-platform/tech_cells_generic.git
+      Git: https://github.com/FondazioneChipsIT/tech_cells_generic.git
     dependencies:
     - common_verification
   timer_unit:

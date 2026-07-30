@@ -3,14 +3,12 @@
 # SPDX-License-Identifier: SHL-0.51
 
 overrides:
-  hyperbus: { git: "https://github.com/FondazioneChipsIt/hyperbus.git", rev: "e51bca81ea908b695808e32cdabbb4d9cd0b5d2d" } # Temporary override by Bender using `bender snapshot` command
-#  hyperbus: { path: "working_dir/hyperbus" } # Temporary override by Bender using `bender clone` command
-##  hyperbus: { git: "https://github.com/FondazioneChipsIt/hyperbus.git", rev: "b5cdbc39ca52194b0d8dddb72e45270398c2040d" } # Temporary override by Bender using `bender snapshot` command
-###  hyperbus: { path: "working_dir/hyperbus" } # Temporary override by Bender using `bender clone` command
+  #hyperbus:             { git: "https://github.com/FondazioneChipsIt/hyperbus.git"        , version: =1.1.1 }
+  hyperbus:             { git: "https://github.com/FondazioneChipsIt/hyperbus.git"        , rev: 1871c7a0cd33d71a80f38edb6759ab623c7f9f0a }
   axi:                  { git: "https://github.com/pulp-platform/axi.git"                 , version: =0.39.8 }
   axi_riscv_atomics:    { git: "https://github.com/pulp-platform/axi_riscv_atomics.git"   , rev: 062bc36cbcca25629384e7f12efa6693273b3e07 } # branch: main
   apb:                  { git: "https://github.com/pulp-platform/apb.git"                 , version: =0.2.4 }
-  tech_cells_generic:   { git: "https://github.com/pulp-platform/tech_cells_generic.git"  , version: =0.2.13 }
+  tech_cells_generic:   { git: "https://github.com/FondazioneChipsIT/tech_cells_generic.git", version: =0.3.0 }
   riscv-dbg:            { git: "https://github.com/pulp-platform/riscv-dbg.git"           , version: =0.8.1 }
   idma:                 { git: "https://github.com/FondazioneChipsIt/idma.git"            , rev: ChipsIt-v0.0.0 }
   fpnew:                { git: "https://github.com/FondazioneChipsIT/cvfpu.git"           , rev: 49b1cb4d50893a9d23f8329d857527ebe5bc8529 } # branch: yt/pulp-merge-v2
@@ -28,4 +26,4 @@ overrides:
   hci:                  { git: "https://github.com/FondazioneChipsIT/hci.git"             , rev: 3e63936991569d0b1e315d6914478937b37bb338 }
   hwpe-stream:          { git: "https://github.com/LuigiGhionda/hwpe-stream.git"          , rev: 4c676e44ccf70a0d8dc67a84c6e02372bfd22557 }
   hwpe-ctrl:            { git: "https://github.com/LuigiGhionda/hwpe-ctrl.git"            , rev: 3156cabafff3b4fb90c1c78fb02b912a931a037c }
-  timer_unit:         { git: https://github.com/pulp-platform/timer_unit.git              , version: =1.0.3 }
+  timer_unit:           { git: https://github.com/pulp-platform/timer_unit.git            , version: =1.0.3 }
