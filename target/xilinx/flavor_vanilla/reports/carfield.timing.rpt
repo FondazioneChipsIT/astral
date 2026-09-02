@@ -1,0 +1,951 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date              : Wed Sep  2 04:01:03 2026
+| Host              : chips-rdp-stanis running 64-bit AlmaLinux release 8.10 (Cerulean Leopard)
+| Command           : report_timing -nworst 1 -delay_type max -sort_by group -file reports/carfield.timing.rpt
+| Design            : carfield_top_xilinx
+| Device            : xcvu9p-flga2104
+| Speed File        : -2L  PRODUCTION 1.27 02-28-2020
+| Temperature Grade : E
+---------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (VIOLATED) :        -20.191ns  (required time - arrival time)
+  Source:                 i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_word[7].data_q_reg[7][addr][17]/C
+                            (rising edge-triggered cell FDRE clocked by clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[addr][17]/D
+                            (rising edge-triggered cell FDCE clocked by periph_domain_clk  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Path Group:             periph_domain_clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            0.000ns  (MaxDelay Path 0.000ns)
+  Data Path Delay:        24.917ns  (logic 0.239ns (0.959%)  route 24.678ns (99.041%))
+  Logic Levels:           2  (LUT6=1 MUXF7=1)
+  Clock Path Skew:        6.672ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    12.601ns
+    Source Clock Delay      (SCD):    5.223ns
+    Clock Pessimism Removal (CPR):    -0.706ns
+  Clock Uncertainty:      0.226ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.199ns
+    Phase Error              (PE):    0.120ns
+  Inter-SLR Compensation: 1.746ns  ((DCD - CCD) * PF)
+    Destination Clock Delay (DCD):    12.601ns
+    Common Clock Delay      (CCD):    0.963ns
+    Prorating Factor         (PF):    0.150
+  Clock Net Delay (Source):      4.687ns (routing 2.719ns, distribution 1.968ns)
+  Clock Net Delay (Destination): 1.844ns (routing 0.617ns, distribution 1.227ns)
+  Timing Exception:       MaxDelay Path 0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_50_xlnx_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.251     0.508    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.536 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+    X2Y4 (CLOCK_ROOT)    net (fo=240101, routed)      4.687     5.223    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/host_clk_i
+    SLR Crossing[2->0]   
+    SLICE_X9Y33          FDRE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_word[7].data_q_reg[7][addr][17]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X9Y33          FDRE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     5.302 r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_word[7].data_q_reg[7][addr][17]/Q
+                         net (fo=1, routed)          24.637    29.939    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/llc_ar_data[707]
+    SLICE_X9Y33          LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.096    30.035 r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_spill_reg.a_data_q[addr][17]_i_3__24/O
+                         net (fo=1, routed)           0.010    30.045    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_spill_reg.a_data_q[addr][17]_i_3__24_n_2
+    SLICE_X9Y33          MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.064    30.109 r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_src_ar/gen_spill_reg.a_data_q_reg[addr][17]_i_1__11/O
+                         net (fo=1, routed)           0.031    30.140    i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[addr][32]_0[17]
+    SLICE_X9Y33          FDCE                                         r  i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[addr][17]/D
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                    0.000     0.000    
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333     0.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT3)
+                                                      0.630     0.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT3
+                         net (fo=1, routed)           0.225     1.188    i_xlnx_clk_wiz/inst/clk_10_xlnx_clk_wiz
+    BUFGCE_X1Y311        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.212 r  i_xlnx_clk_wiz/inst/clkout4_buf/O
+                         net (fo=64, routed)          4.140     5.352    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clks_i[2]
+    SLR Crossing[2->1]   
+    SLICE_X118Y302       LUT5 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.057     5.409 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           0.943     6.352    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y84         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     6.376 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.627     9.003    i_carfield/gen_domain_clock_mux[0].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X61Y300        LUT5 (Prop_G6LUT_SLICEL_I3_O)
+                                                      0.057     9.060 r  i_carfield/gen_domain_clock_mux[0].i_clk_div/n_1_1099782_BUFG_inst_i_1/O
+                         net (fo=2, routed)           0.064     9.124    i_carfield/i_hyper_clk_div/n_1_1099782_BUFG_inst_n_2
+    SLICE_X61Y300        LUT5 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.082     9.206 r  i_carfield/i_hyper_clk_div/hyp_clk_BUFG_inst_i_1/O
+                         net (fo=1, routed)           1.527    10.733    i_carfield/hyp_clk
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y39         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    10.757 r  i_carfield/hyp_clk_BUFG_inst/O
+    X1Y2 (CLOCK_ROOT)    net (fo=1287, routed)        1.844    12.601    i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/hyp_clk_BUFG
+    SLICE_X9Y33          FDCE                                         r  i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[addr][17]/C
+                         clock pessimism             -0.706    11.895    
+                         inter-SLR compensation      -1.746    10.149    
+                         clock uncertainty           -0.226     9.924    
+    SLICE_X9Y33          FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     9.949    i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_dst_ar/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[addr][17]
+  -------------------------------------------------------------------
+                         required time                          9.949    
+                         arrival time                         -30.140    
+  -------------------------------------------------------------------
+                         slack                                -20.191    
+
+Slack (VIOLATED) :        -11.562ns  (required time - arrival time)
+  Source:                 i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/gen_word[0].data_q_reg[0][id][2]/C
+                            (rising edge-triggered cell FDRE clocked by periph_domain_clk  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Destination:            i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[id][2]/D
+                            (rising edge-triggered cell FDCE clocked by clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clk_50_xlnx_clk_wiz
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            0.000ns  (MaxDelay Path 0.000ns)
+  Data Path Delay:        0.576ns  (logic 0.229ns (39.757%)  route 0.347ns (60.243%))
+  Logic Levels:           2  (LUT4=1 LUT6=1)
+  Clock Path Skew:        -10.139ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.274ns
+    Source Clock Delay      (SCD):    14.707ns
+    Clock Pessimism Removal (CPR):    -0.706ns
+  Clock Uncertainty:      0.226ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.199ns
+    Phase Error              (PE):    0.120ns
+  Inter-SLR Compensation: 0.647ns  ((DCD - CCD) * PF)
+    Destination Clock Delay (DCD):    5.274ns
+    Common Clock Delay      (CCD):    0.963ns
+    Prorating Factor         (PF):    0.150
+  Clock Net Delay (Source):      1.926ns (routing 0.677ns, distribution 1.249ns)
+  Clock Net Delay (Destination): 4.067ns (routing 2.468ns, distribution 1.599ns)
+  Timing Exception:       MaxDelay Path 0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock periph_domain_clk rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT3)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT3
+                         net (fo=1, routed)           0.256     0.513    i_xlnx_clk_wiz/inst/clk_10_xlnx_clk_wiz
+    BUFGCE_X1Y311        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.541 r  i_xlnx_clk_wiz/inst/clkout4_buf/O
+                         net (fo=64, routed)          4.608     5.149    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clks_i[2]
+    SLR Crossing[2->1]   
+    SLICE_X118Y302       LUT5 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.089     5.238 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           1.682     6.920    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y84         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     6.948 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.942     9.890    i_carfield/gen_domain_clock_mux[0].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X61Y300        LUT5 (Prop_G6LUT_SLICEL_I3_O)
+                                                      0.089     9.979 r  i_carfield/gen_domain_clock_mux[0].i_clk_div/n_1_1099782_BUFG_inst_i_1/O
+                         net (fo=2, routed)           0.100    10.079    i_carfield/i_hyper_clk_div/n_1_1099782_BUFG_inst_n_2
+    SLICE_X61Y300        LUT5 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.123    10.202 r  i_carfield/i_hyper_clk_div/hyp_clk_BUFG_inst_i_1/O
+                         net (fo=1, routed)           2.551    12.753    i_carfield/hyp_clk
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y39         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028    12.781 r  i_carfield/hyp_clk_BUFG_inst/O
+    X1Y2 (CLOCK_ROOT)    net (fo=1287, routed)        1.926    14.707    i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/hyp_clk_BUFG
+    SLICE_X43Y41         FDRE                                         r  i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/gen_word[0].data_q_reg[0][id][2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X43Y41         FDRE (Prop_DFF_SLICEM_C_Q)
+                                                      0.078    14.785 r  i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/gen_word[0].data_q_reg[0][id][2]/Q
+                         net (fo=1, routed)           0.169    14.954    i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/llc_b_data[14]
+    SLICE_X43Y41         LUT6 (Prop_G6LUT_SLICEM_I5_O)
+                                                      0.100    15.054 r  i_carfield/i_hyperbus_wrap/i_hyper_cdc_dst/i_cdc_fifo_gray_src_b/gen_spill_reg.a_data_q[id][2]_i_3__38/O
+                         net (fo=1, routed)           0.132    15.186    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[id][2]_2
+    SLICE_X44Y42         LUT4 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.051    15.237 r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q[id][2]_i_1__81/O
+                         net (fo=1, routed)           0.046    15.283    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/async_data_i[2]
+    SLICE_X44Y42         FDCE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[id][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                    0.000     0.000    
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333     0.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                      0.630     0.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.220     1.183    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.207 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+    X2Y4 (CLOCK_ROOT)    net (fo=240101, routed)      4.067     5.274    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/host_clk_i
+    SLR Crossing[2->0]   
+    SLICE_X44Y42         FDCE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[id][2]/C
+                         clock pessimism             -0.706     4.568    
+                         inter-SLR compensation      -0.647     3.921    
+                         clock uncertainty           -0.226     3.696    
+    SLICE_X44Y42         FDCE (Setup_EFF_SLICEL_C_D)
+                                                      0.025     3.721    i_carfield/i_cheshire_wrap/i_cheshire_ext_llc_cdc_src/i_cdc_fifo_gray_dst_b/i_spill_register/spill_register_flushable_i/gen_spill_reg.a_data_q_reg[id][2]
+  -------------------------------------------------------------------
+                         required time                          3.721    
+                         arrival time                         -15.283    
+  -------------------------------------------------------------------
+                         slack                                -11.562    
+
+Slack (MET) :             0.000ns  (required time - arrival time)
+  Source:                 i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_ctrl/i_slave/clear_o_reg/C
+                            (rising edge-triggered cell FDCE clocked by pulp_domain_clk  {rise@0.000ns fall@25.000ns period=50.000ns})
+  Destination:            i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][250]/D
+                            (positive level-sensitive latch clocked by pulp_domain_clk  {rise@0.000ns fall@25.000ns period=50.000ns})
+  Path Group:             pulp_domain_clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            0.000ns  (pulp_domain_clk rise@0.000ns - pulp_domain_clk rise@0.000ns)
+  Data Path Delay:        3.164ns  (logic 0.148ns (4.678%)  route 3.016ns (95.322%))
+  Logic Levels:           1  (LUT2=1)
+  Clock Path Skew:        0.256ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    11.859ns
+    Source Clock Delay      (SCD):    12.829ns
+    Clock Pessimism Removal (CPR):    1.226ns
+  Time Borrowing:         
+    Nominal pulse width:              25.000ns
+    Library setup time:               0.025ns
+    Computed max time borrow:         25.025ns
+    Time borrowed from endpoint:      2.908ns
+    Time given to startpoint:         2.908ns
+  Clock Net Delay (Source):      2.703ns (routing 0.944ns, distribution 1.759ns)
+  Clock Net Delay (Destination): 2.759ns (routing 0.857ns, distribution 1.902ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock pulp_domain_clk rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT2)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT2
+                         net (fo=1, routed)           0.248     0.505    i_xlnx_clk_wiz/inst/clk_20_xlnx_clk_wiz
+    BUFGCE_X1Y293        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.533 r  i_xlnx_clk_wiz/inst/clkout3_buf/O
+                         net (fo=33, routed)          4.400     4.933    i_carfield/gen_domain_clock_mux[1].i_clk_mux/clks_i[1]
+    SLR Crossing[2->1]   
+    SLICE_X118Y300       LUT5 (Prop_E6LUT_SLICEL_I2_O)
+                                                      0.099     5.032 r  i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           1.695     6.727    i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y73         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     6.755 r  i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.739     9.494    i_carfield/gen_domain_clock_mux[1].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X55Y567        LUT5 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.089     9.583 r  i_carfield/gen_domain_clock_mux[1].i_clk_div/gen_output_pipeline[0].out_pipe_valid_q[1]_i_5__7/O
+                         net (fo=1, routed)           0.515    10.098    i_carfield/gen_domain_clock_mux[1].i_clk_div_n_4
+    BUFGCE_X0Y223        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028    10.126 r  i_carfield/gen_output_pipeline[0].out_pipe_valid_q_reg[1]_i_2/O
+    X2Y7 (CLOCK_ROOT)    net (fo=209047, routed)      2.703    12.829    i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_ctrl/i_slave/s_clk_gated
+    SLR Crossing[1->2]   
+    SLICE_X85Y667        FDCE                                         r  i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_ctrl/i_slave/clear_o_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X85Y667        FDCE (Prop_FFF2_SLICEL_C_Q)
+                                                      0.081    12.910 f  i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_ctrl/i_slave/clear_o_reg/Q
+                         net (fo=8034, routed)        2.481    15.391    i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][255]_0
+    SLICE_X157Y706       LUT2 (Prop_G5LUT_SLICEL_I1_O)
+                                                      0.067    15.458 r  i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][250]_i_1__0/O
+                         net (fo=1, routed)           0.535    15.993    i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][250]_i_1__0_n_2
+    SLICE_X155Y704       LDCE                                         r  i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][250]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pulp_domain_clk rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333     0.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT2)
+                                                      0.630     0.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT2
+                         net (fo=1, routed)           0.218     1.181    i_xlnx_clk_wiz/inst/clk_20_xlnx_clk_wiz
+    BUFGCE_X1Y293        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     1.205 r  i_xlnx_clk_wiz/inst/clkout3_buf/O
+                         net (fo=33, routed)          3.947     5.152    i_carfield/gen_domain_clock_mux[1].i_clk_mux/clks_i[1]
+    SLR Crossing[2->1]   
+    SLICE_X118Y300       LUT5 (Prop_E6LUT_SLICEL_I2_O)
+                                                      0.066     5.218 r  i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           0.950     6.168    i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y73         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     6.192 r  i_carfield/gen_domain_clock_mux[1].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.453     8.645    i_carfield/gen_domain_clock_mux[1].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X55Y567        LUT5 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.056     8.701 r  i_carfield/gen_domain_clock_mux[1].i_clk_div/gen_output_pipeline[0].out_pipe_valid_q[1]_i_5__7/O
+                         net (fo=1, routed)           0.375     9.076    i_carfield/gen_domain_clock_mux[1].i_clk_div_n_4
+    BUFGCE_X0Y223        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024     9.100 r  i_carfield/gen_output_pipeline[0].out_pipe_valid_q_reg[1]_i_2/O
+    X2Y7 (CLOCK_ROOT)    net (fo=209047, routed)      2.759    11.859    i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/s_clk_gated
+    SLR Crossing[1->2]   
+    SLICE_X155Y704       LDCE                                         r  i_carfield/gen_pulp_cluster.i_integer_cluster/hwpe_gen.hwpe_subsystem_i/gen_hwpe[1].gen_neureka.i_neureka/i_engine/i_double_infeat_buffer/i_even_infeat_buffer/i_infeat_buffer_scm/neureka_infeat_buffer_scm_i/LATCH[35].buffer_reg[35][250]/G
+                         clock pessimism              1.226    13.085    
+                         time borrowed                2.908    15.993    
+  -------------------------------------------------------------------
+                         required time                         15.993    
+                         arrival time                         -15.993    
+  -------------------------------------------------------------------
+                         slack                                  0.000    
+
+Slack (MET) :             1.731ns  (required time - arrival time)
+  Source:                 i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[27].linked_data_q_reg[27][free]/C
+                            (rising edge-triggered cell FDPE clocked by l2_domain_clk  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q_reg[20][next][2]/D
+                            (rising edge-triggered cell FDCE clocked by l2_domain_clk  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             l2_domain_clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (l2_domain_clk rise@20.000ns - l2_domain_clk rise@0.000ns)
+  Data Path Delay:        18.091ns  (logic 3.759ns (20.778%)  route 14.332ns (79.222%))
+  Logic Levels:           36  (CARRY8=2 LUT4=6 LUT5=8 LUT6=19 MUXF7=1)
+  Clock Path Skew:        -0.120ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    12.681ns = ( 32.681 - 20.000 ) 
+    Source Clock Delay      (SCD):    14.914ns
+    Clock Pessimism Removal (CPR):    2.113ns
+  Clock Uncertainty:      0.083ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.150ns
+    Phase Error              (PE):    0.000ns
+  Clock Net Delay (Source):      2.113ns (routing 0.681ns, distribution 1.432ns)
+  Clock Net Delay (Destination): 1.861ns (routing 0.620ns, distribution 1.241ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock l2_domain_clk rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.251     0.508    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.536 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+                         net (fo=240101, routed)      4.660     5.196    i_carfield/gen_domain_clock_mux[2].i_clk_mux/clks_i[0]
+    SLR Crossing[2->1]   
+    SLICE_X120Y301       LUT5 (Prop_H6LUT_SLICEL_I0_O)
+                                                      0.090     5.286 r  i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           1.734     7.020    i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y74         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     7.048 r  i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         3.097    10.145    i_carfield/gen_domain_clock_mux[2].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X61Y300        LUT5 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.049    10.194 r  i_carfield/gen_domain_clock_mux[2].i_clk_div/n_0_1100180_BUFG_inst_i_1/O
+                         net (fo=1, routed)           2.579    12.773    i_carfield/n_0_1100180_BUFG_inst_n_1
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y38         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028    12.801 r  i_carfield/n_0_1100180_BUFG_inst/O
+    X1Y2 (CLOCK_ROOT)    net (fo=17162, routed)       2.113    14.914    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/n_0_1100180_BUFG
+    SLICE_X7Y199         FDPE                                         r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[27].linked_data_q_reg[27][free]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X7Y199         FDPE (Prop_AFF2_SLICEL_C_Q)
+                                                      0.081    14.995 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[27].linked_data_q_reg[27][free]/Q
+                         net (fo=6, routed)           0.678    15.673    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/linked_data_free[23]
+    SLICE_X13Y191        LUT4 (Prop_A6LUT_SLICEM_I2_O)
+                                                      0.150    15.823 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[2].linked_data_q[2][next][4]_i_12__0/O
+                         net (fo=1, routed)           0.183    16.006    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[2].linked_data_q[2][next][4]_i_12__0_n_2
+    SLICE_X13Y191        LUT5 (Prop_D5LUT_SLICEM_I4_O)
+                                                      0.110    16.116 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[2].linked_data_q[2][next][4]_i_8__0/O
+                         net (fo=1, routed)           0.145    16.261    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[2].linked_data_q[2][next][4]_i_8__0_n_2
+    SLICE_X13Y192        LUT4 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148    16.409 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[2].linked_data_q[2][next][4]_i_4__2/O
+                         net (fo=158, routed)         0.678    17.087    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_b_status_queue/wifq_inp_gnt
+    SLICE_X7Y173         LUT6 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.035    17.122 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_b_status_queue/mem_q[31][id][4]_i_4__0/O
+                         net (fo=65, routed)          0.858    17.980    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/gen_ht_ffs[2].head_tail_q_reg[2][id][1]_0
+    SLICE_X22Y169        LUT6 (Prop_B6LUT_SLICEM_I4_O)
+                                                      0.100    18.080 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_21__0/O
+                         net (fo=57, routed)          0.175    18.255    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_axi_wide_in_cut/gen_axi_cut.gen_axi_cuts[0].i_cut/i_reg_ar/spill_register_flushable_i/tbl_q[7][44]_i_6__0
+    SLICE_X22Y168        LUT4 (Prop_H5LUT_SLICEM_I3_O)
+                                                      0.096    18.351 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_axi_wide_in_cut/gen_axi_cut.gen_axi_cuts[0].i_cut/i_reg_ar/spill_register_flushable_i/inp_state_q_i_11__0/O
+                         net (fo=47, routed)          0.558    18.909    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_362__0_0
+    SLICE_X19Y176        LUT6 (Prop_G6LUT_SLICEM_I3_O)
+                                                      0.150    19.059 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_118__0/O
+                         net (fo=32, routed)          0.766    19.825    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/wifq_exists_inp[data][addr][24]
+    SLICE_X9Y188         LUT5 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.097    19.922 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_960__0/O
+                         net (fo=1, routed)           0.241    20.163    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_960__0_n_2
+    SLICE_X10Y188        LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.096    20.259 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_795__0/O
+                         net (fo=1, routed)           0.236    20.495    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_795__0_n_2
+    SLICE_X10Y188        LUT4 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.051    20.546 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_475__0/O
+                         net (fo=1, routed)           0.201    20.747    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_475__0_n_2
+    SLICE_X10Y193        LUT5 (Prop_G6LUT_SLICEL_I0_O)
+                                                      0.089    20.836 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_180__0/O
+                         net (fo=1, routed)           0.145    20.981    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_180__0_n_2
+    SLICE_X11Y192        LUT6 (Prop_H6LUT_SLICEM_I5_O)
+                                                      0.101    21.082 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_52__0/O
+                         net (fo=1, routed)           0.481    21.563    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_52__0_n_2
+    SLICE_X12Y189        LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.050    21.613 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_22__0/O
+                         net (fo=1, routed)           0.557    22.170    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_22__0_n_2
+    SLICE_X9Y184         LUT5 (Prop_E6LUT_SLICEL_I0_O)
+                                                      0.099    22.269 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_16__0/O
+                         net (fo=1, routed)           0.471    22.740    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_16__0_n_2
+    SLICE_X13Y183        LUT6 (Prop_B6LUT_SLICEM_I1_O)
+                                                      0.052    22.792 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/inp_state_q_i_10__0/O
+                         net (fo=6, routed)           0.389    23.181    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/ar_state_q_reg
+    SLICE_X17Y169        LUT6 (Prop_E6LUT_SLICEM_I4_O)
+                                                      0.124    23.305 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/gen_data_ffs[31].linked_data_q[31][data][1]_i_4__0/O
+                         net (fo=5, routed)           0.145    23.450    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/gen_arbiter.rr_q_reg[0]_9
+    SLICE_X18Y168        LUT6 (Prop_F6LUT_SLICEL_I2_O)
+                                                      0.123    23.573 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/FSM_sequential_aw_state_q[1]_i_10__0/O
+                         net (fo=46, routed)          0.377    23.950    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/FSM_sequential_aw_state_q_reg[1]_rep_2
+    SLICE_X21Y165        LUT4 (Prop_B6LUT_SLICEM_I3_O)
+                                                      0.125    24.075 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/p_7_out_carry_i_30__0/O
+                         net (fo=9, routed)           0.558    24.633    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/art_check_clr_addr[1]
+    SLICE_X28Y171        LUT6 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.124    24.757 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/check_res_o0_carry_i_8__0/O
+                         net (fo=1, routed)           0.009    24.766    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/check_res_o0_carry_i_8__0_n_2
+    SLICE_X28Y171        CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.190    24.956 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/check_res_o0_carry/CO[7]
+                         net (fo=1, routed)           0.026    24.982    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/check_res_o0_carry_n_2
+    SLICE_X28Y172        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[6])
+                                                      0.092    25.074 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_art/check_res_o0_carry__0/CO[6]
+                         net (fo=6, routed)           0.321    25.395    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/gen_data_ffs[1].linked_data_q_reg[1][data][1]_0[0]
+    SLICE_X18Y169        LUT6 (Prop_B6LUT_SLICEL_I3_O)
+                                                      0.098    25.493 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_wifq_exists_arb/i_arb/gen_rr_arb.i_arbiter/mem_q[31][forward]_i_3__0/O
+                         net (fo=2, routed)           0.085    25.578    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_aw_trans_reg/i_fifo/status_cnt_q_reg[0]_2
+    SLICE_X17Y169        LUT6 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.090    25.668 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_aw_trans_reg/i_fifo/gen_data_ffs[2].linked_data_q[2][next][4]_i_5__1/O
+                         net (fo=230, routed)         0.537    26.205    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_aw_trans_reg/i_fifo/FSM_sequential_aw_state_q_reg[0]
+    SLICE_X9Y170         LUT5 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.097    26.302 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_aw_trans_reg/i_fifo/gen_spill_reg.a_data_q[id][2]_i_1__4/O
+                         net (fo=99, routed)          1.300    27.602    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[8].head_tail_q_reg[8][id][2]_0
+    SLICE_X6Y230         LUT5 (Prop_D5LUT_SLICEM_I0_O)
+                                                      0.158    27.760 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[2].head_tail_q[2][id][4]_i_83__0/O
+                         net (fo=1, routed)           0.195    27.955    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[2].head_tail_q[2][id][4]_i_83__0_n_2
+    SLICE_X6Y230         LUT6 (Prop_C6LUT_SLICEM_I0_O)
+                                                      0.037    27.992 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[2].head_tail_q[2][id][4]_i_70__0/O
+                         net (fo=1, routed)           0.094    28.086    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[2].head_tail_q[2][id][4]_i_70__0_n_2
+    SLICE_X6Y230         LUT5 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.037    28.123 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[2].head_tail_q[2][id][4]_i_40__0/O
+                         net (fo=4, routed)           0.651    28.774    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/idx_matches_in_id[15]
+    SLICE_X12Y231        LUT4 (Prop_A6LUT_SLICEL_I2_O)
+                                                      0.098    28.872 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[14].head_tail_q[14][tail][4]_i_10__1/O
+                         net (fo=59, routed)          0.843    29.715    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_ht_ffs[14].head_tail_q[14][tail][4]_i_10__1_n_2
+    SLICE_X8Y216         LUT6 (Prop_G6LUT_SLICEM_I1_O)
+                                                      0.100    29.815 f  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_52__0/O
+                         net (fo=1, routed)           0.372    30.187    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_52__0_n_2
+    SLICE_X9Y217         LUT6 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.146    30.333 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_42__0/O
+                         net (fo=1, routed)           0.009    30.342    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_42__0_n_2
+    SLICE_X9Y217         MUXF7 (Prop_F7MUX_CD_SLICEL_I0_O)
+                                                      0.063    30.405 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q_reg[29][next][4]_i_18__0/O
+                         net (fo=1, routed)           0.459    30.864    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q_reg[29][next][4]_i_18__0_n_2
+    SLICE_X12Y217        LUT6 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.124    30.988 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_4__2/O
+                         net (fo=59, routed)          0.745    31.733    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[29].linked_data_q[29][next][4]_i_4__2_n_2
+    SLICE_X9Y200         LUT5 (Prop_E5LUT_SLICEL_I1_O)
+                                                      0.101    31.834 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][4]_i_5__6/O
+                         net (fo=11, routed)          0.303    32.137    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][4]_i_5__6_n_2
+    SLICE_X8Y202         LUT6 (Prop_B6LUT_SLICEM_I3_O)
+                                                      0.149    32.286 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][2]_i_3__1/O
+                         net (fo=1, routed)           0.155    32.441    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][2]_i_3__1_n_2
+    SLICE_X8Y203         LUT6 (Prop_G6LUT_SLICEM_I5_O)
+                                                      0.090    32.531 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][2]_i_2__1/O
+                         net (fo=1, routed)           0.336    32.867    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][2]_i_2__1_n_2
+    SLICE_X9Y204         LUT6 (Prop_C6LUT_SLICEL_I2_O)
+                                                      0.088    32.955 r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q[20][next][2]_i_1__2/O
+                         net (fo=1, routed)           0.050    33.005    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/linked_data_d[20][next][2]
+    SLICE_X9Y204         FDCE                                         r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q_reg[20][next][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock l2_domain_clk rise edge)
+                                                     20.000    20.000 r  
+    E12                  IBUFCTRL                     0.000    20.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333    20.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                      0.630    20.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.220    21.183    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    21.207 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+                         net (fo=240101, routed)      4.196    25.403    i_carfield/gen_domain_clock_mux[2].i_clk_mux/clks_i[0]
+    SLR Crossing[2->1]   
+    SLICE_X120Y301       LUT5 (Prop_H6LUT_SLICEL_I0_O)
+                                                      0.057    25.460 r  i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           0.973    26.433    i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y74         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    26.457 r  i_carfield/gen_domain_clock_mux[2].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.770    29.227    i_carfield/gen_domain_clock_mux[2].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X61Y300        LUT5 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.035    29.262 r  i_carfield/gen_domain_clock_mux[2].i_clk_div/n_0_1100180_BUFG_inst_i_1/O
+                         net (fo=1, routed)           1.534    30.796    i_carfield/n_0_1100180_BUFG_inst_n_1
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y38         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    30.820 r  i_carfield/n_0_1100180_BUFG_inst/O
+    X1Y2 (CLOCK_ROOT)    net (fo=17162, routed)       1.861    32.681    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/n_0_1100180_BUFG
+    SLICE_X9Y204         FDCE                                         r  i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q_reg[20][next][2]/C
+                         clock pessimism              2.113    34.794    
+                         clock uncertainty           -0.083    34.711    
+    SLICE_X9Y204         FDCE (Setup_CFF_SLICEL_C_D)
+                                                      0.025    34.736    i_carfield/gen_l2.i_reconfigurable_l2/i_l2_top/gen_axi_to_mem[1].i_l2_atomics/i_axi_riscv_atomics_wrap/i_atomics/i_lrsc/i_write_in_flight_queue/gen_data_ffs[20].linked_data_q_reg[20][next][2]
+  -------------------------------------------------------------------
+                         required time                         34.736    
+                         arrival time                         -33.005    
+  -------------------------------------------------------------------
+                         slack                                  1.731    
+
+Slack (MET) :             2.175ns  (required time - arrival time)
+  Source:                 i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_src/data_src_q_reg[trans][burst][3]/C
+                            (rising edge-triggered cell FDCE clocked by periph_domain_clk  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Destination:            i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_dst/data_dst_q_reg[trans][burst][3]/D
+  Path Group:             **default**
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (MaxDelay Path 20.000ns)
+  Data Path Delay:        3.165ns  (logic 0.079ns (2.496%)  route 3.086ns (97.504%))
+  Logic Levels:           0  
+  Clock Path Skew:        -14.685ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.000ns
+    Source Clock Delay      (SCD):    14.685ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Net Delay (Source):      1.904ns (routing 0.677ns, distribution 1.227ns)
+  Timing Exception:       MaxDelay Path 20.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock periph_domain_clk rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT3)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT3
+                         net (fo=1, routed)           0.256     0.513    i_xlnx_clk_wiz/inst/clk_10_xlnx_clk_wiz
+    BUFGCE_X1Y311        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.541 r  i_xlnx_clk_wiz/inst/clkout4_buf/O
+                         net (fo=64, routed)          4.608     5.149    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clks_i[2]
+    SLR Crossing[2->1]   
+    SLICE_X118Y302       LUT5 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.089     5.238 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_INST_0/O
+                         net (fo=1, routed)           1.682     6.920    i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o
+    SLR Crossing[1->0]   
+    BUFGCE_X1Y84         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     6.948 r  i_carfield/gen_domain_clock_mux[0].i_clk_mux/clk_o_BUFG_inst/O
+                         net (fo=115, routed)         2.942     9.890    i_carfield/gen_domain_clock_mux[0].i_clk_div/clk_o
+    SLR Crossing[0->1]   
+    SLICE_X61Y300        LUT5 (Prop_G6LUT_SLICEL_I3_O)
+                                                      0.089     9.979 r  i_carfield/gen_domain_clock_mux[0].i_clk_div/n_1_1099782_BUFG_inst_i_1/O
+                         net (fo=2, routed)           0.100    10.079    i_carfield/i_hyper_clk_div/n_1_1099782_BUFG_inst_n_2
+    SLICE_X61Y300        LUT5 (Prop_E6LUT_SLICEL_I3_O)
+                                                      0.123    10.202 r  i_carfield/i_hyper_clk_div/hyp_clk_BUFG_inst_i_1/O
+                         net (fo=1, routed)           2.551    12.753    i_carfield/hyp_clk
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y39         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028    12.781 r  i_carfield/hyp_clk_BUFG_inst/O
+    X1Y2 (CLOCK_ROOT)    net (fo=1287, routed)        1.904    14.685    i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_src/hyp_clk_BUFG
+    SLICE_X48Y54         FDCE                                         r  i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_src/data_src_q_reg[trans][burst][3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X48Y54         FDCE (Prop_CFF_SLICEL_C_Q)
+                                                      0.079    14.764 r  i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_src/data_src_q_reg[trans][burst][3]/Q
+                         net (fo=2, routed)           3.086    17.850    i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_dst/data_dst_q_reg[trans][burst][14]_1[3]
+    SLICE_X45Y54         FDCE                                         r  i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_dst/data_dst_q_reg[trans][burst][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   20.000    20.000    
+                         clock pessimism              0.000    20.000    
+    SLICE_X45Y54         FDCE (Setup_fdce_C_D)        0.025    20.025    i_carfield/i_hyperbus_wrap/i_hyperbus/i_cdc_2phase_trans/i_dst/data_dst_q_reg[trans][burst][3]
+  -------------------------------------------------------------------
+                         required time                         20.025    
+                         arrival time                         -17.850    
+  -------------------------------------------------------------------
+                         slack                                  2.175    
+
+Slack (MET) :             10.867ns  (required time - arrival time)
+  Source:                 i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/ack_dst_q_reg/CLR
+                            (recovery check against rising-edge clock clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             **async_default**
+  Path Type:              Recovery (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clk_50_xlnx_clk_wiz rise@20.000ns - clk_50_xlnx_clk_wiz rise@0.000ns)
+  Data Path Delay:        8.546ns  (logic 0.160ns (1.872%)  route 8.386ns (98.128%))
+  Logic Levels:           2  (BUFGCE=1 LUT1=1)
+  Clock Path Skew:        -0.226ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.088ns = ( 25.088 - 20.000 ) 
+    Source Clock Delay      (SCD):    4.894ns
+    Clock Pessimism Removal (CPR):    -0.420ns
+  Clock Uncertainty:      0.083ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.150ns
+    Phase Error              (PE):    0.000ns
+  Inter-SLR Compensation: 0.212ns  ((DCD - CCD) * PF)
+    Destination Clock Delay (DCD):    5.088ns
+    Common Clock Delay      (CCD):    3.675ns
+    Prorating Factor         (PF):    0.150
+  Clock Net Delay (Source):      4.358ns (routing 2.719ns, distribution 1.639ns)
+  Clock Net Delay (Destination): 3.881ns (routing 2.468ns, distribution 1.413ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_50_xlnx_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.251     0.508    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.536 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+    X2Y4 (CLOCK_ROOT)    net (fo=240101, routed)      4.358     4.894    i_carfield/i_host_rstgen/i_rstgen_bypass/clk_i
+    SLR Crossing[2->1]   
+    SLICE_X67Y305        FDCE                                         r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y305        FDCE (Prop_FFF2_SLICEL_C_Q)
+                                                      0.081     4.975 r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/Q
+                         net (fo=1, routed)           2.803     7.778    i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y48         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     7.806 r  i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no_BUFG_inst/O
+                         net (fo=172522, routed)      1.654     9.460    i_carfield/i_cheshire_wrap/i_cheshire_soc/gen_axi_rt.i_axi_rt_unit_top/gen_rt_units[5].i_axi_rt_unit/i_axi_write_buffer/i_stream_fifo_aw/fifo_i/rst_no
+    SLICE_X116Y96        LUT1 (Prop_C6LUT_SLICEM_I0_O)
+                                                      0.051     9.511 f  i_carfield/i_cheshire_wrap/i_cheshire_soc/gen_axi_rt.i_axi_rt_unit_top/gen_rt_units[5].i_axi_rt_unit/i_axi_write_buffer/i_stream_fifo_aw/fifo_i/SOUT_i_2/O
+                         net (fo=694, routed)         3.929    13.440    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/ack_dst_q_reg_0
+    SLICE_X70Y292        FDCE                                         f  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/ack_dst_q_reg/CLR
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_50_xlnx_clk_wiz rise edge)
+                                                     20.000    20.000 r  
+    E12                  IBUFCTRL                     0.000    20.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333    20.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT1)
+                                                      0.630    20.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT1
+                         net (fo=1, routed)           0.220    21.183    i_xlnx_clk_wiz/inst/clk_50_xlnx_clk_wiz
+    BUFGCE_X1Y298        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    21.207 r  i_xlnx_clk_wiz/inst/clkout2_buf/O
+    X2Y4 (CLOCK_ROOT)    net (fo=240101, routed)      3.881    25.088    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/host_clk_i
+    SLR Crossing[2->0]   
+    SLICE_X70Y292        FDCE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/ack_dst_q_reg/C
+                         clock pessimism             -0.420    24.668    
+                         inter-SLR compensation      -0.212    24.456    
+                         clock uncertainty           -0.083    24.373    
+    SLICE_X70Y292        FDCE (Recov_AFF2_SLICEM_C_CLR)
+                                                     -0.066    24.307    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_req/i_dst/ack_dst_q_reg
+  -------------------------------------------------------------------
+                         required time                         24.307    
+                         arrival time                         -13.440    
+  -------------------------------------------------------------------
+                         slack                                 10.867    
+
+Slack (MET) :             14.518ns  (required time - arrival time)
+  Source:                 dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/state_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK  {rise@0.000ns fall@25.000ns period=50.000ns})
+  Destination:            dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/TDO
+                            (falling edge-triggered cell BSCANE2 clocked by dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK  {rise@0.000ns fall@25.000ns period=50.000ns})
+  Path Group:             dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            25.000ns  (dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK fall@25.000ns - dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK rise@0.000ns)
+  Data Path Delay:        2.302ns  (logic 0.239ns (10.382%)  route 2.063ns (89.618%))
+  Logic Levels:           3  (LUT3=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -7.945ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.000ns = ( 25.000 - 25.000 ) 
+    Source Clock Delay      (SCD):    7.945ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.235ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + DCD
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    Duty Cycle Distortion   (DCD):    0.200ns
+  Clock Net Delay (Source):      2.052ns (routing 1.171ns, distribution 0.881ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK rise edge)
+                                                      0.000     0.000 r  
+    CONFIG_SITE_X0Y1     BSCANE2                      0.000     0.000 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK
+    CONFIG_SITE_X0Y1     BSCANE2 (Prop_BSCAN1_CONFIG_SITE_INTERNAL_TCK_TCK)
+                                                      4.300     4.300 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/TCK
+                         net (fo=1, routed)           1.565     5.865    dbg_hub/inst/BSCANID.u_xsdbm_id/tck_bs
+    BUFGCE_X1Y176        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     5.893 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.u_bufg_icon_tck/O
+    X5Y5 (CLOCK_ROOT)    net (fo=494, routed)         2.052     7.945    dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/s_bscan_tck
+    SLICE_X166Y345       FDRE                                         r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/state_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X166Y345       FDRE (Prop_FFF2_SLICEM_C_Q)
+                                                      0.079     8.024 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/state_reg[1]/Q
+                         net (fo=50, routed)          0.331     8.355    dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/state[1]
+    SLICE_X168Y341       LUT5 (Prop_G6LUT_SLICEM_I4_O)
+                                                      0.090     8.445 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/m_bscan_bscanid_en_INST_0/O
+                         net (fo=35, routed)          0.373     8.818    dbg_hub/inst/BSCANID.u_xsdbm_id/bscanid_en_int
+    SLICE_X167Y330       LUT3 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.035     8.853 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch_i_1/O
+                         net (fo=2, routed)           0.324     9.177    dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/m_bscan_tdo[0]
+    SLICE_X167Y342       LUT6 (Prop_C6LUT_SLICEL_I5_O)
+                                                      0.035     9.212 r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_switch/s_bscan_tdo_INST_0/O
+                         net (fo=1, routed)           1.035    10.247    dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/s_bscan_tdo
+    CONFIG_SITE_X0Y1     BSCANE2                                      r  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/TDO
+  -------------------------------------------------------------------    -------------------
+
+                         (clock dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK fall edge)
+                                                     25.000    25.000 f  
+    CONFIG_SITE_X0Y1     BSCANE2                      0.000    25.000 f  dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst/INTERNAL_TCK
+                         clock pessimism              0.000    25.000    
+                         clock uncertainty           -0.235    24.765    
+    CONFIG_SITE_X0Y1     BSCANE2 (Setup_BSCAN1_CONFIG_SITE_INTERNAL_TCK_TDO)
+                                                      0.000    24.765    dbg_hub/inst/BSCANID.u_xsdbm_id/SWITCH_N_EXT_BSCAN.bscan_inst/SERIES7_BSCAN.bscan_inst
+  -------------------------------------------------------------------
+                         required time                         24.765    
+                         arrival time                         -10.247    
+  -------------------------------------------------------------------
+                         slack                                 14.518    
+
+Slack (MET) :             15.381ns  (required time - arrival time)
+  Source:                 i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[2].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[2]/CLR
+                            (rising edge-triggered cell FDCE clocked by clk_10_xlnx_clk_wiz  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Path Group:             clk_10_xlnx_clk_wiz
+  Path Type:              Recovery (Max at Slow Process Corner)
+  Requirement:            20.000ns  (MaxDelay Path 20.000ns)
+  Data Path Delay:        4.553ns  (logic 0.109ns (2.394%)  route 4.444ns (97.606%))
+  Logic Levels:           1  (BUFGCE=1)
+  Timing Exception:       MaxDelay Path 20.000ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y305                                     0.000     0.000 r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+    SLICE_X67Y305        FDCE (Prop_FFF2_SLICEL_C_Q)
+                                                      0.081     0.081 r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/Q
+                         net (fo=1, routed)           2.803     2.884    i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y48         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     2.912 r  i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no_BUFG_inst/O
+                         net (fo=172522, routed)      1.641     4.553    i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[2].i_rstgen/i_rstgen_bypass/rst_ni
+    SLICE_X84Y39         FDCE                                         f  i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[2].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[2]/CLR  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   20.000    20.000    
+    SLICE_X84Y39         FDCE (Recov_EFF_SLICEM_C_CLR)
+                                                     -0.066    19.934    i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[2].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[2]
+  -------------------------------------------------------------------
+                         required time                         19.934    
+                         arrival time                          -4.553    
+  -------------------------------------------------------------------
+                         slack                                 15.381    
+
+Slack (MET) :             15.394ns  (required time - arrival time)
+  Source:                 i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk_50_xlnx_clk_wiz  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[1].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/CLR
+                            (rising edge-triggered cell FDCE clocked by clk_20_xlnx_clk_wiz  {rise@0.000ns fall@25.000ns period=50.000ns})
+  Path Group:             clk_20_xlnx_clk_wiz
+  Path Type:              Recovery (Max at Slow Process Corner)
+  Requirement:            20.000ns  (MaxDelay Path 20.000ns)
+  Data Path Delay:        4.540ns  (logic 0.109ns (2.401%)  route 4.431ns (97.599%))
+  Logic Levels:           1  (BUFGCE=1)
+  Timing Exception:       MaxDelay Path 20.000ns -datapath_only
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y305                                     0.000     0.000 r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/C
+    SLICE_X67Y305        FDCE (Prop_FFF2_SLICEL_C_Q)
+                                                      0.081     0.081 r  i_carfield/i_host_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/Q
+                         net (fo=1, routed)           2.803     2.884    i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no
+    SLR Crossing[1->0]   
+    BUFGCE_X0Y48         BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     2.912 r  i_carfield/i_host_rstgen/i_rstgen_bypass/rst_no_BUFG_inst/O
+                         net (fo=172522, routed)      1.628     4.540    i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[1].i_rstgen/i_rstgen_bypass/rst_ni
+    SLICE_X77Y53         FDCE                                         f  i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[1].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]/CLR  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   20.000    20.000    
+    SLICE_X77Y53         FDCE (Recov_AFF_SLICEL_C_CLR)
+                                                     -0.066    19.934    i_carfield/gen_domain_clock_mux[1].i_clk_mux/gen_input_stages[1].i_rstgen/i_rstgen_bypass/synch_regs_q_reg[3]
+  -------------------------------------------------------------------
+                         required time                         19.934    
+                         arrival time                          -4.540    
+  -------------------------------------------------------------------
+                         slack                                 15.394    
+
+Slack (MET) :             16.942ns  (required time - arrival time)
+  Source:                 i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/ack_dst_q_reg/C
+                            (rising edge-triggered cell FDRE clocked by clk_jtag  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Destination:            i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/error_q_reg[1]/CE
+                            (rising edge-triggered cell FDRE clocked by clk_jtag  {rise@0.000ns fall@50.000ns period=100.000ns})
+  Path Group:             clk_jtag
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (MaxDelay Path 20.000ns)
+  Data Path Delay:        2.402ns  (logic 0.701ns (29.184%)  route 1.701ns (70.816%))
+  Logic Levels:           5  (LUT4=2 LUT6=3)
+  Clock Path Skew:        -0.094ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.968ns
+    Source Clock Delay      (SCD):    6.520ns
+    Clock Pessimism Removal (CPR):    1.458ns
+  Clock Uncertainty:      0.501ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    1.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+  Clock Net Delay (Source):      2.454ns (routing 1.576ns, distribution 0.878ns)
+  Clock Net Delay (Destination): 2.177ns (routing 1.429ns, distribution 0.748ns)
+  Timing Exception:       MaxDelay Path 20.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_jtag rise edge)
+                                                      0.000     0.000 r  
+    AV15                                              0.000     0.000 r  jtag_tck_i (IN)
+                         net (fo=0)                   0.000     0.000    jtag_tck_i_IBUF_inst/I
+    AV15                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.625     0.625 r  jtag_tck_i_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.625    jtag_tck_i_IBUF_inst/OUT
+    AV15                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000     0.625 r  jtag_tck_i_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           3.413     4.038    jtag_tck_i_IBUF
+    BUFGCE_X0Y219        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     4.066 r  jtag_tck_i_IBUF_BUFG_inst/O
+    X2Y4 (CLOCK_ROOT)    net (fo=301, routed)         2.454     6.520    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/jtag_tck_i
+    SLR Crossing[1->0]   
+    SLICE_X69Y294        FDRE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/ack_dst_q_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X69Y294        FDRE (Prop_AFF2_SLICEL_C_Q)
+                                                      0.081     6.601 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/ack_dst_q_reg/Q
+                         net (fo=37, routed)          0.549     7.150    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_cdc_reset_ctrlr/i_cdc_reset_ctrlr_half_b/i_state_transition_cdc_dst/ack_dst_q_reg_1
+    SLICE_X67Y297        LUT4 (Prop_C5LUT_SLICEL_I2_O)
+                                                      0.158     7.308 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_cdc_reset_ctrlr/i_cdc_reset_ctrlr_half_b/i_state_transition_cdc_dst/ack_dst_d_reg_inferred_i_2/O
+                         net (fo=5, routed)           0.452     7.760    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/dmi_resp_valid
+    SLICE_X71Y292        LUT6 (Prop_F6LUT_SLICEL_I5_O)
+                                                      0.148     7.908 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_cdc/i_cdc_resp/i_dst/dr_q[40]_i_6/O
+                         net (fo=1, routed)           0.058     7.966    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/error_q_reg[0]
+    SLICE_X71Y292        LUT6 (Prop_B6LUT_SLICEL_I5_O)
+                                                      0.148     8.114 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/dr_q[40]_i_3/O
+                         net (fo=5, routed)           0.181     8.295    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/dr_q[40]_i_3_n_2
+    SLICE_X71Y292        LUT4 (Prop_C5LUT_SLICEL_I2_O)
+                                                      0.068     8.363 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/error_q[1]_i_4/O
+                         net (fo=2, routed)           0.123     8.486    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/error_q[1]_i_4_n_2
+    SLICE_X72Y293        LUT6 (Prop_C6LUT_SLICEM_I5_O)
+                                                      0.098     8.584 r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap/error_q[1]_i_1/O
+                         net (fo=2, routed)           0.338     8.922    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/i_dmi_jtag_tap_n_50
+    SLICE_X72Y293        FDRE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/error_q_reg[1]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         max delay                   20.000    20.000    
+    AV15                                              0.000    20.000 r  jtag_tck_i (IN)
+                         net (fo=0)                   0.000    20.000    jtag_tck_i_IBUF_inst/I
+    AV15                 INBUF (Prop_INBUF_HPIOB_M_PAD_O)
+                                                      0.374    20.374 r  jtag_tck_i_IBUF_inst/INBUF_INST/O
+                         net (fo=1, routed)           0.000    20.374    jtag_tck_i_IBUF_inst/OUT
+    AV15                 IBUFCTRL (Prop_IBUFCTRL_HPIOB_M_I_O)
+                                                      0.000    20.374 r  jtag_tck_i_IBUF_inst/IBUFCTRL_INST/O
+                         net (fo=1, routed)           2.393    22.767    jtag_tck_i_IBUF
+    BUFGCE_X0Y219        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024    22.791 r  jtag_tck_i_IBUF_BUFG_inst/O
+    X2Y4 (CLOCK_ROOT)    net (fo=301, routed)         2.177    24.968    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/jtag_tck_i
+    SLR Crossing[1->0]   
+    SLICE_X72Y293        FDRE                                         r  i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/error_q_reg[1]/C
+                         clock pessimism              1.458    26.426    
+                         clock uncertainty           -0.501    25.925    
+    SLICE_X72Y293        FDRE (Setup_DFF_SLICEM_C_CE)
+                                                     -0.061    25.864    i_carfield/i_cheshire_wrap/i_cheshire_soc/i_dbg_dmi_jtag/error_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         25.864    
+                         arrival time                          -8.922    
+  -------------------------------------------------------------------
+                         slack                                 16.942    
+
+Slack (MET) :             989.548ns  (required time - arrival time)
+  Source:                 i_carfield/gen_periph.i_watchdog_timer/u_core/prescale_count_q_reg[6]/C
+                            (rising edge-triggered cell FDCE clocked by rtc_clk  {rise@0.000ns fall@500.000ns period=1000.000ns})
+  Destination:            i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o_reg[0]/CE
+                            (rising edge-triggered cell FDCE clocked by rtc_clk  {rise@0.000ns fall@500.000ns period=1000.000ns})
+  Path Group:             rtc_clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            1000.000ns  (rtc_clk rise@1000.000ns - rtc_clk rise@0.000ns)
+  Data Path Delay:        9.774ns  (logic 0.816ns (8.349%)  route 8.958ns (91.651%))
+  Logic Levels:           8  (CARRY8=2 LUT5=2 LUT6=4)
+  Clock Path Skew:        -0.512ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.499ns = ( 1005.499 - 1000.000 ) 
+    Source Clock Delay      (SCD):    5.795ns
+    Clock Pessimism Removal (CPR):    -0.216ns
+  Clock Uncertainty:      0.106ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.199ns
+    Phase Error              (PE):    0.000ns
+  Clock Net Delay (Source):      4.309ns (routing 3.014ns, distribution 1.295ns)
+  Clock Net Delay (Destination): 3.877ns (routing 2.735ns, distribution 1.142ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock rtc_clk rise edge)    0.000     0.000 r  
+    E12                  IBUFCTRL                     0.000     0.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.384     0.384    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT3)
+                                                     -0.127     0.257 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT3
+                         net (fo=1, routed)           0.256     0.513    i_xlnx_clk_wiz/inst/clk_10_xlnx_clk_wiz
+    BUFGCE_X1Y311        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.028     0.541 r  i_xlnx_clk_wiz/inst/clkout4_buf/O
+    X2Y2 (CLOCK_ROOT)    net (fo=64, routed)          4.309     4.850    clk_10
+    SLR Crossing[2->0]   
+    SLICE_X57Y41         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     4.930 r  rtc_clk_q_reg/Q
+                         net (fo=312, routed)         0.865     5.795    i_carfield/gen_periph.i_watchdog_timer/u_core/rt_clk_i
+    SLICE_X53Y73         FDCE                                         r  i_carfield/gen_periph.i_watchdog_timer/u_core/prescale_count_q_reg[6]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X53Y73         FDCE (Prop_CFF2_SLICEM_C_Q)
+                                                      0.077     5.872 r  i_carfield/gen_periph.i_watchdog_timer/u_core/prescale_count_q_reg[6]/Q
+                         net (fo=6, routed)           0.647     6.519    i_carfield/gen_periph.i_watchdog_timer/u_core/prescale_count_q[6]
+    SLICE_X56Y73         LUT6 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.100     6.619 r  i_carfield/gen_periph.i_watchdog_timer/u_core/q[31]_i_7__191/O
+                         net (fo=1, routed)           1.754     8.373    i_carfield/gen_periph.i_watchdog_timer/u_core/q[31]_i_7__191_n_2
+    SLICE_X55Y73         LUT6 (Prop_F6LUT_SLICEL_I4_O)
+                                                      0.035     8.408 r  i_carfield/gen_periph.i_watchdog_timer/u_core/q[31]_i_3__319/O
+                         net (fo=15, routed)          1.326     9.734    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_src_to_dst_req/q_reg[31]_1
+    SLICE_X55Y63         LUT6 (Prop_B6LUT_SLICEL_I5_O)
+                                                      0.148     9.882 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_src_to_dst_req/q[31]_i_1__509/O
+                         net (fo=101, routed)         1.039    10.921    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_nrz_hs_protocol.src_req_q_reg
+    SLICE_X58Y65         LUT5 (Prop_F5LUT_SLICEL_I4_O)
+                                                      0.106    11.027 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry_i_18/O
+                         net (fo=1, routed)           1.376    12.403    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/aon_wkup_count_ds_int[12]
+    SLICE_X57Y67         LUT6 (Prop_E6LUT_SLICEL_I1_O)
+                                                      0.051    12.454 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry_i_4/O
+                         net (fo=1, routed)           0.007    12.461    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry_i_4_n_2
+    SLICE_X57Y67         CARRY8 (Prop_CARRY8_SLICEL_S[4]_CO[7])
+                                                      0.153    12.614 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry/CO[7]
+                         net (fo=1, routed)           0.026    12.640    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry_n_2
+    SLICE_X57Y68         CARRY8 (Prop_CARRY8_SLICEL_CI_CO[2])
+                                                      0.057    12.697 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/dst_update0_carry__0/CO[2]
+                         net (fo=5, routed)           1.215    13.912    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/CO[0]
+    SLICE_X55Y71         LUT5 (Prop_G6LUT_SLICEL_I2_O)
+                                                      0.089    14.001 r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o[31]_i_1/O
+                         net (fo=32, routed)          1.568    15.569    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o[31]_i_1_n_2
+    SLICE_X55Y68         FDCE                                         r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o_reg[0]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock rtc_clk rise edge) 1000.000  1000.000 r  
+    E12                  IBUFCTRL                     0.000  1000.000 r  u_ibufg_sys_clk/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.333  1000.333    i_xlnx_clk_wiz/inst/clk_in1
+    MMCM_X1Y12           MMCME4_ADV (Prop_MMCM_CLKIN1_CLKOUT3)
+                                                      0.630  1000.963 r  i_xlnx_clk_wiz/inst/mmcme4_adv_inst/CLKOUT3
+                         net (fo=1, routed)           0.225  1001.188    i_xlnx_clk_wiz/inst/clk_10_xlnx_clk_wiz
+    BUFGCE_X1Y311        BUFGCE (Prop_BUFCE_BUFGCE_I_O)
+                                                      0.024  1001.212 r  i_xlnx_clk_wiz/inst/clkout4_buf/O
+    X2Y2 (CLOCK_ROOT)    net (fo=64, routed)          3.877  1005.089    clk_10
+    SLR Crossing[2->0]   
+    SLICE_X57Y41         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.059  1005.148 r  rtc_clk_q_reg/Q
+                         net (fo=312, routed)         0.351  1005.499    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/rt_clk_i
+    SLICE_X55Y68         FDCE                                         r  i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o_reg[0]/C
+                         clock pessimism             -0.216  1005.283    
+                         clock uncertainty           -0.106  1005.177    
+    SLICE_X55Y68         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060  1005.117    i_carfield/gen_periph.i_watchdog_timer/u_reg/u_wkup_count_cdc/u_arb/gen_wr_req.dst_qs_o_reg[0]
+  -------------------------------------------------------------------
+                         required time                       1005.117    
+                         arrival time                         -15.569    
+  -------------------------------------------------------------------
+                         slack                                989.548    
+
+
+
+

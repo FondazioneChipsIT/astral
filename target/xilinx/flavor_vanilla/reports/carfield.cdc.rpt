@@ -1,0 +1,37 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date              : Tue Sep  1 17:24:10 2026
+| Host              : chips-rdp-stanis running 64-bit AlmaLinux release 8.10 (Cerulean Leopard)
+| Command           : report_cdc -file reports/carfield.cdc.rpt
+| Design            : carfield_top_xilinx
+| Device            : xcvu9p-flga2104
+| Speed File        : -2L  PRODUCTION 1.27 02-28-2020
+| Temperature Grade : E
+------------------------------------------------------------------------------------------------
+
+CDC Report
+
+Severity  Source Clock         Destination Clock    CDC Type                 Exceptions           Endpoints    Safe  Unsafe  Unknown  No ASYNC_REG  
+--------  -------------------  -------------------  -----------------------  -------------------  ---------  ------  ------  -------  ------------  
+Critical  rtc_clk              clk_10_xlnx_clk_wiz  User Ignored             Asynch Clock Groups          1       0       0        1             0  
+Critical  clk_jtag             clk_50_xlnx_clk_wiz  No Common Primary Clock  Asynch Clock Groups        788      86       0      702             0  
+Critical  clk_50_xlnx_clk_wiz  clk_jtag             No Common Primary Clock  Asynch Clock Groups        187      18       0      169             0  
+Critical  rtc_clk              periph_domain_clk    User Ignored             Asynch Clock Groups        257     186       0       71            11  
+Critical  periph_domain_clk    rtc_clk              User Ignored             Asynch Clock Groups        788     502       0      286            12  
+Warning   input port clock     clk_50_xlnx_clk_wiz  No Common Primary Clock  False Path                   1       1       0        0             1  
+Warning   rtc_clk              clk_50_xlnx_clk_wiz  User Ignored             Asynch Clock Groups          3       3       0        0             1  
+Warning   rtc_clk              pulp_domain_clk      User Ignored             Asynch Clock Groups          1       1       0        0             1  
+Info      clk_20_xlnx_clk_wiz  clk_10_xlnx_clk_wiz  Safely Timed             None                         3       3       0        0             0  
+Info      clk_50_xlnx_clk_wiz  clk_10_xlnx_clk_wiz  Safely Timed             None                        37      37       0        0             0  
+Info      clk_10_xlnx_clk_wiz  clk_20_xlnx_clk_wiz  Safely Timed             None                         3       3       0        0             0  
+Info      clk_50_xlnx_clk_wiz  clk_20_xlnx_clk_wiz  Safely Timed             None                         6       6       0        0             0  
+Info      clk_10_xlnx_clk_wiz  clk_50_xlnx_clk_wiz  Safely Timed             None                         3       3       0        0             0  
+Info      clk_20_xlnx_clk_wiz  clk_50_xlnx_clk_wiz  Safely Timed             None                         3       3       0        0             0  
+Info      l2_domain_clk        clk_50_xlnx_clk_wiz  Safely Timed             None                       238     238       0        0             0  
+Info      periph_domain_clk    clk_50_xlnx_clk_wiz  Safely Timed             None                       150     150       0        0             0  
+Info      pulp_domain_clk      clk_50_xlnx_clk_wiz  Safely Timed             None                       358     358       0        0             0  
+Info      clk_50_xlnx_clk_wiz  l2_domain_clk        Safely Timed             None                     13746   13746       0        0             0  
+Info      clk_50_xlnx_clk_wiz  periph_domain_clk    Safely Timed             None                      1444    1444       0        0             0  
+Info      clk_50_xlnx_clk_wiz  pulp_domain_clk      Safely Timed             None                    164469  164469       0        0             0  
+

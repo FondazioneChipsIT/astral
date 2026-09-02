@@ -1,0 +1,49 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date              : Tue Sep  1 17:25:28 2026
+| Host              : chips-rdp-stanis running 64-bit AlmaLinux release 8.10 (Cerulean Leopard)
+| Command           : report_clock_interaction -file reports/carfield.clock_interaction.rpt
+| Design            : carfield_top_xilinx
+| Device            : xcvu9p-flga2104
+| Speed File        : -2L  PRODUCTION 1.27 02-28-2020
+| Temperature Grade : E
+------------------------------------------------------------------------------------------------
+
+Clock Interaction Report
+
+Clock Interaction Table
+-----------------------
+
+                                            WNS                            TNS Failing  TNS Total    WNS Path         Clock-Pair           Inter-Clock          
+From Clock            To Clock              Clock Edges  WNS(ns)  TNS(ns)    Endpoints    Endpoints  Requirement(ns)  Classification       Constraints          
+--------------------  --------------------  -----------  -------  -------  -----------  -----------  ---------------  -------------------  -------------------  
+clk_10_xlnx_clk_wiz   clk_10_xlnx_clk_wiz   rise - rise    19.38     0.00            0           68            20.00  Clean                Timed                
+clk_10_xlnx_clk_wiz   clk_20_xlnx_clk_wiz   rise - rise    19.29     0.00            0            3            20.00  Clean                Partial False Path   
+clk_10_xlnx_clk_wiz   clk_50_xlnx_clk_wiz   rise - rise    19.29     0.00            0            3            20.00  Clean                Partial False Path   
+clk_20_xlnx_clk_wiz   clk_10_xlnx_clk_wiz   rise - rise    19.30     0.00            0            3            20.00  Clean                Partial False Path   
+clk_20_xlnx_clk_wiz   clk_20_xlnx_clk_wiz   rise - rise    19.39     0.00            0           37            20.00  Clean                Timed                
+clk_20_xlnx_clk_wiz   clk_50_xlnx_clk_wiz   rise - rise    19.34     0.00            0            3            20.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   clk_10_xlnx_clk_wiz   rise - rise    19.28     0.00            0           46            20.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   clk_20_xlnx_clk_wiz   rise - rise    19.29     0.00            0           15            20.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   clk_50_xlnx_clk_wiz   rise - rise     7.00     0.00            0       693427            20.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   clk_jtag                                                       0          187                   Ignored              Asynchronous Groups  
+clk_50_xlnx_clk_wiz   l2_domain_clk         rise - rise    19.27     0.00            0        15067            20.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   periph_domain_clk     rise - rise    -1.23  -105.76           99         1667             0.00  Clean                Partial False Path   
+clk_50_xlnx_clk_wiz   pulp_domain_clk       rise - rise    19.08     0.00            0       171726            20.00  Clean                Partial False Path   
+clk_jtag              clk_50_xlnx_clk_wiz                                            0          788                   Ignored              Asynchronous Groups  
+clk_jtag              clk_jtag              rise - rise    17.80     0.00            0          471            20.00  Clean                Timed                
+l2_domain_clk         clk_50_xlnx_clk_wiz   rise - rise    19.27     0.00            0          238            20.00  Clean                Partial False Path   
+l2_domain_clk         l2_domain_clk         rise - fall     8.71     0.00            0        49810            10.00  Clean                Partial False Path   
+periph_domain_clk     clk_50_xlnx_clk_wiz   rise - rise    -1.23   -18.43           15          150             0.00  Clean                Partial False Path   
+periph_domain_clk     periph_domain_clk     rise - rise    16.02     0.00            0        25252            20.00  Clean                Partial False Path   
+periph_domain_clk     rtc_clk                                                        0          811                   Ignored              Asynchronous Groups  
+pulp_domain_clk       clk_50_xlnx_clk_wiz   rise - rise    10.22     0.00            0          358            20.00  Clean                Timed                
+pulp_domain_clk       pulp_domain_clk       rise - rise     0.00     0.00            0       579130             0.00  Clean                Partial False Path   
+rtc_clk               clk_10_xlnx_clk_wiz                                            0            1                   Ignored              Asynchronous Groups  
+rtc_clk               clk_50_xlnx_clk_wiz                                            0            3                   Ignored              Asynchronous Groups  
+rtc_clk               periph_domain_clk                                              0          257                   Ignored              Asynchronous Groups  
+rtc_clk               pulp_domain_clk                                                0            1                   Ignored              Asynchronous Groups  
+rtc_clk               rtc_clk               rise - rise   997.23     0.00            0          547          1000.00  Clean                Timed                
+
+
