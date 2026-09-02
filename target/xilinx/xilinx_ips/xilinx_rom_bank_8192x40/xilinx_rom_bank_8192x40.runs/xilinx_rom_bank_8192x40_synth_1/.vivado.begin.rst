@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ProcessHandle Version="1" Minor="0">
+    <Process Command="vivado" Owner="francesco.seratini" Host="chips-rdp-stanis" Pid="3451852" HostCore="128" HostMemory="2113255476">
+    </Process>
+</ProcessHandle>

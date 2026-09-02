@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Tue Sep  1 14:08:41 2026
+# Process ID: 3060689
+# Current directory: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xlnx_mig_ddr4/xlnx_mig_ddr4.runs/xlnx_mig_ddr4_synth_1
+# Command line: vivado -log xlnx_mig_ddr4.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source xlnx_mig_ddr4.tcl
+# Log file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xlnx_mig_ddr4/xlnx_mig_ddr4.runs/xlnx_mig_ddr4_synth_1/xlnx_mig_ddr4.vds
+# Journal file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xlnx_mig_ddr4/xlnx_mig_ddr4.runs/xlnx_mig_ddr4_synth_1/vivado.jou
+#-----------------------------------------------------------
+source xlnx_mig_ddr4.tcl -notrace

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Tue Sep  1 14:22:26 2026
+# Process ID: 3383743
+# Current directory: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_1024x22
+# Command line: vivado -mode batch -source tcl/run.tcl
+# Log file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_1024x22/vivado.log
+# Journal file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_1024x22/vivado.jou
+#-----------------------------------------------------------
+source tcl/run.tcl

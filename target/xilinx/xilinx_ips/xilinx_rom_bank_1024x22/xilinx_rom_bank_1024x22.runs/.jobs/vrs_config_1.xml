@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Runs Version="1" Minor="0">
+	<Run Id="xilinx_rom_bank_1024x22_synth_1" LaunchDir="/data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_1024x22/xilinx_rom_bank_1024x22.runs/xilinx_rom_bank_1024x22_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Parameters>
+		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
+		<Parameter Name="runs.enableClusterConf" Val="true" Type="bool"/>
+	</Parameters>
+</Runs>
+

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Tue Sep  1 14:25:38 2026
+# Process ID: 3451976
+# Current directory: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_8192x40/xilinx_rom_bank_8192x40.runs/xilinx_rom_bank_8192x40_synth_1
+# Command line: vivado -log xilinx_rom_bank_8192x40.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source xilinx_rom_bank_8192x40.tcl
+# Log file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_8192x40/xilinx_rom_bank_8192x40.runs/xilinx_rom_bank_8192x40_synth_1/xilinx_rom_bank_8192x40.vds
+# Journal file: /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_8192x40/xilinx_rom_bank_8192x40.runs/xilinx_rom_bank_8192x40_synth_1/vivado.jou
+#-----------------------------------------------------------
+source xilinx_rom_bank_8192x40.tcl -notrace

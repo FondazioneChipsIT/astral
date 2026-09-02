@@ -1,0 +1,22 @@
+// Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+// --------------------------------------------------------------------------------
+// Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+// Date        : Tue Sep  1 14:24:50 2026
+// Host        : chips-rdp-stanis running 64-bit AlmaLinux release 8.10 (Cerulean Leopard)
+// Command     : write_verilog -force -mode synth_stub
+//               /data2/fseratini/astral-vcu118-v2/target/xilinx/xilinx_ips/xilinx_rom_bank_1024x22/xilinx_rom_bank_1024x22.gen/sources_1/ip/xilinx_rom_bank_1024x22/xilinx_rom_bank_1024x22_stub.v
+// Design      : xilinx_rom_bank_1024x22
+// Purpose     : Stub declaration of top-level module interface
+// Device      : xcvu9p-flga2104-2L-e
+// --------------------------------------------------------------------------------
+
+// This empty module with port declaration file causes synthesis tools to infer a black box for IP.
+// The synthesis directives are for Synopsys Synplify support to prevent IO buffer insertion.
+// Please paste the declaration into a Verilog source file or add the file as an additional source.
+(* x_core_info = "dist_mem_gen_v8_0_13,Vivado 2020.2" *)
+module xilinx_rom_bank_1024x22(a, clk, spo)
+/* synthesis syn_black_box black_box_pad_pin="a[9:0],clk,spo[21:0]" */;
+  input [9:0]a;
+  input clk;
+  output [21:0]spo;
+endmodule
