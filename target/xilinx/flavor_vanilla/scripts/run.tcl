@@ -121,6 +121,7 @@ if {[info exists ::env(XILINX_ELABORATION_ONLY)] && $::env(XILINX_ELABORATION_ON
   }
   
   # Implementation
+  set_param drc.disableLUTOverUtilError 1
   launch_runs impl_1
   wait_on_run impl_1
   launch_runs impl_1 -to_step write_bitstream

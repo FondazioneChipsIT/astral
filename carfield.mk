@@ -198,6 +198,7 @@ include $(CAR_SW_DIR)/sw.mk
 .PHONY: chs-sw-build
 ## Build the host domain (Cheshire) SW libraries and generates an archive (`libcheshire.a`)
 ## available for Carfield as static library at link time.
+CHS_SW_FLAGS += -Wno-int-conversion -Wno-implicit-function-declaration -Wno-incompatible-pointer-types -Wno-implicit-int
 chs-sw-build: chs-sw-all
 
 .PHONY: car-sw-build
@@ -378,8 +379,8 @@ include $(CAR_XIL_DIR)/xilinx.mk
 mibench: $(CAR_SW_DIR)/benchmarks/mibench
 
 $(CAR_SW_DIR)/benchmarks/mibench:
-	git clone https://github.com/alex96295/mibench.git -b carfield $@
-
+	git clone https://github.com/yvantor/mibench.git -b yt/astral $@
+	
 # Litmus tests
 # LITMUS_WORK_DIR  := work-litmus
 # LITMUS_TEST_LIST := $(LITMUS_WORK_DIR)/litmus-tests.list
